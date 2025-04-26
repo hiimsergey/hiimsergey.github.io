@@ -4,61 +4,83 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="icon" type="image/png" href="assets/logo.png"/>
+        <link rel="stylesheet" href="main.css"/>
         <title>Sergey Lavrent</title>
     </head>
 
 	<body>
-		<i>Proper CSS coming soon :]</i><br>
-		<a href="https://hiimsergey.github.io/flappyspace">Play Flappyspace here though</a>
+        <div id="editor">
+            <div id="contact" class="buffer">
+                <div class="content">
+                    <h1>Sergey Lavrent</h1>
+*   <b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a>
+* 󰇰  <b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a>
 
-		<h2>Contact</h2>
-		<ul>
-			<li>sergeylavrent@protonmail.com</li>
-			<li>https://github.com/hiimsergey</li>
-		</ul>
+<!-- TODO CONSIDER MOVE this to its own pane that can be called with :help -->
+Press j/k to navigate down/up.
+Press :vs # to restore the other buffer.
+Type : and Tab to view available commands.
 
-		<h2>Favorite languages</h2>
-		<ul>
-			<li>Zig</li>
-			<li>C</li>
-			<li>Rust</li>
-		</ul>
+<i>This website's design is an homage to the <a href="https://neovim.io">Neovim</a> editor.</i>
+                </div>
+                <div class="lualine bar">
+                    <div class="lualine-left">
+                        <div class="mode">NORMAL</div>
+                        <div id="separator-mode">𜷄</div>
+                        <div class="git"> main</div>
+                        <div id="separator-git">𜷄</div>
+                    </div>
+                    <div class="lualine-right">
+                        <div>1:1</div>
+                        <div>󰖶 wrap</div>
+                    </div>
+                </div>
+            </div>
 
-		<h2>Languages I tolerate</h2>
-		<ul>
-			<li>JavaScript/TypeScript</li>
-			<li>Lua</li>
-			<li>Kotlin</li>
-			<li>CSS</li>
-		</ul>
+            <div id="separator"></div>
 
-		<h2>Skills</h2>
-		<ul>
-			<li>Low level programming</li>
-			<li>CSS design</li>
-		</ul>
+            <div id="portfolio" class="buffer">
+                <div class="content">
+<h2>👋 Welcome</h2>
+I am Sergey, a developer based in Berlin.
+I primarily work in the low level sphere, but occasionally get my hands on Android and web development.
 
-		<h2>Notable projects</h2>
-		<ul>
-			<li><a href="https://mminl-de.github.io/interscore">Interscore</a></li>
-			<ul>
-				<li>Contributions to every part of the suite</li>
-				<li>Wrote all its websites</li>
-			</ul>
-			<li><a href="https://github.com/hiimsergey/obsidian-simple-columns">obsidian-simple-columns</a></li>
-			<li>Contributions to <a href="https://github.com/mminl-de/pakt">Pakt</a></li>
-		</ul>
+<h2>💻 Languages I deal with</h2>
+* Rust
+* C
+* Zig
+* Kotlin
+* HTML/CSS/TypeScript
 
-		<h3>WIP</h3>
-		<ul>
-			<li><a href="https://github.com/hiimsergey/intercrawl">Intercrawl</a></li>
-			<li><a href="https://github.com/hiimsergey/norsu.nvim">norsu.nvim</a> and its grammar: <a href="https://github.com/hiimsergey/tree-sitter-norsu">tree-sitter-norsu</a></li>
-			<li>StreakTracker</li>
-		</ul>
+<h2>🛠️ Notable projects</h2>
+* Flappyspace (a Flappy-Bird-esque game in space)
+    * <a id="aplusplus" href="https://hiimsergey.github.io/flappyspace" target="_blank">Play here</a>
+* Intercrawl (roguelike desktop game)
+* norsu.nvim and its grammar tree-sitter-norsu (Neovim plugin for a custom markup language)
+* Interscore (suite of programs for sports livestreams)
+* Obsidian Simple Columns (Obsidian plugin for multi-column text)
+* Pakt (shell script for package manager organization)
+* this website too
+* More at <a href="https://github.com/hiimsergey?tab=repositories" target="_blank">GitHub</a>
 
-		<h2>Education</h2>
-		<ul>
-			<li>B.Sc. Computer Science at Technical University of Berlin (2024-)</li>
-		</ul>
+<h2>🎓 Education</h2>
+* 2024-present: <a href="https://tu.berlin">Technical University of Berlin</a>
+    * (B.Sc. Computer Science)
+                </div>
+                <div class="lualine bar">
+                    <div class="lualine-left">
+                        <div class="mode">NORMAL</div>
+                        <div> main</div>
+                    </div>
+                    <div class="lualine-right">
+                        <div>1:1</div>
+                        <div>𜵟󰖶 wrap</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="input" class="bar">:lua print "TODO"</div>
 	</body>
+
+    <script src="script.js"></script>
 </html>
