@@ -1,31 +1,52 @@
+const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
 const input = document.querySelector("input")
 
+const line_numbers = document.getElementsByClassName("line-numbers")
 const lualines = document.getElementsByClassName("lualine")
 const modes = document.getElementsByClassName("mode")
 const gits = document.getElementsByClassName("git")
 
 const contact = document.getElementById("contact")
-const separator = document.getElementById("separator")
+const handle = document.getElementById("handle")
+const handle_line = document.getElementById("handle-line")
 const portfolio = document.getElementById("portfolio")
 const aplusplus = document.getElementById("aplusplus")
 
+const contact_line_numbers = contact.querySelector(".line-numbers")
 const contact_filename = contact.querySelector(".filename")
 const contact_position = contact.querySelector(".position")
 
+const platform = portfolio.querySelector("#platform")
+const encoding = portfolio.querySelector("#encoding")
+const filetype = portfolio.querySelector("#filetype")
 const percentage = portfolio.querySelector("#percentage")
 const position = portfolio.querySelector(".position")
+const wrap = portfolio.querySelector(".wrap")
 
 const boring_separators = portfolio.querySelectorAll(".boring-separator")
 const separator_mode = portfolio.querySelector("#separator-mode")
 const separator_git = portfolio.querySelector("#separator-git")
 const separator_percentage = portfolio.querySelector("#separator-percentage")
 const separator_position = portfolio.querySelector("#separator-position")
+const separator_wrap = portfolio.querySelector("#separator-wrap")
+
+const portfolio_line_numbers = portfolio.querySelector(".line-numbers")
+const portfolio_filename = portfolio.querySelector(".filename")
+
+const CONTACT_LINES = 15
+const PORTFOLIO_LINES = 32
 
 // TODO USE
 const COMMANDS = [
     "q"
+    // colorscheme
+    // h
+    // _ E21
+    // _ every other command
+    // hide
+    // vs #
 ]
 
 // TODO FINAL ADD comments about what the name of each hexcolor is
@@ -37,7 +58,7 @@ const COLORSCHEMES = [
         bar: "#181825",
         bar_gray: "#313244",
         text: "#cdd6f4",
-        subtext: "#a6adc8",
+        subtext: "#45475a", // Surface 1
         red: "#f38ba8",
         orange: "#fab387",
         yellow: "#f9e2af",
@@ -95,57 +116,79 @@ const COLORSCHEMES = [
     }
 ]
 
+let colo = 0
 let dragging = false
 
-function set_colorscheme(n) {
-    contact.style.backgroundColor = COLORSCHEMES[n].background
-    //separator.style.backgroundColor = COLORSCHEMES[n].background
-    portfolio.style.backgroundColor = COLORSCHEMES[n].background
-    input.style.color = COLORSCHEMES[n].text
-    input.style.backgroundColor = COLORSCHEMES[n].background
-    document.body.style.color = COLORSCHEMES[n].text
+function set_colorscheme() {
+    document.body.style.color = COLORSCHEMES[colo].text
 
-    for (ll of lualines) ll.style.backgroundColor = COLORSCHEMES[n].bar
+    contact.style.backgroundColor = COLORSCHEMES[colo].background
+    handle.style.backgroundColor = COLORSCHEMES[colo].background
+    handle_line.style.backgroundColor = COLORSCHEMES[colo].bar
+    portfolio.style.backgroundColor = COLORSCHEMES[colo].background
+
+    input.style.color = COLORSCHEMES[colo].text
+    input.style.backgroundColor = COLORSCHEMES[colo].background
+
+    for (ln of line_numbers) {
+        ln.style.color = COLORSCHEMES[colo].subtext
+        ln.style.backgroundColor = COLORSCHEMES[colo].background
+    }
+
+    for (ll of lualines) ll.style.backgroundColor = COLORSCHEMES[colo].bar
 
     // TODO NOW REMOVE loop
     for (mode of modes) {
-        mode.style.backgroundColor = COLORSCHEMES[n].blue
-        mode.style.color = COLORSCHEMES[n].bar
+        mode.style.backgroundColor = COLORSCHEMES[colo].blue
+        mode.style.color = COLORSCHEMES[colo].bar
 
-        separator_mode.style.color = COLORSCHEMES[n].blue
-        separator_mode.style.backgroundColor = COLORSCHEMES[n].bar_gray
+        separator_mode.style.color = COLORSCHEMES[colo].blue
+        separator_mode.style.backgroundColor = COLORSCHEMES[colo].bar_gray
     }
 
     // TODO NOW REMOVE loop
     for (git of gits) {
-        git.style.backgroundColor = COLORSCHEMES[n].bar_gray
-        git.style.color = COLORSCHEMES[n].blue
+        git.style.backgroundColor = COLORSCHEMES[colo].bar_gray
+        git.style.color = COLORSCHEMES[colo].blue
 
-        separator_git.style.color = COLORSCHEMES[n].bar_gray
-        separator_git.style.backgroundColor = COLORSCHEMES[n].bar
+        separator_git.style.color = COLORSCHEMES[colo].bar_gray
+        separator_git.style.backgroundColor = COLORSCHEMES[colo].bar
     }
 
-    for (bs of boring_separators) bs.style.backgroundColor = COLORSCHEMES[n].bar
+    for (bs of boring_separators) bs.style.backgroundColor = COLORSCHEMES[colo].bar
 
-    separator_percentage.style.color = COLORSCHEMES[n].bar_gray
-    separator_percentage.style.backgroundColor = COLORSCHEMES[n].bar
+    encoding.style.backgroundColor = COLORSCHEMES[colo].bar
+    platform.style.backgroundColor = COLORSCHEMES[colo].bar
+    filetype.style.backgroundColor = COLORSCHEMES[colo].bar
 
-    percentage.style.color = COLORSCHEMES[n].blue
-    percentage.style.backgroundColor = COLORSCHEMES[n].bar_gray
+    separator_percentage.style.color = COLORSCHEMES[colo].bar_gray
+    separator_percentage.style.backgroundColor = COLORSCHEMES[colo].bar
 
-    separator_position.style.color = COLORSCHEMES[n].blue
-    separator_position.style.backgroundColor = COLORSCHEMES[n].bar_gray
+    percentage.style.color = COLORSCHEMES[colo].blue
+    percentage.style.backgroundColor = COLORSCHEMES[colo].bar_gray
 
-    position.style.color = COLORSCHEMES[n].background
-    position.style.backgroundColor = COLORSCHEMES[n].blue
+    separator_position.style.color = COLORSCHEMES[colo].blue
+    separator_position.style.backgroundColor = COLORSCHEMES[colo].bar_gray
 
-    h2s.forEach(h2 => h2.style.color = COLORSCHEMES[n].orange)
-    anchors.forEach(a => a.style.color = COLORSCHEMES[n].yellow)
+    position.style.color = COLORSCHEMES[colo].background
+    position.style.backgroundColor = COLORSCHEMES[colo].blue
 
-    aplusplus.style.color = COLORSCHEMES[n].green
+    separator_wrap.style.color = COLORSCHEMES[colo].red
+    separator_wrap.style.backgroundColor = COLORSCHEMES[colo].blue
 
-    contact_filename.style.color = COLORSCHEMES[n].subtext
-    contact_position.style.color = COLORSCHEMES[n].subtext
+    wrap.style.color = COLORSCHEMES[colo].background
+    wrap.style.backgroundColor = COLORSCHEMES[colo].red
+
+    h1s.forEach(h1 => h1.style.color = COLORSCHEMES[colo].red)
+    h2s.forEach(h2 => h2.style.color = COLORSCHEMES[colo].orange)
+    anchors.forEach(a => a.style.color = COLORSCHEMES[colo].yellow)
+
+    aplusplus.style.color = COLORSCHEMES[colo].green
+
+    contact_filename.style.color = COLORSCHEMES[colo].subtext
+    contact_position.style.color = COLORSCHEMES[colo].subtext
+
+    portfolio_filename.style.backgroundColor = COLORSCHEMES[colo].bar
 }
 
 function process_command(command) {
@@ -174,34 +217,64 @@ Press ENTER or type command to continue`
     }
 }
 
+function create_contact_line_numbers() {
+    for (let i = 1; i <= CONTACT_LINES; ++i) {
+        const line = document.createElement("div")
+        line.innerHTML = i
+        contact_line_numbers.appendChild(line)
+    }
+    contact_line_numbers.children[1].style.height = "27.3em";
+}
+
+function create_portfolio_line_numbers() {
+    for (let i = 1; i <= PORTFOLIO_LINES; ++i) {
+        const line = document.createElement("div")
+        line.innerHTML = i
+        portfolio_line_numbers.appendChild(line)
+    }
+}
+
 function trigger_completions(command) {
     console.log("triggering completions")
 }
 
 document.addEventListener("keydown", (e) => {
-    if (e.key === ":") {
-        input.value = ":"
-        input.focus()
-        e.preventDefault() // Don't type ":" again
+    switch (e.key) {
+        case ":":
+            input.style.color = COLORSCHEMES[colo].text
+            input.style.fontStyle = "normal"
+            input.value = ":"
+            input.focus()
+            e.preventDefault() // Don't type ":" again
+            break
+        case "i":
+            if (document.activeElement.tagName === "INPUT") break
+            input.style.color = COLORSCHEMES[colo].red
+            input.style.fontStyle = "italic"
+            input.value = "E21: Cannot make changes, 'modifiable' is off"
     }
 })
 
 input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        process_command(input.value.slice(1))
-        input.blur()
-    }
-    if (e.key === "Tab") {
-        trigger_completions(input.value.slice(1))
-        e.preventDefault()
-    }
-    if (e.key === "Escape" || (input.value === ":" && e.key === "Backspace")) {
-        input.value = ""
-        input.blur()
+    switch (e.key) {
+        case "Enter":
+            process_command(input.value.slice(1))
+            input.blur()
+            break
+        case "Tab":
+            trigger_completions(input.value.slice(1))
+            e.preventDefault()
+            break
+        case "Backspace":
+            if (input.value !== ":") break
+        case "Escape":
+            input.value = ""
+            input.blur()
+            break
     }
 })
 
-separator.addEventListener("mousedown", (e) => {
+handle.addEventListener("mousedown", (e) => {
     dragging = true
     e.preventDefault() // Prevent selecting text while dragging
 })
@@ -213,12 +286,14 @@ document.addEventListener("mousemove", (e) => {
     const contact_w = e.clientX
     const portfolio_w = window_w - contact_w
 
-    contact.style.flexGrow = contact_w
-    portfolio.style.flexGrow = portfolio_w
+    contact.style.width = contact_w + "px"
+    portfolio.style.width = portfolio_w + "px"
 })
 
 document.addEventListener("mouseup", () => {
     dragging = false
 })
 
-set_colorscheme(0)
+create_contact_line_numbers()
+create_portfolio_line_numbers()
+set_colorscheme()

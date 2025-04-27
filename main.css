@@ -21,15 +21,10 @@ body {
 
 img {
     width: 50ch;
+    height: 27em;
 }
 
-/* TODO */
-h1 {
-    font-size: var(--size-font);
-}
-
-/* TODO */
-h2 {
+h1, h2 {
     margin: 0;
     font-size: var(--size-font);
 }
@@ -45,6 +40,8 @@ a::after {
 input {
     font-family: inherit;
     font-size: inherit;
+
+    pointer-events: none;
 }
 
 input:focus {
@@ -65,6 +62,24 @@ input:focus {
 .buffer {
     display: flex;
     flex-direction: column;
+
+    min-width: 1ch;
+}
+
+.viewport {
+    display: flex;
+    flex-grow: 1;
+}
+
+.line-numbers {
+    min-width: 5ch;
+    max-width: 5ch;
+    height: 100%;
+
+    text-align: right;
+    padding-right: 1ch;
+
+    user-select: none;
 }
 
 .content {
@@ -82,8 +97,42 @@ input:focus {
 .lualine {
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
 
-    user-select: none; /* Prevents from selecting text inside lualines */
+    position: relative;
+
+    user-select: none;
+}
+
+.lualine-left,
+.lualine-right {
+    display: flex;
+
+    white-space: nowrap;
+}
+
+.lualine-left {
+    flex-shrink: 0;
+
+    position: absolute;
+    left: 0;
+}
+
+.lualine-right {
+    position: absolute;
+    right: 0;
+}
+
+.lualine-a {
+    display: flex;
+
+    z-index: 2;
+}
+
+.lualine-z {
+    display: flex;
+
+    z-index: 1;
 }
 
 .component {
@@ -99,15 +148,28 @@ input:focus {
 }
 
 #editor {
-    /* For some reason, doing `flex-grow: 1;` creates a tiny vertical overflow. */
-    height: calc(99vh - var(--height-cell));
+    flex-grow: 1;
 }
 
-#separator {
+#handle {
+    background-color: lightgray;
+
     cursor: col-resize;
     height: 100%; /* TODO NOW */
     width: 1ch;
-    background-color: yellow;
+
+    position: relative;
+}
+
+#handle-line {
+    background-color: purple;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 2px;
+    height: 100%;
 }
 
 @font-face {

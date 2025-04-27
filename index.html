@@ -14,10 +14,12 @@
 	<body>
         <div id="editor">
             <div id="contact" class="buffer">
-                <div class="content">
-                    <img src="assets/picture.jpg"/>
+                <div class="viewport">
+                    <div class="line-numbers"></div>
+                    <div class="content">
+<img src="assets/picture.jpg"/>
 
-                    <h1>Sergey Lavrent</h1>
+                        <h1>Sergey Lavrent</h1>
 *   <b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a>
 * 󰇰  <b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a>
 
@@ -26,7 +28,8 @@ Press j/k to navigate down/up.
 Press :vs # to restore the other buffer.
 Type : and Tab to view available commands.
 
-<i>This website's design is an homage to the <a href="https://neovim.io">Neovim</a> editor.</i>
+<i>This website's design is an homage to the <a href="https://neovim.io" target="_blank">Neovim</a> editor.</i>
+                    </div>
                 </div>
                 <div class="lualine bar">
                     <div class="component filename">Contact.portfolio</div>
@@ -34,11 +37,13 @@ Type : and Tab to view available commands.
                 </div>
             </div>
 
-            <div id="separator"></div>
+            <div id="handle"><div id="handle-line"></div></div>
 
             <div id="portfolio" class="buffer">
-                <div class="content">
-<h2>👋 Welcome</h2>
+                <div class="viewport">
+                    <div class="line-numbers"></div>
+                    <div class="content">
+<h1>👋 Welcome</h1>
 I am Sergey, a developer based in Berlin.
 I primarily work in the low level sphere, but occasionally get my hands on Android and web development.
 
@@ -63,38 +68,63 @@ I primarily work in the low level sphere, but occasionally get my hands on Andro
 <h2>🎓 Education</h2>
 * 2024-present: <a href="https://tu.berlin">Technical University of Berlin</a>
     * (B.Sc. Computer Science)
+                    </div>
                 </div>
                 <div class="lualine bar">
                     <div class="lualine-left">
-                        <div class="component bold mode">NORMAL</div>
-                        <div id="separator-mode">𜷄</div>
-                        <div class="component git"> main</div>
-                        <div id="separator-git">𜷄</div>
+                        <div class="lualine-a">
+                            <div class="component bold mode">NORMAL</div>
+                            <div id="separator-mode">𜷄</div>
+
+                            <div class="component git"> main</div>
+                            <div id="separator-git">𜷄</div>
+                        </div>
+
                         <div class="component filename">Portfolio.portfolio</div>
                     </div>
                     <div class="lualine-right">
                         <div id="encoding" class="component">utf-8</div>
+
                         <div class="boring-separator">𜹘</div>
+
                         <div id="platform" class="component"></div>
+
                         <div class="boring-separator">𜹘</div>
+
                         <div id="filetype" class="component"> portfolio</div>
-                        <div id="separator-percentage">𜵟</div>
-                        <div id="percentage" class="component">Top</div>
-                        <div id="separator-position">𜵟</div>
-                        <div class="component bold position">1:1</div>
+
+                        <div class="lualine-z">
+                            <div id="separator-percentage">𜵟</div>
+                            <div id="percentage" class="component">Top</div>
+
+                            <div id="separator-position">𜵟</div>
+                            <div class="component bold position">1:1</div>
+
+                            <div id="separator-wrap">𜵟</div>
+                            <div class="component wrap">󰖶 wrap</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 <!-- TODO PLAN
-lualine
-allow dragging again
-line numbers
 scrolling
+fix line numbers
 narrow width handling
 proper themes
 some commands
+autocompletions
+shell command error
 which-key
+optimize and clean up
+:colorscheme without arguments
+themes
+    onedark
+    something emacs-related
+CONSIDER termguicolors
+:set nu
+:set rnu
+:h E21
 -->
         <!-- TODO pressing backspace after : should close the bar again -->
         <!-- TODO Ctrl+A should prevent selecting and behave like in nvim -->
