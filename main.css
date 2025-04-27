@@ -74,14 +74,14 @@ input:focus {
     flex-direction: column;
 
     min-width: 1ch;
-}
 
-.viewport {
-    display: flex;
-    flex-grow: 1;
+    z-index: 3;
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     /* white-space: pre-wrap; TODO CHECK */
 
     /* TODO WIP */
@@ -187,6 +187,8 @@ input:focus {
     width: 1ch;
 
     position: relative;
+
+    z-index: 3;
 }
 
 #handle-line {

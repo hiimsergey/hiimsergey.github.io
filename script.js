@@ -1,21 +1,26 @@
+// Elements and pseudo-elements
 const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
 const input = document.querySelector("input")
 const deemphs = document.getElementsByClassName("deemph")
 
-const lualines = document.getElementsByClassName("lualine")
-const modes = document.getElementsByClassName("mode")
-const gits = document.getElementsByClassName("git")
-
+// Root structure
 const contact = document.getElementById("contact")
 const handle = document.getElementById("handle")
 const handle_line = document.getElementById("handle-line")
 const portfolio = document.getElementById("portfolio")
 const aplusplus = document.getElementById("aplusplus")
 
+// Lualine - bunches
+const lualines = document.getElementsByClassName("lualine")
+const modes = document.getElementsByClassName("mode")
+const gits = document.getElementsByClassName("git")
+
+// Lualine - singles
 const contact_filename = contact.querySelector(".filename")
 const contact_position = contact.querySelector(".position")
+const portfolio_filename = portfolio.querySelector(".filename")
 
 const platform = portfolio.querySelector("#platform")
 const encoding = portfolio.querySelector("#encoding")
@@ -24,6 +29,7 @@ const percentage = portfolio.querySelector("#percentage")
 const position = portfolio.querySelector(".position")
 const wrap = portfolio.querySelector(".wrap")
 
+// Lualine - separators
 const boring_separators = portfolio.querySelectorAll(".boring-separator")
 const separator_mode = portfolio.querySelector("#separator-mode")
 const separator_git = portfolio.querySelector("#separator-git")
@@ -31,21 +37,8 @@ const separator_percentage = portfolio.querySelector("#separator-percentage")
 const separator_position = portfolio.querySelector("#separator-position")
 const separator_wrap = portfolio.querySelector("#separator-wrap")
 
-const portfolio_filename = portfolio.querySelector(".filename")
-
 const CONTACT_LINES = 15
 const PORTFOLIO_LINES = 31
-
-// TODO USE
-const COMMANDS = [
-    "q"
-    // colorscheme
-    // h
-    // _ E21
-    // _ every other command
-    // hide
-    // vs #
-]
 
 // TODO FINAL ADD comments about what the name of each hexcolor is
 const COLORSCHEMES = [
@@ -98,10 +91,77 @@ const COLORSCHEMES = [
     }
 ]
 
+// TODO USE
+const COMMANDS = [
+    {
+        cmd: "",
+        short: true,
+        callback: () => {}
+    },
+    {
+        cmd: "quit",
+        short: false,
+        callback: quit
+    },
+    {
+        cmd: "q!",
+        short: true,
+        callback: quit
+    },
+    {
+        cmd: "q",
+        short: true,
+        callback: quit
+    },
+    
+    {
+        cmd: "colorscheme",
+        short: false,
+        callback: colorscheme
+    },
+    {
+        cmd: "colo",
+        short: true,
+        callback: colorscheme
+    },
+    // colorscheme
+    // h
+    // _ E21
+    // _ every other command
+    // hide
+    // vs #
+]
+
+function quit(args) {
+    window.open(window.location, "_self").close()
+}
+
+function colorscheme(args) {
+    switch (args.length) {
+        case 1:
+            input.value = COLORSCHEMES[colo].name
+            return
+        case 2:
+            // TODO NOW TEST
+            for (let i = 0; i < COLORSCHEMES.length; ++i) {
+                if (args[1] === COLORSCHEMES[i].name) {
+                    colo = i
+                    apply_colorscheme()
+                    return
+                }
+            }
+        default:
+            input.style.color = COLORSCHEMES[colo].h1
+            input.style.fontStyle = "italic"
+            input.value = `E185: Cannot find color scheme '${args.slice(1).join(" ")}'`
+            return
+    }
+}
+
 let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 let dragging = false
 
-function set_colorscheme() {
+function apply_colorscheme() {
     document.body.style.color = COLORSCHEMES[colo].text
     document.documentElement.style.setProperty("--ln-color", COLORSCHEMES[colo].muted)
 
@@ -191,11 +251,21 @@ Press ENTER or type command to continue`
         console.log(msg)
     }
 
-    if (command === "q" || command === "q!") {
-        window.open(window.location, "_self").close()
+    const args = command.trim().split(" ")
+
+    for (CMDOBJ of COMMANDS) {
+        if (args[0] === CMDOBJ.cmd) {
+            CMDOBJ.callback(args)
+            return
+        }
     }
+
+    input.style.color = COLORSCHEMES[colo].h1
+    input.style.fontStyle = "italic"
+    input.value = `E492: Not an editor command: ${command}`
 }
 
+// TODO NOTE it should also trigger on commands like :colo and :help
 function trigger_completions(command) {
     console.log("triggering completions")
 }
@@ -211,7 +281,7 @@ document.addEventListener("keydown", (e) => {
             break
         case "i":
             if (document.activeElement.tagName === "INPUT") break
-            input.style.color = COLORSCHEMES[colo].red
+            input.style.color = COLORSCHEMES[colo].h1
             input.style.fontStyle = "italic"
             input.value = "E21: Cannot make changes, 'modifiable' is off"
     }
@@ -256,4 +326,4 @@ document.addEventListener("mouseup", () => {
     dragging = false
 })
 
-set_colorscheme()
+apply_colorscheme()
