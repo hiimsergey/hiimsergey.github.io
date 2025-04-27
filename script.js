@@ -51,72 +51,56 @@ const COMMANDS = [
 
 // TODO FINAL ADD comments about what the name of each hexcolor is
 const COLORSCHEMES = [
-    // catppuccin mocha – https://catppuccin.com/palette
     {
-        // TODO FINAL CHECK if all were used
-        background: "#1e1e2e",
-        bar: "#181825",
-        bar_gray: "#313244",
-        text: "#cdd6f4",
-        subtext: "#45475a", // Surface 1
-        red: "#f38ba8",
-        orange: "#fab387",
-        yellow: "#f9e2af",
-        green: "#a6e3a1",
-        blue: "#89b4fa",
-        purple: "#b4befe"
+        name: "catppuccin-mocha",  // https://catppuccin.com/palette
+
+        background:    "#1e1e2e",  // Base
+        bar:           "#181825",  // Mantle
+        bar_gray:      "#313244",  // Surface 0
+        text:          "#cdd6f4",  // Text
+        subtext:       "#45475a",  // Surface 1
+        h1:            "#f38ba8",  // Red
+        h2:            "#fab387",  // Peach
+        link:          "#f9e2af",  // Yellow
+        link_special:  "#a6e3a1",  // Green
+        mode_normal:   "#89b4fa",  // Blue
+        wrap:          "#eba0ac"   // Mauve
     },
 
-    // gruvbox material – https://github.com/sainnhe/gruvbox-material
     {
-        // TODO FINAL CHECK if all were used
-        background: "#1d2021",
-        bar: "#282828",
-        bar_gray: "#3c3836",
-        text: "#d4be98",
-        subtext: "#7c6f64", // TODO CHECK VALUE
-        red: "#ea6962",
-        orange: "#e78a4e",
-        yellow: "#d8a657",
-        green: "#a9b665",
-        blue: "#7daea3",
-        purple: "#d3869b"
+        name: "gruvbox-material",  // https://github.com/sainnhe/gruvbox-material
+
+        background:    "#282828",  // bg0
+        bar:           "#3a3735",  // bg_statusline2
+        bar_gray:      "#504945",  // bg_statusline3
+        text:          "#d4be98",  // fg0
+        subtext:       "#7c6f64",  // grey0
+        h1:            "#ea6962",  // red
+        h2:            "#e78a4e",  // orange
+        link:          "#89b482",  // aqua
+        link_special:  "#d3869b",  // purple
+        mode_normal:   "#7daea3",  // blue
+        wrap:          "#a9b665"   // green
     },
 
-    // rose-pine-moon – https://github.com/rose-pine/nvim
     {
-        // TODO FINAL CHECK if all were used
-        background: "#232136",
-        bar: "#2a283e",
-        bar_gray: "#44415a",
-        text: "#e0def4",
-        subtext: "#6e6a86",
-        red: "#eb6f92",
-        orange: "#ea9a97",
-        yellow: "#f6c177",
-        green: "#9ccfd8",
-        blue: "#3e8fb0",
-        purple: "#c4a7e7"
-    },
+        name: "rose-pine-moon",    // https://rosepinetheme.com/palette/ingredients
 
-    // github – https://primer.style/product/primitives/color
-    {
-        // TODO FINAL CHECK if all were used
-        background: "#e6eaef",
-        bar: "#2a283e",
-        bar_gray: "#44415a",
-        text: "#e0def4",
-        subtext: "#6e6a86",
-        red: "#eb6f92",
-        orange: "#ea9a97",
-        yellow: "#0969da",
-        green: "#9ccfd8",
-        blue: "#0969da",
-        purple: "#c4a7e7"
+        background:    "#232136",  // Base
+        bar:           "#2a283e",  // Highlight Low
+        bar_gray:      "#44415a",  // Highlight Med
+        text:          "#e0def4",  // Text
+        subtext:       "#6e6a86",  // Muted
+        h1:            "#eb6f92",  // Love
+        h2:            "#f6c177",  // Gold
+        link:          "#ea9a97",  // Rose
+        link_special:  "#9ccfd8",  // Foam
+        mode_normal:   "#3e8fb0",  // Pine
+        wrap:          "#c4a7e7"   // Iris
     }
 ]
 
-let colo = 0
+let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 let dragging = false
 
 function set_colorscheme() {
@@ -139,17 +123,17 @@ function set_colorscheme() {
 
     // TODO NOW REMOVE loop
     for (mode of modes) {
-        mode.style.backgroundColor = COLORSCHEMES[colo].blue
+        mode.style.backgroundColor = COLORSCHEMES[colo].mode_normal
         mode.style.color = COLORSCHEMES[colo].bar
 
-        separator_mode.style.color = COLORSCHEMES[colo].blue
+        separator_mode.style.color = COLORSCHEMES[colo].mode_normal
         separator_mode.style.backgroundColor = COLORSCHEMES[colo].bar_gray
     }
 
     // TODO NOW REMOVE loop
     for (git of gits) {
         git.style.backgroundColor = COLORSCHEMES[colo].bar_gray
-        git.style.color = COLORSCHEMES[colo].blue
+        git.style.color = COLORSCHEMES[colo].mode_normal
 
         separator_git.style.color = COLORSCHEMES[colo].bar_gray
         separator_git.style.backgroundColor = COLORSCHEMES[colo].bar
@@ -164,26 +148,26 @@ function set_colorscheme() {
     separator_percentage.style.color = COLORSCHEMES[colo].bar_gray
     separator_percentage.style.backgroundColor = COLORSCHEMES[colo].bar
 
-    percentage.style.color = COLORSCHEMES[colo].blue
+    percentage.style.color = COLORSCHEMES[colo].mode_normal
     percentage.style.backgroundColor = COLORSCHEMES[colo].bar_gray
 
-    separator_position.style.color = COLORSCHEMES[colo].blue
+    separator_position.style.color = COLORSCHEMES[colo].mode_normal
     separator_position.style.backgroundColor = COLORSCHEMES[colo].bar_gray
 
     position.style.color = COLORSCHEMES[colo].background
-    position.style.backgroundColor = COLORSCHEMES[colo].blue
+    position.style.backgroundColor = COLORSCHEMES[colo].mode_normal
 
-    separator_wrap.style.color = COLORSCHEMES[colo].red
-    separator_wrap.style.backgroundColor = COLORSCHEMES[colo].blue
+    separator_wrap.style.color = COLORSCHEMES[colo].wrap
+    separator_wrap.style.backgroundColor = COLORSCHEMES[colo].mode_normal
 
     wrap.style.color = COLORSCHEMES[colo].background
-    wrap.style.backgroundColor = COLORSCHEMES[colo].red
+    wrap.style.backgroundColor = COLORSCHEMES[colo].wrap
 
-    h1s.forEach(h1 => h1.style.color = COLORSCHEMES[colo].red)
-    h2s.forEach(h2 => h2.style.color = COLORSCHEMES[colo].orange)
-    anchors.forEach(a => a.style.color = COLORSCHEMES[colo].yellow)
+    h1s.forEach(h1 => h1.style.color = COLORSCHEMES[colo].h1)
+    h2s.forEach(h2 => h2.style.color = COLORSCHEMES[colo].h2)
+    anchors.forEach(a => a.style.color = COLORSCHEMES[colo].link)
 
-    aplusplus.style.color = COLORSCHEMES[colo].green
+    aplusplus.style.color = COLORSCHEMES[colo].link_special
 
     contact_filename.style.color = COLORSCHEMES[colo].subtext
     contact_position.style.color = COLORSCHEMES[colo].subtext
