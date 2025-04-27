@@ -1,5 +1,6 @@
 <!-- TODO ADD which-key so all actions are space-triggered -->
 <!-- but still through the command line too -->
+<!-- TODO FINAL do we need all classes? -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,6 +15,8 @@
         <div id="editor">
             <div id="contact" class="buffer">
                 <div class="content">
+                    <img src="assets/picture.jpg"/>
+
                     <h1>Sergey Lavrent</h1>
 *   <b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a>
 * 󰇰  <b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a>
@@ -26,16 +29,8 @@ Type : and Tab to view available commands.
 <i>This website's design is an homage to the <a href="https://neovim.io">Neovim</a> editor.</i>
                 </div>
                 <div class="lualine bar">
-                    <div class="lualine-left">
-                        <div class="mode">NORMAL</div>
-                        <div id="separator-mode">𜷄</div>
-                        <div class="git"> main</div>
-                        <div id="separator-git">𜷄</div>
-                    </div>
-                    <div class="lualine-right">
-                        <div>1:1</div>
-                        <div>󰖶 wrap</div>
-                    </div>
+                    <div class="component filename">Contact.portfolio</div>
+                    <div class="component position">1:1</div>
                 </div>
             </div>
 
@@ -62,7 +57,7 @@ I primarily work in the low level sphere, but occasionally get my hands on Andro
 * Interscore (suite of programs for sports livestreams)
 * Obsidian Simple Columns (Obsidian plugin for multi-column text)
 * Pakt (shell script for package manager organization)
-* this website too
+* <a href="https://github.com/hiimsergey/hiimsergey.github.io">this website too</a>
 * More at <a href="https://github.com/hiimsergey?tab=repositories" target="_blank">GitHub</a>
 
 <h2>🎓 Education</h2>
@@ -71,16 +66,36 @@ I primarily work in the low level sphere, but occasionally get my hands on Andro
                 </div>
                 <div class="lualine bar">
                     <div class="lualine-left">
-                        <div class="mode">NORMAL</div>
-                        <div> main</div>
+                        <div class="component bold mode">NORMAL</div>
+                        <div id="separator-mode">𜷄</div>
+                        <div class="component git"> main</div>
+                        <div id="separator-git">𜷄</div>
+                        <div class="component filename">Portfolio.portfolio</div>
                     </div>
                     <div class="lualine-right">
-                        <div>1:1</div>
-                        <div>𜵟󰖶 wrap</div>
+                        <div id="encoding" class="component">utf-8</div>
+                        <div class="boring-separator">𜹘</div>
+                        <div id="platform" class="component"></div>
+                        <div class="boring-separator">𜹘</div>
+                        <div id="filetype" class="component"> portfolio</div>
+                        <div id="separator-percentage">𜵟</div>
+                        <div id="percentage" class="component">Top</div>
+                        <div id="separator-position">𜵟</div>
+                        <div class="component bold position">1:1</div>
                     </div>
                 </div>
             </div>
         </div>
+<!-- TODO PLAN
+lualine
+allow dragging again
+line numbers
+scrolling
+narrow width handling
+proper themes
+some commands
+which-key
+-->
         <!-- TODO pressing backspace after : should close the bar again -->
         <!-- TODO Ctrl+A should prevent selecting and behave like in nvim -->
         <!-- TODO ! command should return shell errors 127 like fish does -->

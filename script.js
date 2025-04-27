@@ -11,8 +11,22 @@ const separator = document.getElementById("separator")
 const portfolio = document.getElementById("portfolio")
 const aplusplus = document.getElementById("aplusplus")
 
-const separator_mode = document.getElementById("separator-mode")
-const separator_git = document.getElementById("separator-git")
+const contact_filename = contact.querySelector(".filename")
+const contact_position = contact.querySelector(".position")
+
+const percentage = portfolio.querySelector("#percentage")
+const position = portfolio.querySelector(".position")
+
+const boring_separators = portfolio.querySelectorAll(".boring-separator")
+const separator_mode = portfolio.querySelector("#separator-mode")
+const separator_git = portfolio.querySelector("#separator-git")
+const separator_percentage = portfolio.querySelector("#separator-percentage")
+const separator_position = portfolio.querySelector("#separator-position")
+
+// TODO USE
+const COMMANDS = [
+    "q"
+]
 
 // TODO FINAL ADD comments about what the name of each hexcolor is
 const COLORSCHEMES = [
@@ -87,12 +101,13 @@ function set_colorscheme(n) {
     contact.style.backgroundColor = COLORSCHEMES[n].background
     //separator.style.backgroundColor = COLORSCHEMES[n].background
     portfolio.style.backgroundColor = COLORSCHEMES[n].background
-    input.style.backgroundColor = COLORSCHEMES[n].background
     input.style.color = COLORSCHEMES[n].text
+    input.style.backgroundColor = COLORSCHEMES[n].background
     document.body.style.color = COLORSCHEMES[n].text
 
     for (ll of lualines) ll.style.backgroundColor = COLORSCHEMES[n].bar
 
+    // TODO NOW REMOVE loop
     for (mode of modes) {
         mode.style.backgroundColor = COLORSCHEMES[n].blue
         mode.style.color = COLORSCHEMES[n].bar
@@ -101,6 +116,7 @@ function set_colorscheme(n) {
         separator_mode.style.backgroundColor = COLORSCHEMES[n].bar_gray
     }
 
+    // TODO NOW REMOVE loop
     for (git of gits) {
         git.style.backgroundColor = COLORSCHEMES[n].bar_gray
         git.style.color = COLORSCHEMES[n].blue
@@ -109,10 +125,27 @@ function set_colorscheme(n) {
         separator_git.style.backgroundColor = COLORSCHEMES[n].bar
     }
 
+    for (bs of boring_separators) bs.style.backgroundColor = COLORSCHEMES[n].bar
+
+    separator_percentage.style.color = COLORSCHEMES[n].bar_gray
+    separator_percentage.style.backgroundColor = COLORSCHEMES[n].bar
+
+    percentage.style.color = COLORSCHEMES[n].blue
+    percentage.style.backgroundColor = COLORSCHEMES[n].bar_gray
+
+    separator_position.style.color = COLORSCHEMES[n].blue
+    separator_position.style.backgroundColor = COLORSCHEMES[n].bar_gray
+
+    position.style.color = COLORSCHEMES[n].background
+    position.style.backgroundColor = COLORSCHEMES[n].blue
+
     h2s.forEach(h2 => h2.style.color = COLORSCHEMES[n].orange)
     anchors.forEach(a => a.style.color = COLORSCHEMES[n].yellow)
 
     aplusplus.style.color = COLORSCHEMES[n].green
+
+    contact_filename.style.color = COLORSCHEMES[n].subtext
+    contact_position.style.color = COLORSCHEMES[n].subtext
 }
 
 function process_command(command) {
@@ -134,6 +167,10 @@ Press ENTER or type command to continue`
         // TODO
         console.clear()
         console.log(msg)
+    }
+
+    if (command === "q" || command === "q!") {
+        window.open(window.location, "_self").close()
     }
 }
 
@@ -158,16 +195,15 @@ input.addEventListener("keydown", (e) => {
         trigger_completions(input.value.slice(1))
         e.preventDefault()
     }
-    if (input.value === ":" && e.key === "Backspace") {
+    if (e.key === "Escape" || (input.value === ":" && e.key === "Backspace")) {
         input.value = ""
         input.blur()
-        // TODO window.open(window.location, "_self").close()
     }
 })
 
 separator.addEventListener("mousedown", (e) => {
     dragging = true
-    e.preventDefault() // prevent selecting text while dragging
+    e.preventDefault() // Prevent selecting text while dragging
 })
 
 document.addEventListener("mousemove", (e) => {
