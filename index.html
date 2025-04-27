@@ -1,3 +1,5 @@
+<!-- TODO ADD which-key so all actions are space-triggered -->
+<!-- but still through the command line too -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -79,7 +81,11 @@ I primarily work in the low level sphere, but occasionally get my hands on Andro
                 </div>
             </div>
         </div>
-        <div id="input" class="bar">:lua print "TODO"</div>
+        <!-- TODO pressing backspace after : should close the bar again -->
+        <!-- TODO Ctrl+A should prevent selecting and behave like in nvim -->
+        <!-- TODO ! command should return shell errors 127 like fish does -->
+        <!-- TODO CONSIDER Ctrl+F mode -->
+        <input class="bar"/>
 	</body>
 
     <script src="script.js"></script>

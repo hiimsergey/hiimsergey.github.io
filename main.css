@@ -1,3 +1,4 @@
+/* TODO FINAL make scrollbar fit it with neovim's style (make it look like a ruler) */
 :root {
     /* TODO change this value based on how many terminal cells could fit here */
     --font-size: 20px;
@@ -16,6 +17,34 @@ body {
     flex-direction: column;
 
     height: 100vh;
+}
+
+/* TODO */
+h1 {
+    font-size: var(--size-font);
+}
+
+/* TODO */
+h2 {
+    margin: 0;
+}
+
+a {
+    font-style: italic;
+}
+
+a::after {
+    content: " ";
+}
+
+input {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: bold;
+}
+
+input:focus {
+    outline: none;
 }
 
 #editor,
@@ -68,49 +97,11 @@ body {
     height: calc(99vh - var(--height-cell));
 }
 
-#contact {
-    background-color: red;
-}
-
-#contact .bar {
-    background-color: pink;
-}
-
 #separator {
     cursor: col-resize;
     height: 100%; /* TODO NOW */
     width: 1ch;
     background-color: yellow;
-}
-
-#portfolio {
-    background-color: blue;
-}
-
-#portfolio .bar {
-    background-color: cyan;
-}
-
-#input {
-    background-color: white;
-}
-
-/* TODO */
-h1 {
-    font-size: var(--size-font);
-}
-
-/* TODO */
-h2 {
-    margin: 0;
-}
-
-a {
-    font-style: italic;
-}
-
-a::after {
-    content: " ";
 }
 
 @font-face {
