@@ -1,8 +1,11 @@
+import { COLORSCHEMES } from "./colorschemes.js"
+import { COMMANDS } from "./commands.js"
+
 // Elements and pseudo-elements
+export const input = document.querySelector("input")
 const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
-const input = document.querySelector("input")
 const deemphs = document.getElementsByClassName("deemph")
 
 // Root structure
@@ -40,203 +43,86 @@ const separator_wrap = portfolio.querySelector("#separator-wrap")
 const CONTACT_LINES = 15
 const PORTFOLIO_LINES = 31
 
-// TODO FINAL ADD comments about what the name of each hexcolor is
-const COLORSCHEMES = [
-    {
-        name: "catppuccin-mocha",  // https://catppuccin.com/palette
+export let ctx = {
+    colo: Math.floor(Math.random() * COLORSCHEMES.length),
+    dragging: false,
 
-        background:    "#1e1e2e",  // Base
-        bar:           "#181825",  // Mantle
-        bar_gray:      "#313244",  // Surface 0
-        text:          "#cdd6f4",  // Text
-        muted:       "#45475a",  // Surface 1
-        h1:            "#f38ba8",  // Red
-        h2:            "#fab387",  // Peach
-        link:          "#f9e2af",  // Yellow
-        link_special:  "#a6e3a1",  // Green
-        mode_normal:   "#89b4fa",  // Blue
-        wrap:          "#eba0ac"   // Mauve
+    apply_colorscheme: function() {
+        document.body.style.color = COLORSCHEMES[ctx.colo].text
+        document.documentElement.style.setProperty("--ln-color", COLORSCHEMES[ctx.colo].muted)
+
+        contact.style.backgroundColor = COLORSCHEMES[ctx.colo].background
+        handle.style.backgroundColor = COLORSCHEMES[ctx.colo].background
+        handle_line.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+        portfolio.style.backgroundColor = COLORSCHEMES[ctx.colo].background
+
+        input.style.color = COLORSCHEMES[ctx.colo].text
+        input.style.backgroundColor = COLORSCHEMES[ctx.colo].background
+
+        for (const ll of lualines) ll.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+
+        // TODO NOW REMOVE loop
+        for (const mode of modes) {
+            mode.style.backgroundColor = COLORSCHEMES[ctx.colo].mode_normal
+            mode.style.color = COLORSCHEMES[ctx.colo].bar
+
+            separator_mode.style.color = COLORSCHEMES[ctx.colo].mode_normal
+            separator_mode.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
+        }
+
+        // TODO NOW REMOVE loop
+        for (const git of gits) {
+            git.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
+            git.style.color = COLORSCHEMES[ctx.colo].mode_normal
+
+            separator_git.style.color = COLORSCHEMES[ctx.colo].bar_gray
+            separator_git.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+        }
+
+        for (const bs of boring_separators) bs.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+
+        encoding.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+        platform.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+        filetype.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+
+        separator_percentage.style.color = COLORSCHEMES[ctx.colo].bar_gray
+        separator_percentage.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
+
+        percentage.style.color = COLORSCHEMES[ctx.colo].mode_normal
+        percentage.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
+
+        separator_position.style.color = COLORSCHEMES[ctx.colo].mode_normal
+        separator_position.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
+
+        position.style.color = COLORSCHEMES[ctx.colo].background
+        position.style.backgroundColor = COLORSCHEMES[ctx.colo].mode_normal
+
+        separator_wrap.style.color = COLORSCHEMES[ctx.colo].wrap
+        separator_wrap.style.backgroundColor = COLORSCHEMES[ctx.colo].mode_normal
+
+        wrap.style.color = COLORSCHEMES[ctx.colo].background
+        wrap.style.backgroundColor = COLORSCHEMES[ctx.colo].wrap
+
+        h1s.forEach(h1 => h1.style.color = COLORSCHEMES[ctx.colo].h1)
+        h2s.forEach(h2 => h2.style.color = COLORSCHEMES[ctx.colo].h2)
+        anchors.forEach(a => a.style.color = COLORSCHEMES[ctx.colo].link)
+        for (const de of deemphs) de.style.color = COLORSCHEMES[ctx.colo].muted
+
+        aplusplus.style.color = COLORSCHEMES[ctx.colo].link_special
+
+        contact_filename.style.color = COLORSCHEMES[ctx.colo].muted
+        contact_position.style.color = COLORSCHEMES[ctx.colo].muted
+
+        portfolio_filename.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
     },
 
-    {
-        name: "gruvbox-material",  // https://github.com/sainnhe/gruvbox-material
+    process_command: function(command) {
+        console.log("TODO processing: '", command, "'")
 
-        background:    "#282828",  // bg0
-        bar:           "#3a3735",  // bg_statusline2
-        bar_gray:      "#504945",  // bg_statusline3
-        text:          "#d4be98",  // fg0
-        muted:       "#7c6f64",  // grey0
-        h1:            "#ea6962",  // red
-        h2:            "#e78a4e",  // orange
-        link:          "#89b482",  // aqua
-        link_special:  "#d3869b",  // purple
-        mode_normal:   "#7daea3",  // blue
-        wrap:          "#a9b665"   // green
-    },
-
-    {
-        name: "rose-pine-moon",    // https://rosepinetheme.com/palette/ingredients
-
-        background:    "#232136",  // Base
-        bar:           "#2a283e",  // Highlight Low
-        bar_gray:      "#44415a",  // Highlight Med
-        text:          "#e0def4",  // Text
-        muted:       "#6e6a86",  // Muted
-        h1:            "#eb6f92",  // Love
-        h2:            "#f6c177",  // Gold
-        link:          "#ea9a97",  // Rose
-        link_special:  "#9ccfd8",  // Foam
-        mode_normal:   "#3e8fb0",  // Pine
-        wrap:          "#c4a7e7"   // Iris
-    }
-]
-
-// TODO USE
-const COMMANDS = [
-    {
-        cmd: "",
-        short: true,
-        callback: () => {}
-    },
-    {
-        cmd: "quit",
-        short: false,
-        callback: quit
-    },
-    {
-        cmd: "q!",
-        short: true,
-        callback: quit
-    },
-    {
-        cmd: "q",
-        short: true,
-        callback: quit
-    },
-    
-    {
-        cmd: "colorscheme",
-        short: false,
-        callback: colorscheme
-    },
-    {
-        cmd: "colo",
-        short: true,
-        callback: colorscheme
-    },
-    // colorscheme
-    // h
-    // _ E21
-    // _ every other command
-    // hide
-    // vs #
-]
-
-function quit(args) {
-    window.open(window.location, "_self").close()
-}
-
-function colorscheme(args) {
-    switch (args.length) {
-        case 1:
-            input.value = COLORSCHEMES[colo].name
-            return
-        case 2:
-            // TODO NOW TEST
-            for (let i = 0; i < COLORSCHEMES.length; ++i) {
-                if (args[1] === COLORSCHEMES[i].name) {
-                    colo = i
-                    apply_colorscheme()
-                    return
-                }
-            }
-        default:
-            input.style.color = COLORSCHEMES[colo].h1
-            input.style.fontStyle = "italic"
-            input.value = `E185: Cannot find color scheme '${args.slice(1).join(" ")}'`
-            return
-    }
-}
-
-let colo = Math.floor(Math.random() * COLORSCHEMES.length)
-let dragging = false
-
-function apply_colorscheme() {
-    document.body.style.color = COLORSCHEMES[colo].text
-    document.documentElement.style.setProperty("--ln-color", COLORSCHEMES[colo].muted)
-
-    contact.style.backgroundColor = COLORSCHEMES[colo].background
-    handle.style.backgroundColor = COLORSCHEMES[colo].background
-    handle_line.style.backgroundColor = COLORSCHEMES[colo].bar
-    portfolio.style.backgroundColor = COLORSCHEMES[colo].background
-
-    input.style.color = COLORSCHEMES[colo].text
-    input.style.backgroundColor = COLORSCHEMES[colo].background
-
-    for (ll of lualines) ll.style.backgroundColor = COLORSCHEMES[colo].bar
-
-    // TODO NOW REMOVE loop
-    for (mode of modes) {
-        mode.style.backgroundColor = COLORSCHEMES[colo].mode_normal
-        mode.style.color = COLORSCHEMES[colo].bar
-
-        separator_mode.style.color = COLORSCHEMES[colo].mode_normal
-        separator_mode.style.backgroundColor = COLORSCHEMES[colo].bar_gray
-    }
-
-    // TODO NOW REMOVE loop
-    for (git of gits) {
-        git.style.backgroundColor = COLORSCHEMES[colo].bar_gray
-        git.style.color = COLORSCHEMES[colo].mode_normal
-
-        separator_git.style.color = COLORSCHEMES[colo].bar_gray
-        separator_git.style.backgroundColor = COLORSCHEMES[colo].bar
-    }
-
-    for (bs of boring_separators) bs.style.backgroundColor = COLORSCHEMES[colo].bar
-
-    encoding.style.backgroundColor = COLORSCHEMES[colo].bar
-    platform.style.backgroundColor = COLORSCHEMES[colo].bar
-    filetype.style.backgroundColor = COLORSCHEMES[colo].bar
-
-    separator_percentage.style.color = COLORSCHEMES[colo].bar_gray
-    separator_percentage.style.backgroundColor = COLORSCHEMES[colo].bar
-
-    percentage.style.color = COLORSCHEMES[colo].mode_normal
-    percentage.style.backgroundColor = COLORSCHEMES[colo].bar_gray
-
-    separator_position.style.color = COLORSCHEMES[colo].mode_normal
-    separator_position.style.backgroundColor = COLORSCHEMES[colo].bar_gray
-
-    position.style.color = COLORSCHEMES[colo].background
-    position.style.backgroundColor = COLORSCHEMES[colo].mode_normal
-
-    separator_wrap.style.color = COLORSCHEMES[colo].wrap
-    separator_wrap.style.backgroundColor = COLORSCHEMES[colo].mode_normal
-
-    wrap.style.color = COLORSCHEMES[colo].background
-    wrap.style.backgroundColor = COLORSCHEMES[colo].wrap
-
-    h1s.forEach(h1 => h1.style.color = COLORSCHEMES[colo].h1)
-    h2s.forEach(h2 => h2.style.color = COLORSCHEMES[colo].h2)
-    anchors.forEach(a => a.style.color = COLORSCHEMES[colo].link)
-    for (de of deemphs) de.style.color = COLORSCHEMES[colo].muted
-
-    aplusplus.style.color = COLORSCHEMES[colo].link_special
-
-    contact_filename.style.color = COLORSCHEMES[colo].muted
-    contact_position.style.color = COLORSCHEMES[colo].muted
-
-    portfolio_filename.style.backgroundColor = COLORSCHEMES[colo].bar
-}
-
-function process_command(command) {
-    console.log("TODO processing: '", command, "'")
-
-    if (command[0] === "!") {
-        const shell_command = command.slice(1)
-        const tildes = "~".repeat(shell_command.replace(/ .*/, "").length - 2)
-        const msg = `:!${shell_command}
+        if (command[0] === "!") {
+            const shell_command = command.slice(1)
+            const tildes = "~".repeat(shell_command.replace(/ .*/, "").length - 2)
+            const msg = `:!${shell_command}
 sh: Unknown command: ${shell_command}
 sh:
 ${shell_command}
@@ -246,34 +132,35 @@ shell returned 127
 
 Press ENTER or type command to continue`
 
-        // TODO
-        console.clear()
-        console.log(msg)
-    }
-
-    const args = command.trim().split(" ")
-
-    for (CMDOBJ of COMMANDS) {
-        if (args[0] === CMDOBJ.cmd) {
-            CMDOBJ.callback(args)
-            return
+            // TODO
+            console.clear()
+            console.log(msg)
         }
+
+        const args = command.trim().split(" ")
+
+        for (const CMDOBJ of COMMANDS) {
+            if (args[0] === CMDOBJ.cmd) {
+                CMDOBJ.callback(args)
+                return
+            }
+        }
+
+        input.style.color = COLORSCHEMES[ctx.colo].h1
+        input.style.fontStyle = "italic"
+        input.value = `E492: Not an editor command: ${command}`
+    },
+
+    // TODO NOTE it should also trigger on commands like :colo and :help
+    trigger_completions: function(command) {
+        console.log("triggering completions")
     }
-
-    input.style.color = COLORSCHEMES[colo].h1
-    input.style.fontStyle = "italic"
-    input.value = `E492: Not an editor command: ${command}`
-}
-
-// TODO NOTE it should also trigger on commands like :colo and :help
-function trigger_completions(command) {
-    console.log("triggering completions")
 }
 
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
-            input.style.color = COLORSCHEMES[colo].text
+            input.style.color = COLORSCHEMES[ctx.colo].text
             input.style.fontStyle = "normal"
             input.value = ":"
             input.focus()
@@ -281,7 +168,7 @@ document.addEventListener("keydown", (e) => {
             break
         case "i":
             if (document.activeElement.tagName === "INPUT") break
-            input.style.color = COLORSCHEMES[colo].h1
+            input.style.color = COLORSCHEMES[ctx.colo].h1
             input.style.fontStyle = "italic"
             input.value = "E21: Cannot make changes, 'modifiable' is off"
     }
@@ -290,11 +177,11 @@ document.addEventListener("keydown", (e) => {
 input.addEventListener("keydown", (e) => {
     switch (e.key) {
         case "Enter":
-            process_command(input.value.slice(1))
+            ctx.process_command(input.value.slice(1))
             input.blur()
             break
         case "Tab":
-            trigger_completions(input.value.slice(1))
+            ctx.trigger_completions(input.value.slice(1))
             e.preventDefault()
             break
         case "Backspace":
@@ -307,12 +194,12 @@ input.addEventListener("keydown", (e) => {
 })
 
 handle.addEventListener("mousedown", (e) => {
-    dragging = true
+    ctx.dragging = true
     e.preventDefault() // Prevent selecting text while dragging
 })
 
 document.addEventListener("mousemove", (e) => {
-    if (!dragging) return
+    if (!ctx.dragging) return
 
     const window_w = window.innerWidth
     const contact_w = e.clientX
@@ -323,7 +210,7 @@ document.addEventListener("mousemove", (e) => {
 })
 
 document.addEventListener("mouseup", () => {
-    dragging = false
+    ctx.dragging = false
 })
 
-apply_colorscheme()
+ctx.apply_colorscheme()
