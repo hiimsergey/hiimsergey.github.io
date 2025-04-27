@@ -5,6 +5,8 @@
 
     --height-line: 1.25em;
     --height-cell: 1.5em;
+
+    --ln-color: yellow;
 }
 
 body {
@@ -37,6 +39,10 @@ a::after {
     content: " ";
 }
 
+#aplusplus::after {
+    content: " ";
+}
+
 input {
     font-family: inherit;
     font-size: inherit;
@@ -46,6 +52,10 @@ input {
 
 input:focus {
     outline: none;
+}
+
+.deemph {
+    display: inline;
 }
 
 #editor,
@@ -71,19 +81,37 @@ input:focus {
     flex-grow: 1;
 }
 
-.line-numbers {
-    min-width: 5ch;
-    max-width: 5ch;
-    height: 100%;
+.content {
+    /* white-space: pre-wrap; TODO CHECK */
 
-    text-align: right;
-    padding-right: 1ch;
+    /* TODO WIP */
+    counter-reset: line;
+    position: relative;
 
-    user-select: none;
+    padding-left: 5ch;
 }
 
-.content {
-    white-space: pre-wrap; /* TODO CHECK */
+.content > * {
+    position: relative;
+    min-height: 1.3em;
+}
+
+.content > *::before {
+    color: var(--ln-color);
+
+    display: normal;
+
+    position: absolute;
+    top: 0;
+    left: -6ch;
+    counter-increment: line;
+    content: counter(line);
+
+    text-align: right;
+    min-width: 4ch;
+    max-width: 4ch;
+
+    margin-left: 1ch;
 }
 
 .bar {

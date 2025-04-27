@@ -15,20 +15,24 @@
         <div id="editor">
             <div id="contact" class="buffer">
                 <div class="viewport">
-                    <div class="line-numbers"></div>
                     <div class="content">
-<img src="assets/picture.jpg"/>
+<div></div>
+<div><img src="assets/picture.jpg"/></div>
 
-                        <h1>Sergey Lavrent</h1>
-*   <b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a>
-* 󰇰  <b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a>
+<div></div>
+<h1>Sergey Lavrent</h1>
 
-<!-- TODO CONSIDER MOVE this to its own pane that can be called with :help -->
-Press j/k to navigate down/up.
-Press :vs # to restore the other buffer.
-Type : and Tab to view available commands.
+<div></div>
+<div>*   <b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a></div>
+<div>* 󰇰  <b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a></div>
 
-<i>This website's design is an homage to the <a href="https://neovim.io" target="_blank">Neovim</a> editor.</i>
+<div></div>
+<div>Press j/k to navigate down/up.</div>
+<div>Press :vs # to restore the other buffer.</div>
+<div>Type : and Tab to view available commands.</div>
+
+<div></div>
+<div class="deemph"><i>This website's design is an homage to the <a href="https://neovim.io" target="_blank">Neovim</a> editor.</i></div>
                     </div>
                 </div>
                 <div class="lualine bar">
@@ -40,34 +44,41 @@ Type : and Tab to view available commands.
             <div id="handle"><div id="handle-line"></div></div>
 
             <div id="portfolio" class="buffer">
+                <!-- TODO NOW REMOVE .viewport -->
                 <div class="viewport">
-                    <div class="line-numbers"></div>
                     <div class="content">
+<div></div>
 <h1>👋 Welcome</h1>
-I am Sergey, a developer based in Berlin.
-I primarily work in the low level sphere, but occasionally get my hands on Android and web development.
+                        
+<div></div>
+<div>I am Sergey, a developer based in Berlin.</div>
+<div>I primarily work in the low level sphere, but occasionally get my hands on Android and web development.</div>
 
+<div></div>
 <h2>💻 Languages I deal with</h2>
-* Rust
-* C
-* Zig
-* Kotlin
-* HTML/CSS/TypeScript
 
+<div></div>
+<div>* Rust</div>
+<div>* C</div>
+<div>* Zig</div>
+<div>* Kotlin</div>
+<div>* HTML/CSS/TypeScript</div>
+
+<div></div>
 <h2>🛠️ Notable projects</h2>
-* Flappyspace (a Flappy-Bird-esque game in space)
-    * <a id="aplusplus" href="https://hiimsergey.github.io/flappyspace" target="_blank">Play here</a>
-* Intercrawl (roguelike desktop game)
-* norsu.nvim and its grammar tree-sitter-norsu (Neovim plugin for a custom markup language)
-* Interscore (suite of programs for sports livestreams)
-* Obsidian Simple Columns (Obsidian plugin for multi-column text)
-* Pakt (shell script for package manager organization)
-* <a href="https://github.com/hiimsergey/hiimsergey.github.io">this website too</a>
-* More at <a href="https://github.com/hiimsergey?tab=repositories" target="_blank">GitHub</a>
+<div>* <b>Flappyspace</b> <div class="deemph">(a Flappy-Bird-esque game in space)</div></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;* <a id="aplusplus" href="https://hiimsergey.github.io/flappyspace" target="_blank">Play here</a></div>
+<div>* <b>Intercrawl</b> <div class="deemph">(roguelike desktop game)</div></div>
+<div>* <b>norsu.nvim</b> and its grammar, <b>tree-sitter-norsu</b> <div class="deemph">(Neovim plugin for a custom markup language)</div></div>
+<div>* <b>Interscore</b> <div class="deemph">(suite of programs for sports livestreams)</div></div>
+<div>* <b>Obsidian Simple Columns</b> <div class="deemph">(Obsidian plugin for multi-column text)</div></div>
+<div>* <b>Pakt</b> <div class="deemph">(shell script for package manager organization)</div></div>
+<div>* <a href="https://github.com/hiimsergey/hiimsergey.github.io">this website too</a></div>
+<div>* More at <a href="https://github.com/hiimsergey?tab=repositories" target="_blank">GitHub</a></div>
 
+<div></div>
 <h2>🎓 Education</h2>
-* 2024-present: <a href="https://tu.berlin">Technical University of Berlin</a>
-    * (B.Sc. Computer Science)
+                        <div>* 2024-present: <b>Technical University of Berlin</b> <div class="deemph">(B.Sc. Computer Science)</div></div>
                     </div>
                 </div>
                 <div class="lualine bar">
@@ -122,9 +133,12 @@ themes
     onedark
     something emacs-related
 CONSIDER termguicolors
+wide cursor in the commmand bar
+mobile-friendly design: vertical stack, hide movement details
 :set nu
 :set rnu
 :h E21
+FINAL ADD screenshots to README
 -->
         <!-- TODO pressing backspace after : should close the bar again -->
         <!-- TODO Ctrl+A should prevent selecting and behave like in nvim -->

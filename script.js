@@ -2,8 +2,8 @@ const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
 const input = document.querySelector("input")
+const deemphs = document.getElementsByClassName("deemph")
 
-const line_numbers = document.getElementsByClassName("line-numbers")
 const lualines = document.getElementsByClassName("lualine")
 const modes = document.getElementsByClassName("mode")
 const gits = document.getElementsByClassName("git")
@@ -14,7 +14,6 @@ const handle_line = document.getElementById("handle-line")
 const portfolio = document.getElementById("portfolio")
 const aplusplus = document.getElementById("aplusplus")
 
-const contact_line_numbers = contact.querySelector(".line-numbers")
 const contact_filename = contact.querySelector(".filename")
 const contact_position = contact.querySelector(".position")
 
@@ -32,11 +31,10 @@ const separator_percentage = portfolio.querySelector("#separator-percentage")
 const separator_position = portfolio.querySelector("#separator-position")
 const separator_wrap = portfolio.querySelector("#separator-wrap")
 
-const portfolio_line_numbers = portfolio.querySelector(".line-numbers")
 const portfolio_filename = portfolio.querySelector(".filename")
 
 const CONTACT_LINES = 15
-const PORTFOLIO_LINES = 32
+const PORTFOLIO_LINES = 31
 
 // TODO USE
 const COMMANDS = [
@@ -58,7 +56,7 @@ const COLORSCHEMES = [
         bar:           "#181825",  // Mantle
         bar_gray:      "#313244",  // Surface 0
         text:          "#cdd6f4",  // Text
-        subtext:       "#45475a",  // Surface 1
+        muted:       "#45475a",  // Surface 1
         h1:            "#f38ba8",  // Red
         h2:            "#fab387",  // Peach
         link:          "#f9e2af",  // Yellow
@@ -74,7 +72,7 @@ const COLORSCHEMES = [
         bar:           "#3a3735",  // bg_statusline2
         bar_gray:      "#504945",  // bg_statusline3
         text:          "#d4be98",  // fg0
-        subtext:       "#7c6f64",  // grey0
+        muted:       "#7c6f64",  // grey0
         h1:            "#ea6962",  // red
         h2:            "#e78a4e",  // orange
         link:          "#89b482",  // aqua
@@ -90,7 +88,7 @@ const COLORSCHEMES = [
         bar:           "#2a283e",  // Highlight Low
         bar_gray:      "#44415a",  // Highlight Med
         text:          "#e0def4",  // Text
-        subtext:       "#6e6a86",  // Muted
+        muted:       "#6e6a86",  // Muted
         h1:            "#eb6f92",  // Love
         h2:            "#f6c177",  // Gold
         link:          "#ea9a97",  // Rose
@@ -105,6 +103,7 @@ let dragging = false
 
 function set_colorscheme() {
     document.body.style.color = COLORSCHEMES[colo].text
+    document.documentElement.style.setProperty("--ln-color", COLORSCHEMES[colo].muted)
 
     contact.style.backgroundColor = COLORSCHEMES[colo].background
     handle.style.backgroundColor = COLORSCHEMES[colo].background
@@ -113,11 +112,6 @@ function set_colorscheme() {
 
     input.style.color = COLORSCHEMES[colo].text
     input.style.backgroundColor = COLORSCHEMES[colo].background
-
-    for (ln of line_numbers) {
-        ln.style.color = COLORSCHEMES[colo].subtext
-        ln.style.backgroundColor = COLORSCHEMES[colo].background
-    }
 
     for (ll of lualines) ll.style.backgroundColor = COLORSCHEMES[colo].bar
 
@@ -166,11 +160,12 @@ function set_colorscheme() {
     h1s.forEach(h1 => h1.style.color = COLORSCHEMES[colo].h1)
     h2s.forEach(h2 => h2.style.color = COLORSCHEMES[colo].h2)
     anchors.forEach(a => a.style.color = COLORSCHEMES[colo].link)
+    for (de of deemphs) de.style.color = COLORSCHEMES[colo].muted
 
     aplusplus.style.color = COLORSCHEMES[colo].link_special
 
-    contact_filename.style.color = COLORSCHEMES[colo].subtext
-    contact_position.style.color = COLORSCHEMES[colo].subtext
+    contact_filename.style.color = COLORSCHEMES[colo].muted
+    contact_position.style.color = COLORSCHEMES[colo].muted
 
     portfolio_filename.style.backgroundColor = COLORSCHEMES[colo].bar
 }
@@ -198,23 +193,6 @@ Press ENTER or type command to continue`
 
     if (command === "q" || command === "q!") {
         window.open(window.location, "_self").close()
-    }
-}
-
-function create_contact_line_numbers() {
-    for (let i = 1; i <= CONTACT_LINES; ++i) {
-        const line = document.createElement("div")
-        line.innerHTML = i
-        contact_line_numbers.appendChild(line)
-    }
-    contact_line_numbers.children[1].style.height = "27.3em";
-}
-
-function create_portfolio_line_numbers() {
-    for (let i = 1; i <= PORTFOLIO_LINES; ++i) {
-        const line = document.createElement("div")
-        line.innerHTML = i
-        portfolio_line_numbers.appendChild(line)
     }
 }
 
@@ -278,6 +256,4 @@ document.addEventListener("mouseup", () => {
     dragging = false
 })
 
-create_contact_line_numbers()
-create_portfolio_line_numbers()
 set_colorscheme()
