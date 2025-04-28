@@ -1,17 +1,16 @@
 import { COLORSCHEMES } from "./colorschemes.js"
-import { ctx } from "./script.js"
-import { input } from "./script.js"
+import { ctx, input } from "./script.js"
 
 // TODO USE
 export const COMMANDS = [
-    { cmd: "", short: true, callback: () => {} },
+    { cmd: "", short: true, callback: () => {}, completions: () => [] },
 
-    { cmd: "colorscheme", short: false, callback: colorscheme },
-    { cmd: "colo", short: true, callback: colorscheme },
+    { cmd: "colorscheme", short: false, callback: colorscheme, completions: () => [] },
+    { cmd: "colo", short: true, callback: colorscheme, completions: () => [] },
 
-    { cmd: "quit", short: false, callback: quit },
-    { cmd: "q!", short: true, callback: quit },
-    { cmd: "q", short: true, callback: quit },
+    { cmd: "quit", short: false, callback: quit, completions: () => [] },
+    { cmd: "q!", short: true, callback: quit, completions: () => [] },
+    { cmd: "q", short: true, callback: quit, completions: () => [] },
     // colorscheme
     // h
     // _ E21

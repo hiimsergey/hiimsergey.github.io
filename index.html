@@ -23,7 +23,7 @@
 
                     <div></div>
                     <div>*  &nbsp;<b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a></div>
-                    <div>* 󰇰 &nbsp;<b>Email</b>: <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a></div>
+                    <div>* 󰇰 &nbsp;<b>Email</b>:&nbsp; <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a></div>
 
                     <div></div>
                     <div>Press j/k to navigate down/up.</div>
@@ -116,11 +116,14 @@
             </div>
         </div>
 <!-- TODO PLAN
+/ (regex search) (maybe integrate Ctrl+F)
+DEBUG :colorscheme| <tab> should not go back to :colo|
+completion correct position
 scrolling
 fix line numbers
 proper themes
 some commands
-autocompletions
+autocompletions (TODO NOTE, the w is <max> + 4 (including scrollbar))
 shell command error
 which-key
 optimize and clean up
@@ -132,6 +135,9 @@ themes
 CONSIDER termguicolors
 wide cursor in the commmand bar
 mobile-friendly design: vertical stack, hide movement details
+:echo
+:e
+:Ex
 :set nu
 :set rnu
 :h E21
@@ -139,12 +145,19 @@ highlight j/k with wrap's color
 :wq & friends (E45: 'readonly' option is set (add ! to override) -> E212: Can't open file for writing: permission denied)
 command history
 FINAL ADD screenshots to README
+pane switching by moving the lualine itself
+
+store completions only in ctx + old command
+0 stores old command (display: none;)
+handle case where in-word but no matching command (e.g. `:zz`)
 -->
         <!-- TODO pressing backspace after : should close the bar again -->
         <!-- TODO Ctrl+A should prevent selecting and behave like in nvim -->
         <!-- TODO ! command should return shell errors 127 like fish does -->
         <!-- TODO CONSIDER Ctrl+F mode -->
         <input class="bar"/>
+
+        <div id="completion"></div>
 	</body>
 
     <script type="module" src="script.js"></script>

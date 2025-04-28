@@ -1,8 +1,10 @@
 import { COLORSCHEMES } from "./colorschemes.js"
 import { COMMANDS } from "./commands.js"
+import { construct_completions, reset_completions } from "./completion.js"
 
 // Elements and pseudo-elements
 export const input = document.querySelector("input")
+export const completion = document.getElementById("completion")
 const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
@@ -40,12 +42,14 @@ const separator_percentage = portfolio.querySelector("#separator-percentage")
 const separator_position = portfolio.querySelector("#separator-position")
 const separator_wrap = portfolio.querySelector("#separator-wrap")
 
-const CONTACT_LINES = 15
-const PORTFOLIO_LINES = 31
-
 export let ctx = {
     colo: Math.floor(Math.random() * COLORSCHEMES.length),
     dragging: false,
+    completion: {
+        trigger: construct_completions,
+        options: [],
+        cur: 0
+    },
 
     apply_colorscheme: function() {
         document.body.style.color = COLORSCHEMES[ctx.colo].text
@@ -150,11 +154,6 @@ Press ENTER or type command to continue`
         input.style.fontStyle = "italic"
         input.value = `E492: Not an editor command: ${command}`
     },
-
-    // TODO NOTE it should also trigger on commands like :colo and :help
-    trigger_completions: function(command) {
-        console.log("triggering completions")
-    }
 }
 
 document.addEventListener("keydown", (e) => {
@@ -175,20 +174,27 @@ document.addEventListener("keydown", (e) => {
 })
 
 input.addEventListener("keydown", (e) => {
+    // TODO NOW when leaving input, then change trigger to construct
+    // TODO OPTIMIZE
     switch (e.key) {
         case "Enter":
+            reset_completions()
             ctx.process_command(input.value.slice(1))
             input.blur()
             break
         case "Tab":
-            ctx.trigger_completions(input.value.slice(1))
             e.preventDefault()
+            ctx.completion.trigger()
             break
         case "Backspace":
+            reset_completions()
             if (input.value !== ":") break
         case "Escape":
+            reset_completions()
             input.value = ""
             input.blur()
+        default:
+            reset_completions()
             break
     }
 })
