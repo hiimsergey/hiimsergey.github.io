@@ -1,22 +1,8 @@
 import { COLORSCHEMES } from "./colorschemes.js"
 import { ctx, input } from "./script.js"
 
-// TODO USE
-export const COMMANDS = [
-    { cmd: "", short: true, callback: () => {}, completions: () => [] },
-
-    { cmd: "colorscheme", short: false, callback: colorscheme, completions: () => [] },
-    { cmd: "colo", short: true, callback: colorscheme, completions: () => [] },
-
-    { cmd: "quit", short: false, callback: quit, completions: () => [] },
-    { cmd: "q!", short: true, callback: quit, completions: () => [] },
-    { cmd: "q", short: true, callback: quit, completions: () => [] },
-    // colorscheme
-    // h
-    // _ E21
-    // _ every other command
-    // hide
-    // vs #
+export const SET_OPTIONS = [
+    // TODO
 ]
 
 function colorscheme(args) {
@@ -41,6 +27,26 @@ function colorscheme(args) {
     }
 }
 
+const colorscheme_completions = COLORSCHEMES.map(COLO => COLO.name)
+
 function quit(args) {
     window.open(window.location, "_self").close()
 }
+
+// TODO USE
+export const COMMANDS = [
+    { name: "", short: true, callback: () => {}, completions: () => [] },
+
+    { name: "colorscheme", short: false, callback: colorscheme, completions: colorscheme_completions },
+    { name: "colo", short: true, callback: colorscheme, completions: colorscheme_completions },
+
+    { name: "quit", short: false, callback: quit, completions: [] },
+    { name: "q!", short: true, callback: quit, completions: [] },
+    { name: "q", short: true, callback: quit, completions: [] },
+    // colorscheme
+    // h
+    // _ E21
+    // _ every other command
+    // hide
+    // vs #
+]

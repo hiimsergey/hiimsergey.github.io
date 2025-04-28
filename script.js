@@ -46,6 +46,7 @@ export let ctx = {
     colo: Math.floor(Math.random() * COLORSCHEMES.length),
     dragging: false,
     completion: {
+        input: "",
         trigger: construct_completions,
         options: [],
         cur: 0
@@ -143,9 +144,9 @@ Press ENTER or type command to continue`
 
         const args = command.trim().split(" ")
 
-        for (const CMDOBJ of COMMANDS) {
-            if (args[0] === CMDOBJ.cmd) {
-                CMDOBJ.callback(args)
+        for (const CMD of COMMANDS) {
+            if (args[0] === CMD.name) {
+                CMD.callback(args)
                 return
             }
         }

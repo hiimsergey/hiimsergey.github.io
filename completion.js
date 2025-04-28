@@ -3,28 +3,39 @@ import { ctx, completion, input } from "./script.js"
 
 // TODO NOTE it should also trigger on commands like :colo and :help
 export function construct_completions() {
+    ctx.completion.input = input.value
+
     while (completion.firstChild) completion.firstChild.remove()
 
-    const command = input.value.slice(1)
+    const command = ctx.completion.input.slice(1)
 
-    if (command[command.length - 1] === " ") {
-        const cmd = command.slice(0, command.length - 1)
-        for (const CMDOBJ of COMMANDS) {
-            if (cmd === CMDOBJ.cmd) {
-                ctx.completion.options = [cmd, ...CMDOBJ.completions()]
-                break
-            }
-        }
+    if (command.endsWith(" ")) {
+        const cmd = COMMANDS.find(CMD => CMD.name === command.trim())
+        if (cmd) ctx.completion.options = ["", ...cmd.completions]
     } else {
-        // TODO NOTE when cycling when tab, it doesnt jump to the
-        // first one again, it goes back to the cmd part
-        ctx.completion.options = [command, ...COMMANDS
-            .filter(CMDOBJ => !CMDOBJ.short)
-            .map(CMDOBJ => CMDOBJ.cmd)
-            .filter(cmd => cmd.startsWith(command))]
+        const words = command.split(" ")
+        console.log(words)
+
+        if (words.length === 1) {
+            // TODO NOTE :colorscheme gruv| should also complete
+            // TODO NOTE when cycling when tab, it doesnt jump to the
+            // first one again, it goes back to the cmd part
+            ctx.completion.options = [
+                "",
+                ...COMMANDS
+                    .filter(CMD => !CMD.short)
+                    .map(CMD => CMD.name)
+                    .filter(cmd => cmd.startsWith(words[0]))
+            ]
+        } else {
+            const cmd = COMMANDS.find(CMD => CMD.name === words[0])
+            ctx.completion.options = cmd ?
+                cmd.completions.filter(cmp => cmp.startsWith(words[words.length - 1])) :
+                []
+        }
     }
 
-    if (ctx.completion.options.length === 1) return
+    // TODO if (ctx.completion.options.length === 1) return
 
     for (const option of ctx.completion.options) {
         const div = document.createElement("div")
@@ -41,7 +52,7 @@ export function construct_completions() {
     // Don't display the original command in the completion menu
     completion.children[0].style.display = "none"
 
-    // TODO change position
+    completion.style.left = ctx.completion.input.length + "ch"
 
     cycle_completions()
     if (ctx.completion.options.length > 2) ctx.completion.trigger = cycle_completions
@@ -49,9 +60,10 @@ export function construct_completions() {
 }
 
 export function reset_completions() {
-    ctx.completion.cur = 0
-    ctx.completion.trigger = construct_completions
     completion.style.display = "none"
+    ctx.completion.input = ""
+    ctx.completion.trigger = construct_completions
+    ctx.completion.cur = 0
 }
     
 function cycle_completions() {
@@ -60,5 +72,22 @@ function cycle_completions() {
     ctx.completion.cur = (ctx.completion.cur + 1) % ctx.completion.options.length
     completion.children[ctx.completion.cur].style.backgroundColor = "red" // TODO
 
-    input.value = ":" + ctx.completion.options[ctx.completion.cur]
+    if (ctx.completion.input.endsWith(" ")) {
+        input.value = ctx.completion.input + ctx.completion.options[ctx.completion.cur]
+    } else {
+        console.log("cycling ocmpletions")
+        let words = ctx.completion.input.slice(1).split(" ")
+        words[words.length - 1] = ctx.completion.options[ctx.completion.cur]
+        input.value = ":" + words.join(" ")
+    }
 }
+
+// TODO DEBUG :colorscheme co| <tab>
+// TODO DEBUG :c gruvbox-material| <tab>
+// TODO DEBUG :ajfdlkadsjflds| <tab>
+/* TODO
+ * :one| -> ": " + option
+ * :one | -> input.value + option
+ * :one two| -> words[0] + " " + option
+ * :one two | -> input.value + option
+*/
