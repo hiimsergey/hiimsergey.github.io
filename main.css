@@ -6,7 +6,9 @@
     --height-line: 1.25em;
     --height-cell: 1.5em;
 
-    --ln-color: yellow;
+    --color-line-numbers: yellow;
+    --color-completion-selected: yellow;
+    --color-completion-text: black;
 }
 
 body {
@@ -97,7 +99,7 @@ input:focus {
 }
 
 .content > *::before {
-    color: var(--ln-color);
+    color: var(--color-line-numbers);
 
     position: absolute;
     top: 0;
@@ -203,17 +205,27 @@ input:focus {
 }
 
 #completion {
-    background-color: gold;
+    background-color: red;
+
+    display: none;
 
     position: absolute;
     bottom: 2em;
-    left: 10ch; 
+    left: 0; 
     
     width: 10ch;
     height: 4em;
 
-    /* TODO NOW */
     z-index: 4;
+}
+
+#completion > * {
+    padding-left: 1ch;
+}
+
+#completion #selected {
+    background-color: var(--color-completion-selected);
+    color: var(--color-completion-selected-text);
 }
 
 @font-face {

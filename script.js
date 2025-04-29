@@ -5,6 +5,7 @@ import { construct_completions, reset_completions } from "./completion.js"
 // Elements and pseudo-elements
 export const input = document.querySelector("input")
 export const completion = document.getElementById("completion")
+const completion_selected = document.getElementById("selected")
 const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
@@ -54,7 +55,10 @@ export let ctx = {
 
     apply_colorscheme: function() {
         document.body.style.color = COLORSCHEMES[ctx.colo].text
-        document.documentElement.style.setProperty("--ln-color", COLORSCHEMES[ctx.colo].muted)
+        document.documentElement.style.setProperty(
+            "--color-line-numbers",
+            COLORSCHEMES[ctx.colo].muted
+        )
 
         contact.style.backgroundColor = COLORSCHEMES[ctx.colo].background
         handle.style.backgroundColor = COLORSCHEMES[ctx.colo].background
@@ -63,6 +67,18 @@ export let ctx = {
 
         input.style.color = COLORSCHEMES[ctx.colo].text
         input.style.backgroundColor = COLORSCHEMES[ctx.colo].background
+
+        completion.style.color = COLORSCHEMES[ctx.colo].completion_text
+        completion.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
+
+        document.documentElement.style.setProperty(
+            "--color-completion-selected",
+            COLORSCHEMES[ctx.colo].completion_selected
+        )
+        document.documentElement.style.setProperty(
+            "--color-completion-selected-text",
+            COLORSCHEMES[ctx.colo].completion_selected_text
+        )
 
         for (const ll of lualines) ll.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
 
@@ -160,6 +176,7 @@ Press ENTER or type command to continue`
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
+            if (document.activeElement === input) break
             input.style.color = COLORSCHEMES[ctx.colo].text
             input.style.fontStyle = "normal"
             input.value = ":"
@@ -167,7 +184,7 @@ document.addEventListener("keydown", (e) => {
             e.preventDefault() // Don't type ":" again
             break
         case "i":
-            if (document.activeElement.tagName === "INPUT") break
+            if (document.activeElement === input) break
             input.style.color = COLORSCHEMES[ctx.colo].h1
             input.style.fontStyle = "italic"
             input.value = "E21: Cannot make changes, 'modifiable' is off"
