@@ -8,13 +8,12 @@ export function construct_completions() {
     ctx.completion.input = input.value
 
     const command = ctx.completion.input.slice(1)
+    const words = command.split(" ")
 
     if (command.endsWith(" ")) {
-        const cmd = COMMANDS.find(CMD => CMD.name === command.trim())
+        const cmd = COMMANDS.find(CMD => CMD.name === words[0])
         ctx.completion.options = cmd ? ["", ...cmd.completions] : [""]
     } else {
-        const words = command.split(" ")
-
         if (words.length === 1) {
             // TODO NOTE :colorscheme gruv| should also complete
             // TODO NOTE when cycling when tab, it doesnt jump to the
@@ -22,7 +21,7 @@ export function construct_completions() {
             ctx.completion.options = [
                 [words[0]],
                 ...COMMANDS
-                    .filter(CMD => !CMD.short)
+                    .filter(CMD => !CMD.hidden)
                     .map(CMD => CMD.name)
                     .filter(cmd => cmd.startsWith(words[0]))
             ]

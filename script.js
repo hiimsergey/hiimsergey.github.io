@@ -167,6 +167,7 @@ Press ENTER or type command to continue`
             }
         }
 
+        // TODO CONSIDER replacing h1 with a new color .red
         input.style.color = COLORSCHEMES[ctx.colo].h1
         input.style.fontStyle = "italic"
         input.value = `E492: Not an editor command: ${command}`

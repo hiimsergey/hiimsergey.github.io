@@ -9,6 +9,8 @@
     --color-line-numbers: yellow;
     --color-completion-selected: yellow;
     --color-completion-text: black;
+
+    --display-line-numbers: block;
 }
 
 body {
@@ -99,6 +101,8 @@ input:focus {
 }
 
 .content > *::before {
+    display: var(--display-line-numbers);
+
     color: var(--color-line-numbers);
 
     position: absolute;
