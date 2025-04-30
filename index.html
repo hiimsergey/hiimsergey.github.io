@@ -7,7 +7,7 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="icon" type="image/png" href="assets/logo.png"/>
-        <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="style.css"/>
         <title>Sergey Lavrent</title>
     </head>
 
@@ -116,15 +116,14 @@
             </div>
         </div>
 <!-- TODO PLAN
+command history
 / (regex search) (maybe integrate Ctrl+F)
 scrolling
-proper themes
 some commands
 autocompletions (TODO NOTE, the w is <max> + 4 (including scrollbar))
 shell command error
-which-key
+(which-key)
 optimize and clean up
-:colorscheme without arguments
 make lualine a lil shorter
 themes
     onedark
@@ -132,15 +131,13 @@ themes
 CONSIDER termguicolors
 wide cursor in the commmand bar
 mobile-friendly design: vertical stack, hide movement details
-:echo
+(:echo) (because it has extensive completions)
 :e
 :Ex
-:set nu
 :set rnu
 :h E21
 highlight j/k with wrap's color
 :wq & friends (E45: 'readonly' option is set (add ! to override) -> E212: Can't open file for writing: permission denied)
-command history
 FINAL ADD screenshots to README
 pane switching by moving the lualine itself
 
@@ -157,5 +154,5 @@ handle case where in-word but no matching command (e.g. `:zz`)
         <div id="completion"><div id="selected"></div></div>
 	</body>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="main.js"></script>
 </html>

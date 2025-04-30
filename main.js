@@ -1,24 +1,28 @@
 import { COLORSCHEMES } from "./colorschemes.js"
 import { COMMANDS } from "./commands.js"
 import { construct_completions, reset_completions } from "./completion.js"
+import { init_command_history, reset_command_history } from "./history.js"
 
 // Elements and pseudo-elements
 export const input = document.querySelector("input")
-export const completion = document.getElementById("completion")
-const completion_selected = document.getElementById("selected")
 const h1s = document.querySelectorAll("h1")
 const h2s = document.querySelectorAll("h2")
 const anchors = document.querySelectorAll("a")
 const deemphs = document.getElementsByClassName("deemph")
 
 // Root structure
+export const completion = document.getElementById("completion")
 const contact = document.getElementById("contact")
 const handle = document.getElementById("handle")
 const handle_line = document.getElementById("handle-line")
 const portfolio = document.getElementById("portfolio")
 const aplusplus = document.getElementById("aplusplus")
 
+// Classes
+export const contents = document.getElementsByClassName("content")
+
 // Lualine - bunches
+// TODO CONSIDER change to querySelector to use .forEach if not using CSS variables
 const lualines = document.getElementsByClassName("lualine")
 const modes = document.getElementsByClassName("mode")
 const gits = document.getElementsByClassName("git")
@@ -52,6 +56,14 @@ export let ctx = {
         options: [],
         cur: 0
     },
+    // TODO NOTE when escaping history while having an old command open, it gets moved to the end, not copied
+    history: {
+        commands: {
+            trigger: init_command_history,
+            history: [],
+            cur: -1
+        }
+    },
 
     apply_colorscheme: function() {
         document.body.style.color = COLORSCHEMES[ctx.colo].text
@@ -82,7 +94,6 @@ export let ctx = {
 
         for (const ll of lualines) ll.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
 
-        // TODO NOW REMOVE loop
         for (const mode of modes) {
             mode.style.backgroundColor = COLORSCHEMES[ctx.colo].mode_normal
             mode.style.color = COLORSCHEMES[ctx.colo].bar
@@ -137,9 +148,7 @@ export let ctx = {
         portfolio_filename.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
     },
 
-    process_command: function(command) {
-        console.log("TODO processing: '", command, "'")
-
+    execute_command: function(command) {
         if (command[0] === "!") {
             const shell_command = command.slice(1)
             const tildes = "~".repeat(shell_command.replace(/ .*/, "").length - 2)
@@ -189,27 +198,38 @@ document.addEventListener("keydown", (e) => {
             input.style.color = COLORSCHEMES[ctx.colo].h1
             input.style.fontStyle = "italic"
             input.value = "E21: Cannot make changes, 'modifiable' is off"
+            break
     }
 })
 
 input.addEventListener("keydown", (e) => {
-    // TODO NOW when leaving input, then change trigger to construct
     // TODO OPTIMIZE
     switch (e.key) {
         case "Enter":
             reset_completions()
-            ctx.process_command(input.value.slice(1))
+            reset_command_history()
+            ctx.execute_command(input.value.slice(1))
             input.blur()
             break
         case "Tab":
-            e.preventDefault()
             ctx.completion.trigger()
+            e.preventDefault()
             break
+        case "ArrowUp":
+            ctx.history.commands.trigger(true)
+            e.preventDefault()
+            break
+        case "ArrowDown":
+            // TODO
+            break
+
         case "Backspace":
             reset_completions()
             if (input.value !== ":") break
         case "Escape":
+            // TODO
             reset_completions()
+            reset_command_history()
             input.value = ""
             input.blur()
         default:
@@ -238,4 +258,4 @@ document.addEventListener("mouseup", () => {
     ctx.dragging = false
 })
 
-ctx.apply_colorscheme()
+//ctx.apply_colorscheme()

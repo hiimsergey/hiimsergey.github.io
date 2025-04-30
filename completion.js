@@ -1,5 +1,5 @@
 import { COMMANDS } from "./commands.js"
-import { ctx, completion, input } from "./script.js"
+import { ctx, completion, input } from "./main.js"
 
 // TODO NOTE it should also trigger on commands like :colo and :help
 export function construct_completions() {

@@ -1,5 +1,5 @@
 import { COLORSCHEMES } from "./colorschemes.js"
-import { ctx, input } from "./script.js"
+import { contents, ctx, input } from "./main.js"
 
 const completions_colorscheme = COLORSCHEMES.map(COLO => COLO.name)
 
@@ -44,8 +44,12 @@ function quit() {
 export const SET_OPTIONS = [
     { name: "number", hidden: false, callback: set_number },
     { name: "nu", hidden: true, callback: set_number },
+
     { name: "number!", hidden: true, callback: set_number_exc },
-    { name: "nu!", hidden: true, callback: set_number_exc }
+    { name: "nu!", hidden: true, callback: set_number_exc },
+
+    { name: "nonumber", hidden: false, callback: set_number_exc },
+    { name: "nonu", hidden: true, callback: set_number_exc }
 ]
 
 const completions_set = SET_OPTIONS.filter(SET => !SET.hidden).map(SET => SET.name)
@@ -76,7 +80,8 @@ function set_number() {
         "--display-line-numbers",
         "block"
     )
-    // TODO change buffer margin-left/padding-left (i forgor)
+    // TODO DEBUG doesnt work
+    for (const content of contents) content.style.padding_left = "5ch"
 }
 
 function set_number_exc() {
@@ -84,5 +89,6 @@ function set_number_exc() {
         "--display-line-numbers",
         "none"
     )
-    // TODO change buffer margin-left/padding-left (i forgor)
+    // TODO DEBUG doesnt work
+    for (const content of contents) content.style.padding_left = "0"
 }
