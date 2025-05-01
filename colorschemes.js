@@ -1,4 +1,5 @@
-// TODO FINAL ADD comments about what the name of each hexcolor is
+// TODO make hexcolor description v3
+// own color for line numbers and lualine components
 export const COLORSCHEMES = [
     {
         name: "catppuccin-mocha", // https://catppuccin.com/palette
@@ -20,6 +21,25 @@ export const COLORSCHEMES = [
     },
 
     {
+        name: "henna",            // https://github.com/httpsterio/vscode-henna
+
+        background:               "#21272e",  // bg
+        bar:                      "#10151a",  // base0
+        bar_gray:                 "#282c34",  // base4
+        completion_text:          "#6b717d",  // fg-alt
+        completion_selected:      "#495162",  // base7
+        completion_selected_text: "#f8f8f0",  // fg
+        text:                     "#f8f8f0",  // fg
+        muted:                    "#6b717d",  // fg-alt
+        h1:                       "#e74c3c",  // red
+        h2:                       "#53df83",  // green
+        link:                     "#53df83",  // green
+        link_special:             "#1abc9c",  // teal
+        mode_normal:              "#56b5c2",  // blue
+        wrap:                     "#1abc9c"   // teal
+    },
+
+    {
         name: "gruvbox-material", // https://github.com/sainnhe/gruvbox-material
 
         background:               "#282828",  // bg0
@@ -37,6 +57,28 @@ export const COLORSCHEMES = [
         mode_normal:              "#7daea3",  // blue
         wrap:                     "#a9b665"   // green
     },
+
+    {
+        name: "helix", // https://github.com/helix-editor/helix/blob/master/theme.toml
+
+        background:               "#3b224c",  // midnight
+        bar:                      "#281733",  // revolver
+        bar_gray:                 "#281733",  // revolver
+        completion_text:          "#a4a0e8",  // lavender
+        completion_selected:      "#ffffff",  // white
+        completion_selected_text: "#000000",  // ???
+        text:                     "#a4a0e8",  // lavender
+        muted:                    "#5a5977",  // comet
+        h1:                       "#dbbfef",  // lilac
+        h2:                       "#dbbfef",  // lilac
+        link:                     "#efba5d",  // honey
+        link_special:             "#9ff28f",  // mint
+        mode_normal:              "#281733",  // revolver
+        wrap:                     "#281733"   // revolver
+    },
+    // TODO NOTE
+    // line number selected #dbbfef // lilac
+    // completion background #452859 // bossanova
 
     {
         name: "rose-pine-moon",   // https://rosepinetheme.com/palette/ingredients

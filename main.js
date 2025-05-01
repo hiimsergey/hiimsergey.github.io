@@ -148,7 +148,9 @@ export let ctx = {
         portfolio_filename.style.backgroundColor = COLORSCHEMES[ctx.colo].bar
     },
 
-    execute_command: function(command) {
+    execute_command: function() {
+        const command = input.value.replace(/^:+/, "")
+
         if (command[0] === "!") {
             const shell_command = command.slice(1)
             const tildes = "~".repeat(shell_command.replace(/ .*/, "").length - 2)
@@ -208,7 +210,7 @@ input.addEventListener("keydown", (e) => {
         case "Enter":
             reset_completions()
             reset_command_history()
-            ctx.execute_command(input.value.slice(1))
+            ctx.execute_command()
             input.blur()
             break
         case "Tab":
@@ -220,20 +222,23 @@ input.addEventListener("keydown", (e) => {
             e.preventDefault()
             break
         case "ArrowDown":
-            // TODO
+            ctx.history.commands.trigger(false)
+            e.preventDefault()
             break
 
         case "Backspace":
-            reset_completions()
             if (input.value !== ":") break
         case "Escape":
             // TODO
-            reset_completions()
             reset_command_history()
             input.value = ""
             input.blur()
         default:
             reset_completions()
+            if (ctx.history.commands.trigger !== init_command_history) {
+                ctx.history.commands.trigger = init_command_history
+                ctx.history.commands.history.pop()
+            }
             break
     }
 })
@@ -258,4 +263,4 @@ document.addEventListener("mouseup", () => {
     ctx.dragging = false
 })
 
-//ctx.apply_colorscheme()
+ctx.apply_colorscheme()

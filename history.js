@@ -1,6 +1,7 @@
 import { ctx, input } from "./main.js"
 
 export function init_command_history() {
+    console.log("init")
     //if (!ctx.history.commands.history.length) return // TODO CHECk
     //ctx.history.commands.history.push(input.value)
     //ctx.history.commands.trigger = navigate_command_history
@@ -12,10 +13,12 @@ export function init_command_history() {
     // the goal is to push current input, but make .cur to the previously last one
     // THAT MATCHES THE PATTERN OF THE INPUT
     if (!ctx.history.commands.history.length) return // TODO CHECK
-    ctx.history.commands.cur = ctx.history.commands.history.length - 1
-    input.value = ctx.history.commands.history[ctx.history.commands.history.length - 1]
+    //ctx.history.commands.cur = ctx.history.commands.history.length - 1
+    //input.value = ctx.history.commands.history[ctx.history.commands.history.length - 1]
     ctx.history.commands.history.push(input.value)
+    ctx.history.commands.cur = ctx.history.commands.history.length - 1
     ctx.history.commands.trigger = navigate_command_history
+    navigate_command_history(true)
 }
 
 // TODO NOW CHECK
@@ -29,13 +32,16 @@ export function reset_command_history() {
         ctx.history.commands.history.pop()
 
     if (ctx.history.commands.cur !== ctx.history.commands.history.length - 1) {
-        for (
-            let i = ctx.history.commands.cur;
-            i < ctx.history.commands.history.length - 1;
-        ) ctx.history.commands.history[i] = ctx.history.commands.history[++i]
+        ctx.history.commands.history
+            .push(ctx.history.commands.history.splice(ctx.history.commands.cur, 1)[0])
+        // TODO REMOVE
+        //for (
+        //    let i = ctx.history.commands.cur;
+        //    i < ctx.history.commands.history.length - 1;
+        //) ctx.history.commands.history[i] = ctx.history.commands.history[++i]
 
-        ctx.history.commands.history[ctx.history.commands.history.length - 1] =
-            input.value
+        //ctx.history.commands.history[ctx.history.commands.history.length - 1] =
+        //    input.value
     } else if (input.value.trim() !== ":") ctx.history.commands.history.push(input.value)
  
     ctx.history.commands.cur = ctx.history.commands.history.length - 1
@@ -46,24 +52,25 @@ export function reset_command_history() {
 
 function navigate_command_history(up) {
     const original = ctx.history.commands.history[ctx.history.commands.history.length - 1]
+    let cmp = ctx.history.commands.cur
 
     if (up) {
-        while (!input.value.startsWith(original)) {
-            console.log("i")
-            if (!ctx.history.commands.cur) return
-            input.value = ctx.history.commands.history[--ctx.history.commands.cur]
+        while (cmp) {
+            if (ctx.history.commands.history[cmp - 1].startsWith(original)) {
+                input.value = ctx.history.commands.history[cmp - 1]
+                ctx.history.commands.cur = cmp - 1
+                return
+            }
+            --cmp
         }
     } else {
-        while (!input.value.startsWith(original)) {
-            if (ctx.history.commands.cur >= ctx.history.commands.history.length - 1)
+        while (cmp < ctx.history.commands.history.length - 1) {
+            if (ctx.history.commands.history[cmp + 1].startsWith(original)) {
+                input.value = ctx.history.commands.history[cmp + 1]
+                ctx.history.commands.cur = cmp + 1
                 return
-            input.value = ctx.history.commands.history[++ctx.history.commands.cur]
+            }
+            ++cmp
         }
-    }
-
-    const cond = input.value.startsWith(original)
-    console.log(`${input.value} starts with ${original}? ${cond}`)
-    if (!cond) {
-        navigate_command_history(up)
     }
 }

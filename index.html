@@ -27,8 +27,8 @@
 
                     <div></div>
                     <div>Press j/k to navigate down/up.</div>
-                    <div>Press :vs # to restore the other buffer.</div>
                     <div>Type : and Tab to view available commands.</div>
+                    <div>E.g. Type :colorscheme followed by Tab to list available themes.</div>
 
                     <div></div>
                     <div class="deemph"><i>This website's design is an homage to the <a href="https://neovim.io" target="_blank">Neovim</a> editor.</i></div>
@@ -120,15 +120,25 @@ command history
 / (regex search) (maybe integrate Ctrl+F)
 scrolling
 some commands
-autocompletions (TODO NOTE, the w is <max> + 4 (including scrollbar))
 shell command error
-(which-key)
 optimize and clean up
 make lualine a lil shorter
 themes
+    oceanic
+    github-dark
+    github-light
+    nord-dark
+    nord-light
+    onelight
+    terminal (custom)
+    material
+    ferra
+    everforest
+    ayu-dark
+    gruvbox-material-light
+    solarized-dark
+    solarized-light
     onedark
-    something emacs-related
-CONSIDER termguicolors
 wide cursor in the commmand bar
 mobile-friendly design: vertical stack, hide movement details
 (:echo) (because it has extensive completions)
@@ -136,7 +146,6 @@ mobile-friendly design: vertical stack, hide movement details
 :Ex
 :set rnu
 :h E21
-highlight j/k with wrap's color
 :wq & friends (E45: 'readonly' option is set (add ! to override) -> E212: Can't open file for writing: permission denied)
 FINAL ADD screenshots to README
 pane switching by moving the lualine itself
