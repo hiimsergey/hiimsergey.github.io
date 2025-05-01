@@ -1,6 +1,44 @@
 // TODO make hexcolor description v3
-// own color for line numbers and lualine components
+// own color for line numbers and lualine components and completion window
 export const COLORSCHEMES = [
+    {
+        name: "aloe",             // i made it up ¯\_(ツ)_/¯
+
+        background:               "#011a12",  //
+        bar:                      "#0e2c22",  //
+        bar_gray:                 "#0e3b2d",  //
+        completion_text:          "#aaeaad",  //
+        completion_selected:      "#0e2c22",  //
+        completion_selected_text: "#aeeaad",  //
+        text:                     "#aaeaad",  //
+        muted:                    "#83b495",  //
+        h1:                       "#249324",  //
+        h2:                       "#08af7b",  //
+        link:                     "#53d454",  //
+        link_special:             "#54d4a7",  //
+        mode_normal:              "#08af7b",  //
+        wrap:                     "#3e7a4f"   //
+    },
+
+    {
+        name: "bloom",            // i also made it up ¯\_(ツ)_/¯
+
+        background:               "#112",     // bg0
+        bar:                      "#224",     // bg1
+        bar_gray:                 "#447",     // bg2
+        completion_text:          "#654",     // muted
+        completion_selected:      "#447",     // bg2
+        completion_selected_text: "#fdb",     // text
+        text:                     "#fdb",     // text
+        muted:                    "#654",     // muted
+        h1:                       "#f97",     // coral
+        h2:                       "#ec3",     // gold
+        link:                     "#97a",     // lilac
+        link_special:             "#5b9",     // aqua
+        mode_normal:              "#5b9",     // aqua
+        wrap:                     "#97a"      // lilac
+    },
+
     {
         name: "catppuccin-mocha", // https://catppuccin.com/palette
 
@@ -33,10 +71,10 @@ export const COLORSCHEMES = [
         muted:                    "#6b717d",  // fg-alt
         h1:                       "#e74c3c",  // red
         h2:                       "#53df83",  // green
-        link:                     "#53df83",  // green
-        link_special:             "#1abc9c",  // teal
+        link:                     "#1abc9c",  // teal
+        link_special:             "#56b5c2",  // blue
         mode_normal:              "#56b5c2",  // blue
-        wrap:                     "#1abc9c"   // teal
+        wrap:                     "#e74c3c"   // red
     },
 
     {
@@ -59,7 +97,7 @@ export const COLORSCHEMES = [
     },
 
     {
-        name: "helix", // https://github.com/helix-editor/helix/blob/master/theme.toml
+        name: "helix",            // https://github.com/helix-editor/helix/blob/master/theme.toml
 
         background:               "#3b224c",  // midnight
         bar:                      "#281733",  // revolver
@@ -97,5 +135,25 @@ export const COLORSCHEMES = [
         link_special:             "#9ccfd8",  // Foam
         mode_normal:              "#3e8fb0",  // Pine
         wrap:                     "#c4a7e7"   // Iris
+    },
+
+    {
+        name: "serika-dark",      // https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/themes/serika_dark.css
+
+        background:               "#323437",  // bg-color
+        bar:                      "#2c2e31",  // sub-alt-color
+        bar_gray:                 "#646669",  // sub-color
+        // TODO make completion background dark
+        completion_text:          "#d1d0c5",  // text-color
+        completion_selected:      "#2c2e31",  // sub-alt-color
+        completion_selected_text: "#d1d0c5",  // text-color
+        text:                     "#d1d0c5",  // text-color
+        muted:                    "#646669",  // sub-color
+        h1:                       "#e2b714",  // main-color
+        h2:                       "#e2b714",  // main-color
+        link:                     "#e2b714",  // error-color
+        link_special:             "#e2b714",  // error-extra-color
+        mode_normal:              "#e2b714",  // main-color
+        wrap:                     "#e2b714"   // main-color
     }
 ]
