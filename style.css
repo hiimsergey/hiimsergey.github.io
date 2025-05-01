@@ -28,7 +28,7 @@ body {
 
 img {
     width: 50ch;
-    height: 27em;
+    height: calc(20 * var(--height-cell));
 }
 
 h1, h2 {
@@ -65,36 +65,40 @@ input:focus {
     display: inline;
 }
 
-.buffer,
-.content{
-    flex-grow: 1;
-}
-
 .buffer {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
     min-width: 1ch;
+    min-height: 0; /* TODO CONSIDER */
 
     z-index: 3;
 }
 
+.viewport {
+    flex-grow: 1;
+    overflow-y: auto;
+
+    min-height: 0; /* TODO CONSIDER */
+}
+
 .content {
+    /* TODO CONSIDER */
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    /* white-space: pre-wrap; TODO CHECK */
 
-    /* TODO WIP */
+    /* Line numbers */
     counter-reset: line;
     position: relative;
-
     padding-left: 5ch;
 }
 
 .content > * {
     position: relative;
-    min-height: 1.3em;
+
+    min-height: var(--height-cell);
+    line-height: var(--height-line);
 }
 
 .content > *::before {
@@ -111,6 +115,7 @@ input:focus {
 
     text-align: right;
 
+    /* TODO */
     min-width: 4ch;
     max-width: 4ch;
 
@@ -195,6 +200,8 @@ input:focus {
     font-weight: bold;
 }
 
+/* TODO NOTE changing flex-grow to a fixed height makes it look like we solved it but we need it still.
+ * we need to constrain its parent, aka body, but it already is. TODO NOTE */
 #editor {
     display: flex;
     flex-grow: 1;
