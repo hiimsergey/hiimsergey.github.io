@@ -47,6 +47,23 @@ const separator_percentage = portfolio.querySelector("#separator-percentage")
 const separator_position = portfolio.querySelector("#separator-position")
 const separator_wrap = portfolio.querySelector("#separator-wrap")
 
+// Measures the width of `1ch` from CSS in pixels precisely.
+// Useful for discrete pane resizing.
+function measureCh(el = document.body) {
+    const span = document.createElement("span")
+    span.innerText = "0"
+    span.style.position = "absolute"
+    span.style.visibility = "hidden"
+    span.style.font = getComputedStyle(el).font
+
+    document.body.appendChild(span)
+    const width = span.getBoundingClientRect().width
+    document.body.removeChild(span)
+
+    return width
+}
+const ch = measureCh()
+
 export let ctx = {
     colo: Math.floor(Math.random() * COLORSCHEMES.length),
     dragging: false,
@@ -249,10 +266,24 @@ handle.addEventListener("mousedown", (e) => {
 })
 
 document.addEventListener("mousemove", (e) => {
+    // TODO
+    //if (!ctx.dragging) return
+
+    //const window_w = window.innerWidth
+    //const contact_w = e.clientX
+    //const portfolio_w = window_w - contact_w
+
+    //contact.style.width = contact_w + "px"
+    //portfolio.style.width = portfolio_w + "px"
+
     if (!ctx.dragging) return
 
     const window_w = window.innerWidth
-    const contact_w = e.clientX
+
+    const contact_w_raw = e.clientX
+    const contact_w_snapped = Math.round(contact_w_raw / ch) * ch
+    const contact_w = Math.min(Math.max(contact_w_snapped, 0), window_w)
+
     const portfolio_w = window_w - contact_w
 
     contact.style.width = contact_w + "px"

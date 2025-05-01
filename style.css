@@ -6,8 +6,8 @@
     --height-line: 1.25em;
     --height-cell: 1.5em;
 
-    --color-line-numbers: yellow;
-    --color-completion-selected: yellow;
+    --color-line-numbers: gray;
+    --color-completion-selected: gray;
     --color-completion-text: black;
 
     --display-line-numbers: block;
@@ -23,6 +23,7 @@ body {
     flex-direction: column;
 
     height: 100vh;
+    line-height: var(--height-line);
 }
 
 img {
@@ -48,6 +49,8 @@ a::after {
 }
 
 input {
+    background-color: black;
+
     font-family: inherit;
     font-size: inherit;
 
@@ -60,12 +63,6 @@ input:focus {
 
 .deemph {
     display: inline;
-}
-
-#editor,
-.lualine-left,
-.lualine-right {
-    display: flex;
 }
 
 .buffer,
@@ -121,11 +118,11 @@ input:focus {
 }
 
 .bar {
-    line-height: var(--height-line);
-    height: var(--height-cell);
+    min-height: var(--height-cell);
+    max-height: var(--height-cell);
 
     align-content: center;
-    align-items: center;
+    /* TODO align-items: center; */
 }
 
 .lualine {
@@ -141,8 +138,18 @@ input:focus {
 .lualine-left,
 .lualine-right {
     display: flex;
+    align-items: center;
+
+    height: var(--height-cell);
 
     white-space: nowrap;
+}
+
+.lualine-left > *,
+.lualine-right > * {
+    align-items: stretch;
+
+    height: var(--height-cell);
 }
 
 .lualine-left {
@@ -171,6 +178,13 @@ input:focus {
 
 .component {
     padding: 0 1ch;
+
+    align-content: center;
+}
+
+.separator {
+    font-size: var(--height-line);
+    align-content: center;
 }
 
 .position {
@@ -182,6 +196,7 @@ input:focus {
 }
 
 #editor {
+    display: flex;
     flex-grow: 1;
 }
 
@@ -198,7 +213,7 @@ input:focus {
 }
 
 #handle-line {
-    background-color: purple;
+    background-color: black;
 
     position: absolute;
     top: 0;
@@ -209,22 +224,27 @@ input:focus {
 }
 
 #completion {
-    background-color: red;
+    background-color: white;
 
     display: none;
 
     position: absolute;
-    bottom: 2em;
+    bottom: var(--height-cell);
     left: 0; 
     
     width: 10ch;
-    height: 4em;
+    height: var(--height-cell);
 
     z-index: 4;
 }
 
 #completion > * {
     padding-left: 1ch;
+
+    align-content: center;
+
+    height: var(--height-cell);
+    line-height: var(--height-line);
 }
 
 #completion #selected {

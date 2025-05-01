@@ -45,7 +45,8 @@ export function construct_completions() {
     completion.style.display = "block"
     completion.style.width =
         Math.max(...ctx.completion.options.map(option => option.length)) + 5 + "ch"
-    completion.style.height = ctx.completion.options.length - 1 + "em"
+    // TODO completion.style.height = ctx.completion.options.length - 1 + "em"
+    completion.style.height = `calc(${ctx.completion.options.length - 1} * var(--height-cell))`
 
     // Don't display the original command in the completion menu
     completion.children[0].style.display = "none"
