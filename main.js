@@ -22,7 +22,6 @@ const aplusplus = document.getElementById("aplusplus")
 export const contents = document.getElementsByClassName("content")
 
 // Lualine - bunches
-// TODO CONSIDER change to querySelector to use .forEach if not using CSS variables
 const lualines = document.getElementsByClassName("lualine")
 const modes = document.getElementsByClassName("mode")
 const gits = document.getElementsByClassName("git")
@@ -73,7 +72,6 @@ export let ctx = {
         options: [],
         cur: 0
     },
-    // TODO NOTE when escaping history while having an old command open, it gets moved to the end, not copied
     history: {
         commands: {
             trigger: init_command_history,
@@ -119,7 +117,6 @@ export let ctx = {
             separator_mode.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
         }
 
-        // TODO NOW REMOVE loop
         for (const git of gits) {
             git.style.backgroundColor = COLORSCHEMES[ctx.colo].bar_gray
             git.style.color = COLORSCHEMES[ctx.colo].mode_normal
@@ -180,10 +177,6 @@ ${shell_command}
 shell returned 127
 
 Press ENTER or type command to continue`
-
-            // TODO
-            console.clear()
-            console.log(msg)
         }
 
         const args = command.trim().split(" ")
@@ -195,7 +188,6 @@ Press ENTER or type command to continue`
             }
         }
 
-        // TODO CONSIDER replacing h1 with a new color .red
         input.style.color = COLORSCHEMES[ctx.colo].h1
         input.style.fontStyle = "italic"
         input.value = `E492: Not an editor command: ${command}`
@@ -222,7 +214,6 @@ document.addEventListener("keydown", (e) => {
 })
 
 input.addEventListener("keydown", (e) => {
-    // TODO OPTIMIZE
     switch (e.key) {
         case "Enter":
             reset_completions()
@@ -257,12 +248,11 @@ input.addEventListener("keydown", (e) => {
 
             e.preventDefault()
             break
-        case "Shift": break // TODO
+        case "Shift": break
 
         case "Backspace":
             if (input.value !== ":") break
         case "Escape":
-            // TODO
             reset_command_history()
             input.value = ""
             input.blur()
@@ -282,16 +272,6 @@ handle.addEventListener("mousedown", (e) => {
 })
 
 document.addEventListener("mousemove", (e) => {
-    // TODO
-    //if (!ctx.dragging) return
-
-    //const window_w = window.innerWidth
-    //const contact_w = e.clientX
-    //const portfolio_w = window_w - contact_w
-
-    //contact.style.width = contact_w + "px"
-    //portfolio.style.width = portfolio_w + "px"
-
     if (!ctx.dragging) return
 
     const window_w = window.innerWidth

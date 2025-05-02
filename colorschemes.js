@@ -174,5 +174,7 @@ export const COLORSCHEMES = [
         link_special:             "#e2b714",  // error-extra-color
         mode_normal:              "#e2b714",  // main-color
         wrap:                     "#e2b714"   // main-color
+        // TODO NOTE the error messages should be separated from h1
+        // thus they should be not red and not yellow
     }
 ]

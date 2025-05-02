@@ -9,7 +9,6 @@ function colorscheme(args) {
             input.value = COLORSCHEMES[ctx.colo].name
             return
         case 2:
-            // TODO NOW TEST
             for (let i = 0; i < COLORSCHEMES.length; ++i) {
                 if (args[1] === COLORSCHEMES[i].name) {
                     ctx.colo = i
@@ -54,7 +53,6 @@ export const SET_OPTIONS = [
 
 const completions_set = SET_OPTIONS.filter(SET => !SET.hidden).map(SET => SET.name)
 
-// TODO USE
 export const COMMANDS = [
     { name: "", hidden: true, callback: () => {}, completions: () => [] },
 
@@ -67,7 +65,7 @@ export const COMMANDS = [
     { name: "quit", hidden: false, callback: quit, completions: [] },
     { name: "q!", hidden: true, callback: quit, completions: [] },
     { name: "q", hidden: true, callback: quit, completions: [] },
-    // colorscheme
+    // TODO
     // h
     // _ E21
     // _ every other command
@@ -80,7 +78,6 @@ function set_number() {
         "--display-line-numbers",
         "block"
     )
-    // TODO DEBUG doesnt work
     for (const content of contents) content.style = "0 5ch"
 }
 
@@ -89,6 +86,5 @@ function set_number_exc() {
         "--display-line-numbers",
         "none"
     )
-    // TODO DEBUG doesnt work
     for (const content of contents) content.style.padding = "0 2ch"
 }

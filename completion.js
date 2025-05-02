@@ -12,9 +12,6 @@ export function update_completions() {
         ctx.completion.options = cmd ? ["", ...cmd.completions] : [""]
     } else {
         if (words.length === 1) {
-            // TODO NOTE :colorscheme gruv| should also complete
-            // TODO NOTE when cycling when tab, it doesnt jump to the
-            // first one again, it goes back to the cmd part
             ctx.completion.options = [
                 [words[0]],
                 ...COMMANDS
@@ -33,8 +30,7 @@ export function update_completions() {
     }
 }
 
-// TODO NOTE it should also trigger on commands like :colo and :help
-export function show_completions() {
+export function show_completions(down) {
     while (completion.firstChild) completion.firstChild.remove()
 
     update_completions()
@@ -44,12 +40,10 @@ export function show_completions() {
         div.innerText = option
         completion.appendChild(div)
     }
-    completion.firstChild.id = "selected"
 
     completion.style.display = "block"
     completion.style.width =
         Math.max(...ctx.completion.options.map(option => option.length)) + 5 + "ch"
-    // TODO completion.style.height = ctx.completion.options.length - 1 + "em"
     completion.style.height = `calc(${ctx.completion.options.length - 1} * var(--height-cell))`
 
     // Don't display the original command in the completion menu
@@ -57,7 +51,7 @@ export function show_completions() {
 
     completion.style.left = ctx.completion.input.length + "ch"
 
-    cycle_completions(false)
+    cycle_completions(down)
     if (ctx.completion.options.length > 2) ctx.completion.trigger = cycle_completions
     else reset_completions()
 }
@@ -71,14 +65,10 @@ export function reset_completions() {
 }
     
 function cycle_completions(up) {
-    // TODO handle one child in completions
     completion.children[ctx.completion.cur].removeAttribute("id")
     ctx.completion.cur =
         (ctx.completion.cur + (up ? ctx.completion.options.length - 1 : 1)) %
             ctx.completion.options.length
-    //TODO
-    //ctx.completion.cur = (ctx.completion.cur + 1) % ctx.completion.options.length
-    //ctx.completion.cur = (ctx.completion.cur + ctx.completion.options.length - 1) % ctx.completion.options.length
     completion.children[ctx.completion.cur].id = "selected"
 
     if (ctx.completion.input.endsWith(" ")) {
