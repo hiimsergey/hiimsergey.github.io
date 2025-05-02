@@ -81,7 +81,7 @@ function set_number() {
         "block"
     )
     // TODO DEBUG doesnt work
-    for (const content of contents) content.style.padding_left = "5ch"
+    for (const content of contents) content.style = "0 5ch"
 }
 
 function set_number_exc() {
@@ -90,5 +90,5 @@ function set_number_exc() {
         "none"
     )
     // TODO DEBUG doesnt work
-    for (const content of contents) content.style.padding_left = "0"
+    for (const content of contents) content.style.padding = "0 1ch"
 }
