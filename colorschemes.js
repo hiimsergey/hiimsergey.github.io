@@ -119,6 +119,25 @@ export const COLORSCHEMES = [
     // completion background #452859 // bossanova
 
     {
+        name: "nordic",           // https://github.com/alexzyl/nordic.nvim
+
+        background:               "#242933",  // gray0
+        bar:                      "#191d24",  // black0
+        bar_gray:                 "#13222a",  // black1
+        completion_text:          "#60728a",  // gray5
+        completion_selected:      "#242933",  // gray0
+        completion_selected_text: "#bbc3d4",  // white0
+        text:                     "#bbc3d4",  // white0
+        muted:                    "#60728a",  // gray5
+        h1:                       "#d08770",  // orange
+        h2:                       "#8fbcbb",  // cyan
+        link:                     "#ebc88b",  // yellow
+        link_special:             "#a3be8c",  // green
+        mode_normal:              "#5e81ac",  // blue0
+        wrap:                     "#d08770"   // orange
+    },
+
+    {
         name: "rose-pine-moon",   // https://rosepinetheme.com/palette/ingredients
 
         background:               "#232136",  // Base
@@ -138,7 +157,7 @@ export const COLORSCHEMES = [
     },
 
     {
-        name: "serika-dark",      // https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/themes/serika_dark.css
+        name: "serika",           // https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/themes/serika_dark.css
 
         background:               "#323437",  // bg-color
         bar:                      "#2c2e31",  // sub-alt-color
