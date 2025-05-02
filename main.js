@@ -1,6 +1,6 @@
 import { COLORSCHEMES } from "./colorschemes.js"
 import { COMMANDS } from "./commands.js"
-import { construct_completions, reset_completions } from "./completion.js"
+import { update_completions, show_completions, reset_completions } from "./completion.js"
 import { init_command_history, reset_command_history } from "./history.js"
 
 // Elements and pseudo-elements
@@ -69,7 +69,7 @@ export let ctx = {
     dragging: false,
     completion: {
         input: "",
-        trigger: construct_completions,
+        trigger: show_completions,
         options: [],
         cur: 0
     },
@@ -240,6 +240,21 @@ input.addEventListener("keydown", (e) => {
             break
         case "ArrowDown":
             ctx.history.commands.trigger(false)
+            e.preventDefault()
+            break
+        case "a":
+            if (!e.ctrlKey) break
+            update_completions()
+
+            const all_completions = ctx.completion.options.slice(1).join(" ")
+            if (ctx.completion.input.endsWith(" ")) {
+                input.value = ctx.completion.input + all_completions
+            } else {
+                let words = ctx.completion.input.slice(1).split(" ")
+                words[words.length - 1] = all_completions
+                input.value = ":" + words.join(" ")
+            }
+
             e.preventDefault()
             break
 

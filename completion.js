@@ -1,10 +1,7 @@
 import { COMMANDS } from "./commands.js"
 import { ctx, completion, input } from "./main.js"
 
-// TODO NOTE it should also trigger on commands like :colo and :help
-export function construct_completions() {
-    while (completion.firstChild) completion.firstChild.remove()
-
+export function update_completions() {
     ctx.completion.input = input.value
 
     const command = ctx.completion.input.slice(1)
@@ -34,6 +31,13 @@ export function construct_completions() {
                 [words[words.length - 1]]
         }
     }
+}
+
+// TODO NOTE it should also trigger on commands like :colo and :help
+export function show_completions() {
+    while (completion.firstChild) completion.firstChild.remove()
+
+    update_completions()
 
     for (const option of ctx.completion.options) {
         const div = document.createElement("div")
@@ -62,7 +66,7 @@ export function reset_completions() {
     completion.style.display = "none"
 
     ctx.completion.input = ""
-    ctx.completion.trigger = construct_completions
+    ctx.completion.trigger = show_completions
     ctx.completion.cur = 0
 }
     

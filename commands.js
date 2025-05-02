@@ -90,5 +90,5 @@ function set_number_exc() {
         "none"
     )
     // TODO DEBUG doesnt work
-    for (const content of contents) content.style.padding = "0 1ch"
+    for (const content of contents) content.style.padding = "0 2ch"
 }
