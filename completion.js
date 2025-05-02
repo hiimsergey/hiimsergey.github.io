@@ -57,7 +57,7 @@ export function show_completions() {
 
     completion.style.left = ctx.completion.input.length + "ch"
 
-    cycle_completions()
+    cycle_completions(false)
     if (ctx.completion.options.length > 2) ctx.completion.trigger = cycle_completions
     else reset_completions()
 }
@@ -70,10 +70,15 @@ export function reset_completions() {
     ctx.completion.cur = 0
 }
     
-function cycle_completions() {
+function cycle_completions(up) {
     // TODO handle one child in completions
     completion.children[ctx.completion.cur].removeAttribute("id")
-    ctx.completion.cur = (ctx.completion.cur + 1) % ctx.completion.options.length
+    ctx.completion.cur =
+        (ctx.completion.cur + (up ? ctx.completion.options.length - 1 : 1)) %
+            ctx.completion.options.length
+    //TODO
+    //ctx.completion.cur = (ctx.completion.cur + 1) % ctx.completion.options.length
+    //ctx.completion.cur = (ctx.completion.cur + ctx.completion.options.length - 1) % ctx.completion.options.length
     completion.children[ctx.completion.cur].id = "selected"
 
     if (ctx.completion.input.endsWith(" ")) {

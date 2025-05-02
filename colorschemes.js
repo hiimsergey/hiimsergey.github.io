@@ -59,25 +59,6 @@ export const COLORSCHEMES = [
     },
 
     {
-        name: "henna",            // https://github.com/httpsterio/vscode-henna
-
-        background:               "#21272e",  // bg
-        bar:                      "#10151a",  // base0
-        bar_gray:                 "#282c34",  // base4
-        completion_text:          "#6b717d",  // fg-alt
-        completion_selected:      "#495162",  // base7
-        completion_selected_text: "#f8f8f0",  // fg
-        text:                     "#f8f8f0",  // fg
-        muted:                    "#6b717d",  // fg-alt
-        h1:                       "#e74c3c",  // red
-        h2:                       "#53df83",  // green
-        link:                     "#1abc9c",  // teal
-        link_special:             "#56b5c2",  // blue
-        mode_normal:              "#56b5c2",  // blue
-        wrap:                     "#e74c3c"   // red
-    },
-
-    {
         name: "gruvbox-material", // https://github.com/sainnhe/gruvbox-material
 
         background:               "#282828",  // bg0
@@ -117,6 +98,25 @@ export const COLORSCHEMES = [
     // TODO NOTE
     // line number selected #dbbfef // lilac
     // completion background #452859 // bossanova
+
+    {
+        name: "henna",            // https://github.com/httpsterio/vscode-henna
+
+        background:               "#21272e",  // bg
+        bar:                      "#10151a",  // base0
+        bar_gray:                 "#282c34",  // base4
+        completion_text:          "#6b717d",  // fg-alt
+        completion_selected:      "#495162",  // base7
+        completion_selected_text: "#f8f8f0",  // fg
+        text:                     "#f8f8f0",  // fg
+        muted:                    "#6b717d",  // fg-alt
+        h1:                       "#e74c3c",  // red
+        h2:                       "#53df83",  // green
+        link:                     "#1abc9c",  // teal
+        link_special:             "#56b5c2",  // blue
+        mode_normal:              "#56b5c2",  // blue
+        wrap:                     "#e74c3c"   // red
+    },
 
     {
         name: "nordic",           // https://github.com/alexzyl/nordic.nvim

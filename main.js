@@ -231,7 +231,7 @@ input.addEventListener("keydown", (e) => {
             input.blur()
             break
         case "Tab":
-            ctx.completion.trigger()
+            ctx.completion.trigger(e.shiftKey)
             e.preventDefault()
             break
         case "ArrowUp":
@@ -257,6 +257,7 @@ input.addEventListener("keydown", (e) => {
 
             e.preventDefault()
             break
+        case "Shift": break // TODO
 
         case "Backspace":
             if (input.value !== ":") break
