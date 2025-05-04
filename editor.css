@@ -1,6 +1,17 @@
 #editor {
     flex-grow: 1;
+
+    overflow: hidden;
+
     padding-bottom: var(--cell-h);
+
+    display: flex;
+}
+
+#lualine {
+    background-color: purple;
+
+    height: var(--cell-h);
 }
 
 textarea {
@@ -29,4 +40,34 @@ textarea {
 
 textarea::-webkit-scrollbar {
     display: none;
+}
+
+.buffer {
+    background-color: brown;
+
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.viewport {
+    background-color: cyan;
+
+    flex-grow: 1;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.handle {
+    background-color: yellow;
+    min-width: 1ch;
+}
+
+.bar {
+    background-color: pink;
+
+    height: var(--cell-h);
 }

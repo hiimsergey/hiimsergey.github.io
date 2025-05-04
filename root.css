@@ -11,6 +11,8 @@
 }
 
 body {
+    background-color: black;
+
     margin: 0;
 
     display: flex;
@@ -18,13 +20,11 @@ body {
 }
 
 #root {
-    background-color: green;
+    width: var(--root-w);
+    height: var(--root-h);
 
     display: flex;
     flex-direction: column;
-
-    width: var(--root-w);
-    height: var(--root-h);
 
     position: relative;
 }

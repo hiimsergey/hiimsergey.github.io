@@ -1,6 +1,13 @@
-import { execute_command } from "./commands.js"
+import { init_lualine, new_buffer, set_lualine_filename } from "./buffers.js"
+import { edit, execute_command } from "./commands.js"
 
+export const lualine = init_lualine()
 export const textarea = document.querySelector("textarea")
+const editor = document.getElementById("editor")
+
+const portfolio = new_buffer()
+const contact = new_buffer()
+export let curbuf = portfolio
 
 let ch, em, cell_h = 0
 
@@ -12,6 +19,21 @@ function resizeTextArea() {
         Math.floor(textarea.scrollHeight / cell_h) * cell_h + "px"
     if (parseFloat(textarea.style.height) > cell_h)
         textarea.style.padding = "var(--cell-h) 0 0 0"
+}
+
+function set_curbuf(div) {
+    curbuf.children[1].style.display = "block"
+
+    // TODO NOW resolve race condition
+    console.log(div.children[1].outerHTML)
+    //div.children[1].style.display = "none"
+    div.appendChild(lualine)
+    set_lualine_filename(div.children[1].innerText)
+    console.log(div.children[1])
+
+    // TODO set file name
+
+    curbuf = div
 }
 
 function updateRoot() {
@@ -77,4 +99,17 @@ textarea.addEventListener("keydown", (e) => {
     }
 })
 
+// TODO PLAN
+// edit portfolio
+// vsplit
+// edit contact
+
+editor.appendChild(portfolio)
+set_curbuf(portfolio)
 updateRoot()
+edit(["", "Portfolio"])
+
+// TODO REPLACE with vsplit
+editor.appendChild(contact)
+set_curbuf(contact)
+edit(["", "Contact"])
