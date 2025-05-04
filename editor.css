@@ -1,0 +1,32 @@
+#editor {
+    flex-grow: 1;
+    padding-bottom: var(--cell-h);
+}
+
+textarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    background: none;
+    background-color: orange;
+    border: none;
+    outline: none;
+    padding: 0;
+    pointer-events: none;
+    resize: none;
+
+    font-family: inherit;
+    font-size: inherit;
+
+    width: 100%;
+    height: var(--cell-h);
+
+    /* Firefox */
+    scrollbar-width: none;
+    overflow: hidden;
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
+}

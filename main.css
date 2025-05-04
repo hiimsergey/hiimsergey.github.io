@@ -1,0 +1,41 @@
+:root {
+    --cell-h: 1.3em;
+    --root-w: 100vw;
+    --root-h: 100vh;
+
+    font-family: "JetBrains Mono";
+    font-size: 1em;
+
+    height: var(--cell-h);
+    line-height: var(--cell-h);
+}
+
+body {
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    background-color: green;
+
+    display: flex;
+    flex-direction: column;
+
+    width: var(--root-w);
+    height: var(--root-h);
+
+    position: relative;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("assets/JetBrainsMonoNerdFont-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("assets/JetBrainsMonoNerdFont-Italic.ttf") format("truetype");
+    font-style: italic;
+}
