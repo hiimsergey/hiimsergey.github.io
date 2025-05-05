@@ -1,0 +1,4 @@
+#profile-picture {
+    width: 50ch;
+    height: calc(25 * var(--cell-h));
+}

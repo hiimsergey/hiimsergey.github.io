@@ -1,39 +1,32 @@
-import { init_lualine, new_buffer, set_lualine_filename } from "./buffers.js"
-import { edit, execute_command } from "./commands.js"
+import { initLualine, newBuffer, newHandle, setLualineFilename } from "./buffers.js"
+import { edit, executeCommand, split, vsplit } from "./commands.js"
 
-export const lualine = init_lualine()
+export const lualine = initLualine()
+export const portfolio = newBuffer()
 export const textarea = document.querySelector("textarea")
+export let curbuf = portfolio
+export let pages = {}
+const contact = newBuffer()
 const editor = document.getElementById("editor")
 
-const portfolio = new_buffer()
-const contact = new_buffer()
-export let curbuf = portfolio
+let ch, em, cellH = 0
 
-let ch, em, cell_h = 0
+export function setCurbuf(div) {
+    curbuf.children[1].style.display = "block"
+    div.children[1].style.display = "none"
+    div.appendChild(lualine)
+    curbuf = div
+    setLualineFilename(div.children[1].innerText)
+}
 
 function resizeTextArea() {
-    textarea.style.height = "var(--cell-h)"
+    textarea.style.height = cellH + "px"
     textarea.style.padding = "0"
 
     textarea.style.height =
-        Math.floor(textarea.scrollHeight / cell_h) * cell_h + "px"
-    if (parseFloat(textarea.style.height) > cell_h)
-        textarea.style.padding = "var(--cell-h) 0 0 0"
-}
-
-function set_curbuf(div) {
-    curbuf.children[1].style.display = "block"
-
-    // TODO NOW resolve race condition
-    console.log(div.children[1].outerHTML)
-    //div.children[1].style.display = "none"
-    div.appendChild(lualine)
-    set_lualine_filename(div.children[1].innerText)
-    console.log(div.children[1])
-
-    // TODO set file name
-
-    curbuf = div
+        Math.floor(textarea.scrollHeight / cellH) * cellH + "px"
+    if (parseFloat(textarea.style.height) > cellH)
+        textarea.style.padding = cellH + "px 0 0 0"
 }
 
 function updateRoot() {
@@ -48,11 +41,11 @@ function updateRoot() {
     const dimensions = span.getBoundingClientRect()
     ch = Math.floor(dimensions.width)
     em = parseFloat(getComputedStyle(document.documentElement).fontSize)
-    cell_h = 1.3 * em
+    cellH = 1.3 * em
 
     document.documentElement.style.setProperty(
         "--cell-h",
-        cell_h + "px"
+        cellH + "px"
     )
     document.documentElement.style.setProperty(
         "--root-w",
@@ -60,11 +53,10 @@ function updateRoot() {
     )
     document.documentElement.style.setProperty(
         "--root-h",
-        Math.floor(Math.floor(window.innerHeight / cell_h) * cell_h) + "px"
+        Math.floor(Math.floor(window.innerHeight / cellH) * cellH) + "px"
     )
 
     document.body.removeChild(span)
-    console.log(ch, em, cell_h)
 }
 
 window.addEventListener("resize", () => {
@@ -76,9 +68,16 @@ document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
             if (document.activeElement === textarea) break
-            // TODO set color to normal and style to normal
+            // TODO set color and style (style is theme-specific)
             textarea.value = ""
             textarea.focus()
+            break
+        // TODO TEST
+        case "s":
+            split(["", "Portfolio"])
+            break
+        case "v":
+            vsplit(["", "Portfolio"])
             break
     }
 })
@@ -88,7 +87,7 @@ textarea.addEventListener("input", resizeTextArea)
 textarea.addEventListener("keydown", (e) => {
     switch (e.key) {
         case "Enter":
-            execute_command()
+            executeCommand()
             textarea.blur()
             break
         case "Escape":
@@ -99,17 +98,14 @@ textarea.addEventListener("keydown", (e) => {
     }
 })
 
-// TODO PLAN
-// edit portfolio
-// vsplit
-// edit contact
+updateRoot()
 
 editor.appendChild(portfolio)
-set_curbuf(portfolio)
-updateRoot()
+setCurbuf(portfolio)
 edit(["", "Portfolio"])
 
-// TODO REPLACE with vsplit
+editor.appendChild(newHandle("vhandle"))
+
 editor.appendChild(contact)
-set_curbuf(contact)
+setCurbuf(contact)
 edit(["", "Contact"])

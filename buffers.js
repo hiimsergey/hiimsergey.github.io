@@ -1,7 +1,9 @@
+import { curbuf } from "./main.js"
+
 const filename = document.createElement("div")
 filename.id = "lualine-a"
 
-export function new_buffer() {
+export function newBuffer() {
     const result = document.createElement("div")
     result.classList.add("buffer")
 
@@ -11,44 +13,64 @@ export function new_buffer() {
 
         const bar = document.createElement("div")
         bar.classList.add("bar")
+        bar.innerText = "[No name]"
         result.appendChild(bar)
 
     return result
 }
 
-export function init_lualine() {
+// TODO TEST
+export function newHandle(type) {
+    const result = document.createElement("div")
+    result.classList.add(type)
+    return result
+}
+
+// TODO TEST
+export function newContainer(type) {
+    const result = document.createElement("div")
+    result.style.display = "flex"
+    result.style.flexDirection = type
+    return result
+}
+
+export function initLualine() {
     const result = document.createElement("div")
     result.id = "lualine"
 
-        const lualine_left = document.createElement("div")
-        lualine_left.classList.add("lualine-side")
+        const lualineLeft = document.createElement("div")
+        lualineLeft.classList.add("lualine-side")
 
-            const lualine_a = document.createElement("div")
-            lualine_a.id = "lualine-a"
-            lualine_left.appendChild(lualine_a)
+            const lualineA = document.createElement("div")
+            lualineA.id = "lualine-a"
+            lualineLeft.appendChild(lualineA)
 
-            lualine_left.appendChild(filename)
+            lualineLeft.appendChild(filename)
 
-        result.appendChild(lualine_left)
+        result.appendChild(lualineLeft)
 
-        const lualine_right = document.createElement("div")
-        lualine_right.classList.add("lualine-side")
-        result.appendChild(lualine_right)
+        const lualineRight = document.createElement("div")
+        lualineRight.classList.add("lualine-side")
+        result.appendChild(lualineRight)
 
-            const lualine_y = document.createElement("div")
-            lualine_y.id = "lualine-a"
-            lualine_left.appendChild(lualine_y)
+            const lualineY = document.createElement("div")
+            lualineY.id = "lualine-a"
+            lualineRight.appendChild(lualineY)
 
-            const lualine_z = document.createElement("div")
-            lualine_z.id = "lualine-a"
-            lualine_left.appendChild(lualine_z)
+            const lualineZ = document.createElement("div")
+            lualineZ.id = "lualine-a"
+            lualineRight.appendChild(lualineZ)
 
-        result.appendChild(lualine_left)
+        result.appendChild(lualineRight)
 
     return result
 }
 
-export function set_lualine_filename(name) {
+export function setLualineFilename(name) {
     filename.innerText = name
-    console.log(filename.innerText)
+}
+
+// TODO FINAL CHECK USE
+export function curbufName() {
+    return curbuf.children[1].innerHTML.replace(".portfolio", "") // TODO
 }

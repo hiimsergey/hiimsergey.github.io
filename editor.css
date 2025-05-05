@@ -6,6 +6,7 @@
     padding-bottom: var(--cell-h);
 
     display: flex;
+    flex-direction: row;
 }
 
 #lualine {
@@ -61,9 +62,18 @@ textarea::-webkit-scrollbar {
     flex-direction: column;
 }
 
-.handle {
+.vhandle {
     background-color: yellow;
+
     min-width: 1ch;
+    height: 100%;
+}
+
+.hhandle {
+    background-color: yellow;
+
+    width: 100%;
+    min-height: var(--cell-h);
 }
 
 .bar {
