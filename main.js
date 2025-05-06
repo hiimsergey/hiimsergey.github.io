@@ -96,10 +96,10 @@ editor.style.flexDirection = "row" // Necessary for reading later
 
 editor.appendChild(portfolio)
 setCurbuf(portfolio)
-edit(["", "Portfolio"])
+edit(["Portfolio"])
 
 editor.appendChild(newHandle("vhandle"))
 
 editor.appendChild(contact)
 setCurbuf(contact)
-edit(["", "Contact"])
+edit(["Contact"])

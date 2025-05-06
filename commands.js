@@ -12,6 +12,10 @@ export const COMMANDS = [
 
     { name: "vsplit", hidden: false, callback: vsplit, completions: PAGES },
     { name: "vs", hidden: true, callback: vsplit, completions: PAGES },
+
+    { name: "quit", hidden: false, callback: quit, completions: [] },
+    { name: "q", hidden: true, callback: quit, completions: [] },
+    { name: "q!", hidden: true, callback: quit, completions: [] }
 ]
 
 export function executeCommand() {
@@ -38,7 +42,7 @@ Press ENTER or type command to continue`
 
     for (const CMD of COMMANDS) {
         if (args[0] === CMD.name) {
-            CMD.callback(args)
+            CMD.callback(args.slice(1))
             return
         }
     }
@@ -48,8 +52,8 @@ Press ENTER or type command to continue`
 }
 
 export function edit(args) {
-    if (args.length === 1) return
-    const file = args.slice(1).join(" ")
+    if (!args.length) return
+    const file = args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
     target.children[1].innerHTML = file + ".portfolio"
@@ -76,7 +80,7 @@ export function edit(args) {
         })
 }
 
-export function split(args) {
+function split(args) {
     const oldbuf = curbufName()
 
     const buffer = newBuffer()
@@ -94,8 +98,8 @@ export function split(args) {
 
     setCurbuf(buffer)
 
-    if (args.length > 1) edit(["", args.slice(1).join(" ")])
-    else edit(["", oldbuf])
+    if (args.length) edit([args.slice(1).join(" ")])
+    else edit([oldbuf])
 
     // TODO DEBUG + COPY to vsplit
     const totalH = buffer.parentElement.style.height
@@ -107,7 +111,7 @@ export function split(args) {
     }
 }
 
-export function vsplit(args) {
+function vsplit(args) {
     const oldbuf = curbufName()
 
     const buffer = newBuffer()
@@ -125,6 +129,10 @@ export function vsplit(args) {
 
     setCurbuf(buffer)
 
-    if (args.length > 1) edit(["", args.slice(1).join(" ")])
-    else edit(["", oldbuf])
+    if (args.length) edit([args.slice(1).join(" ")])
+    else edit([oldbuf])
+}
+
+function quit() {
+    window.open(window.location, "_self").close()
 }
