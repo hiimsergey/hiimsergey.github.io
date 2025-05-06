@@ -1,5 +1,5 @@
 import { PAGES } from "./pages.js"
-import { curbuf, pages, setCurbuf, textarea } from "./main.js"
+import { cellH, curbuf, pageCache, setCurbuf, textarea } from "./main.js"
 import { curbufName, newBuffer, newContainer, newHandle,
     setLualineFilename } from "./buffers.js"
 
@@ -15,7 +15,36 @@ export const COMMANDS = [
 ]
 
 export function executeCommand() {
-    console.log(`TODO execute this command: '${textarea.value.slice(1)}'`)
+    const command = textarea.value.replace(/^:+/, "")
+
+    if (command[0] === "!") {
+        // TODO VERIFY is is realistic + IMPLEMENT + COLOR
+        const shellCmd = command.slice(1)
+        // TODO CONSIDER trim
+        const tildes = "~".repeat(shellCmd.trim().length - 2)
+        const err = `:!${shellCmd}
+sh: Unknown command: ${shellCmd}
+sh:
+${shellCmd}
+^${tildes}^
+
+shell returned 127
+
+Press ENTER or type command to continue`
+        console.log(err)
+    }
+
+    const args = command.trim().split(" ")
+
+    for (const CMD of COMMANDS) {
+        if (args[0] === CMD.name) {
+            CMD.callback(args)
+            return
+        }
+    }
+
+    // TODO make red (theme-specific), italic and write errmsg
+    console.error("Invalid command")
 }
 
 export function edit(args) {
@@ -26,8 +55,16 @@ export function edit(args) {
     target.children[1].innerHTML = file + ".portfolio"
     setLualineFilename(file + ".portfolio")
 
-    if (pages[file]) {
-        target.children[0].innerHTML = pages[file]
+    if (pageCache[file]) {
+        target.children[0].innerHTML = pageCache[file]
+        return
+    }
+
+    // TODO NOW ditch .portfolio in favor of html
+    // but add "html-preview" to lualine
+    if (!PAGES.includes(file + ".html")) {
+        target.children[0].innerHTML = ""
+        // TODO CONSIDER putting into cache
         return
     }
 
@@ -35,7 +72,7 @@ export function edit(args) {
         .then(res => res.text())
         .then(html => {
             target.children[0].innerHTML = html
-            pages[file] = html
+            pageCache[file] = html
         })
 }
 
@@ -59,6 +96,15 @@ export function split(args) {
 
     if (args.length > 1) edit(["", args.slice(1).join(" ")])
     else edit(["", oldbuf])
+
+    // TODO DEBUG + COPY to vsplit
+    const totalH = buffer.parentElement.style.height
+    const bufN = buffer.parentElement.children.length
+    const bufH = (totalH - cellH * (bufN - 1)) / bufN
+    for (const buf of buffer.parentElement.children) {
+        console.log(buf.style.height)
+        buf.style.height = bufH
+    }
 }
 
 export function vsplit(args) {

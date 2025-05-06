@@ -1,15 +1,15 @@
 import { initLualine, newBuffer, newHandle, setLualineFilename } from "./buffers.js"
-import { edit, executeCommand, split, vsplit } from "./commands.js"
+import { edit, executeCommand } from "./commands.js"
 
 export const lualine = initLualine()
 export const portfolio = newBuffer()
 export const textarea = document.querySelector("textarea")
 export let curbuf = portfolio
-export let pages = {}
+export let pageCache = {}
 const contact = newBuffer()
 const editor = document.getElementById("editor")
 
-let ch, em, cellH = 0
+export let ch, em, cellH = 0
 
 export function setCurbuf(div) {
     curbuf.children[1].style.display = "block"
@@ -72,13 +72,6 @@ document.addEventListener("keydown", (e) => {
             textarea.value = ""
             textarea.focus()
             break
-        // TODO TEST
-        case "s":
-            split(["", "Portfolio"])
-            break
-        case "v":
-            vsplit(["", "Portfolio"])
-            break
     }
 })
 
@@ -99,6 +92,7 @@ textarea.addEventListener("keydown", (e) => {
 })
 
 updateRoot()
+editor.style.flexDirection = "row" // Necessary for reading later
 
 editor.appendChild(portfolio)
 setCurbuf(portfolio)
