@@ -58,22 +58,43 @@ textarea::-webkit-scrollbar {
     flex-grow: 1;
     overflow-y: auto;
 
-    display: flex;
-    flex-direction: column;
+    /* Line numbers */
+    counter-reset: line;
+    position: relative;
+    padding-left: 5ch;
 }
 
-.vhandle {
+.viewport div {
+    min-height: var(--cell-h);
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    position: relative;
+}
+
+.viewport div::before {
+    display: var(--line-number-display);
+
+    position: absolute;
+    top: 0;
+    left: -6ch;
+
+    counter-increment: line;
+    content: counter(line);
+
+    text-align: right;
+
+    min-width: 4ch;
+    max-width: 4ch;
+    
+    margin-left: 1ch;
+}
+
+.handle {
     background-color: yellow;
 
     min-width: 1ch;
     height: 100%;
-}
-
-.hhandle {
-    background-color: yellow;
-
-    width: 100%;
-    min-height: var(--cell-h);
 }
 
 .bar {

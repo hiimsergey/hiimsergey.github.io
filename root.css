@@ -3,11 +3,16 @@
     --root-w: 100vw;
     --root-h: 100vh;
 
+    --line-number-display: block;
+
     font-family: "JetBrains Mono";
     font-size: 1em;
 
     height: var(--cell-h);
     line-height: var(--cell-h);
+
+    /* TODO TEST */
+    box-sizing: border-box;
 }
 
 body {

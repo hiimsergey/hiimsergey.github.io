@@ -1,12 +1,11 @@
-import { initLualine, newBuffer, newHandle, setLualineFilename } from "./buffers.js"
-import { edit, executeCommand } from "./commands.js"
+import { initLualine, newBuffer, setLualineFilename } from "./buffers.js"
+import { edit, executeCommand, vsplit } from "./commands.js"
 
 export const lualine = initLualine()
-export const portfolio = newBuffer()
 export const textarea = document.querySelector("textarea")
+const portfolio = newBuffer()
 export let curbuf = portfolio
 export let pageCache = {}
-const contact = newBuffer()
 const editor = document.getElementById("editor")
 
 export let ch, em, cellH = 0
@@ -64,13 +63,29 @@ window.addEventListener("resize", () => {
     resizeTextArea()
 })
 
+window.addEventListener("beforeunload", (e) => {
+    e.preventDefault()
+    e.returnValue = ""
+})
+
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
             if (document.activeElement === textarea) break
-            // TODO set color and style (style is theme-specific)
+            // TODO set color and style (style is theme-specific) ()
             textarea.value = ""
             textarea.focus()
+            break
+        case "i":
+        case "I":
+        case "o":
+        case "O":
+        case "a":
+        case "A":
+            if (document.activeElement === textarea) break
+            // TODO set color and style (style is theme-specific)
+            textarea.style.fontStyle = "italic"
+            textarea.value = "E21: Cannot make changes, 'modifiable' is off"
             break
     }
 })
@@ -95,11 +110,5 @@ updateRoot()
 editor.style.flexDirection = "row" // Necessary for reading later
 
 editor.appendChild(portfolio)
-setCurbuf(portfolio)
-edit(["Portfolio"])
-
-editor.appendChild(newHandle("vhandle"))
-
-editor.appendChild(contact)
-setCurbuf(contact)
-edit(["Contact"])
+edit(["Portfolio.html"])
+vsplit(["Contact.html"])

@@ -19,14 +19,13 @@ export function newBuffer() {
     return result
 }
 
-// TODO TEST
-export function newHandle(type) {
+// TODO add this line to handles
+export function newHandle() {
     const result = document.createElement("div")
-    result.classList.add(type)
+    result.classList.add("handle")
     return result
 }
 
-// TODO TEST
 export function newContainer(type) {
     const result = document.createElement("div")
     result.style.display = "flex"
@@ -72,5 +71,5 @@ export function setLualineFilename(name) {
 
 // TODO FINAL CHECK USE
 export function curbufName() {
-    return curbuf.children[1].innerHTML.replace(".portfolio", "") // TODO
+    return curbuf.children[1].innerHTML // TODO
 }

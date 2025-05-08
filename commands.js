@@ -1,5 +1,5 @@
 import { PAGES } from "./pages.js"
-import { cellH, curbuf, pageCache, setCurbuf, textarea } from "./main.js"
+import { cellH, ch, curbuf, pageCache, setCurbuf, textarea } from "./main.js"
 import { curbufName, newBuffer, newContainer, newHandle,
     setLualineFilename } from "./buffers.js"
 
@@ -22,7 +22,7 @@ export function executeCommand() {
     const command = textarea.value.replace(/^:+/, "")
 
     if (command[0] === "!") {
-        // TODO VERIFY is is realistic + IMPLEMENT + COLOR
+        // TODO VERIFY is it realistic + IMPLEMENT + COLOR
         const shellCmd = command.slice(1)
         // TODO CONSIDER trim
         const tildes = "~".repeat(shellCmd.trim().length - 2)
@@ -56,66 +56,71 @@ export function edit(args) {
     const file = args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
-    target.children[1].innerHTML = file + ".portfolio"
-    setLualineFilename(file + ".portfolio")
+    target.children[1].innerHTML = file
+    setLualineFilename(file)
 
+    // TODO TEST kaumon
     if (pageCache[file]) {
         target.children[0].innerHTML = pageCache[file]
+            .trimEnd()
+            .split("\n")
+            .map(line => "<div>" + line + "</div>")
+            .join("\n")
         return
     }
 
-    // TODO NOW ditch .portfolio in favor of html
-    // but add "html-preview" to lualine
-    if (!PAGES.includes(file + ".html")) {
+    // TODO but add "html-preview" to lualine
+    if (!PAGES.includes(file)) {
         target.children[0].innerHTML = ""
         // TODO CONSIDER putting into cache
         return
     }
 
-    fetch(`_pages/${file}.html`)
+    // TODO TEST kaumon
+    fetch(`_pages/${file}`)
         .then(res => res.text())
         .then(html => {
             target.children[0].innerHTML = html
+                .trimEnd()
+                .split("\n")
+                .map(line => "<div>" + line + "</div>")
+                .join("\n")
             pageCache[file] = html
         })
 }
 
 function split(args) {
     const oldbuf = curbufName()
-
     const buffer = newBuffer()
-    const handle = newHandle("hhandle")
 
     if (curbuf.parentElement.style.flexDirection === "column") {
-        console.log("pushing to the old container")
-        curbuf.before(buffer, handle)
+        curbuf.before(buffer)
     } else {
-        console.log("making a new container")
         const vcontainer = newContainer("column")
         curbuf.replaceWith(vcontainer)
-        vcontainer.append(buffer, handle, curbuf)
+        vcontainer.append(buffer, curbuf)
     }
 
     setCurbuf(buffer)
 
-    if (args.length) edit([args.slice(1).join(" ")])
+    if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
 
-    // TODO DEBUG + COPY to vsplit
-    const totalH = buffer.parentElement.style.height
+    // Equalize heights of layout children
+    const totalH = buffer.parentElement.clientHeight
     const bufN = buffer.parentElement.children.length
     const bufH = (totalH - cellH * (bufN - 1)) / bufN
     for (const buf of buffer.parentElement.children) {
-        console.log(buf.style.height)
-        buf.style.height = bufH
+        buf.style.width = "100%" // TODO CONSIDER
+        buf.style.height = bufH + "px"
     }
 }
 
-function vsplit(args) {
+export function vsplit(args) {
     const oldbuf = curbufName()
 
     const buffer = newBuffer()
-    const handle = newHandle("vhandle")
+    const handle = newHandle()
 
     if (curbuf.parentElement.style.flexDirection === "row") {
         console.log("pushing to the old container")
@@ -129,8 +134,15 @@ function vsplit(args) {
 
     setCurbuf(buffer)
 
-    if (args.length) edit([args.slice(1).join(" ")])
+    if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
+
+    // Equalize widths of layout children
+    const totalW = buffer.parentElement.clientWidth
+    const bufN = buffer.parentElement.children.length
+    const bufW = (totalW - ch * (bufN - 1)) / bufN
+    for (let i = 0; i < buffer.parentElement.children.length; i += 2)
+        buffer.parentElement.children[i].style.width = bufW + "px"
 }
 
 function quit() {
