@@ -111,7 +111,7 @@ function split(args) {
     const bufN = buffer.parentElement.children.length
     const bufH = (totalH - cellH * (bufN - 1)) / bufN
     for (const buf of buffer.parentElement.children) {
-        buf.style.width = "100%" // TODO CONSIDER
+        buf.style.width = "100%"
         buf.style.height = bufH + "px"
     }
 }
@@ -141,8 +141,10 @@ export function vsplit(args) {
     const totalW = buffer.parentElement.clientWidth
     const bufN = buffer.parentElement.children.length
     const bufW = (totalW - ch * (bufN - 1)) / bufN
-    for (let i = 0; i < buffer.parentElement.children.length; i += 2)
+    for (let i = 0; i < buffer.parentElement.children.length; i += 2) {
         buffer.parentElement.children[i].style.width = bufW + "px"
+        buffer.parentElement.children[i].style.height = "100%"
+    }
 }
 
 function quit() {

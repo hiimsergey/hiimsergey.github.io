@@ -1,8 +1,6 @@
 #editor {
     flex-grow: 1;
 
-    overflow: hidden;
-
     padding-bottom: var(--cell-h);
 
     display: flex;

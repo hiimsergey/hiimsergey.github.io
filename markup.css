@@ -22,6 +22,8 @@ a::after {
 }
 
 code {
+    color: green;
+
     font-family: inherit;
     font-size: inherit;
     font-style: normal;
