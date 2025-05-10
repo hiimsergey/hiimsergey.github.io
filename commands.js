@@ -88,7 +88,7 @@ export function edit(args) {
         })
 }
 
-function split(args) {
+export function split(args) {
     const oldbuf = curbufName()
     const buffer = Buffer()
 
@@ -122,10 +122,8 @@ export function vsplit(args) {
     const handle = Handle()
 
     if (curbuf.parentElement.style.flexDirection === "row") {
-        console.log("pushing to the old container")
         curbuf.before(buffer, handle)
     } else {
-        console.log("making a new container")
         const row = Container("row")
         curbuf.replaceWith(row)
         row.append(buffer, handle, curbuf)

@@ -1,4 +1,4 @@
-import { curbuf, setCurbuf } from "./main.js"
+import { ch, curbuf, drag, setCurbuf } from "./main.js"
 
 const filename = document.createElement("div")
 filename.id = "lualine-a"
@@ -28,6 +28,15 @@ export function Buffer() {
 export function Handle() {
     const result = document.createElement("div")
     result.classList.add("handle")
+
+    result.addEventListener("mousedown", (e) => {
+        drag.handle = result
+        e.preventDefault() // Prevent selecting text while dragging
+
+        document.addEventListener("mousemove", resizeHorizontally)
+        document.addEventListener("mouseup", resizeStop)
+    })
+
     return result
 }
 
@@ -76,4 +85,21 @@ export function setLualineFilename(name) {
 // TODO FINAL CHECK USE
 export function curbufName() {
     return curbuf.children[1].innerHTML // TODO
+}
+
+function resizeHorizontally(e) {
+    const leftRect = drag.handle.previousElementSibling.getBoundingClientRect()
+    const leftWRaw = e.clientX - leftRect.left
+    const leftW = Math.floor(leftWRaw / ch) * ch
+    drag.handle.previousElementSibling.style.width = leftW + "px"
+
+    const rightRect = drag.handle.nextElementSibling.getBoundingClientRect()
+    const rightWRaw = rightRect.right - e.clientX
+    const rightW = Math.ceil(rightWRaw / ch) * ch
+    drag.handle.nextElementSibling.style.width = rightW + "px"
+}
+
+function resizeStop() {
+    document.removeEventListener("mousemove", resizeHorizontally)
+    document.removeEventListener("mouseup", resizeStop)
 }

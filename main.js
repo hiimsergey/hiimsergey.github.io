@@ -1,5 +1,5 @@
 import { Buffer, Lualine, setLualineFilename } from "./buffers.js"
-import { edit, executeCommand, vsplit } from "./commands.js"
+import { edit, executeCommand, split, vsplit } from "./commands.js"
 
 export const editor = document.getElementById("editor")
 export const lualine = Lualine()
@@ -7,6 +7,7 @@ export const textarea = document.querySelector("textarea")
 const firstBuffer = Buffer()
 
 export let curbuf = firstBuffer
+export let drag = { handle: null }
 export let pageCache = {}
 export let ch, em, cellH = 0
 
