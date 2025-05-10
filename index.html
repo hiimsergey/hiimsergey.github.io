@@ -22,15 +22,14 @@
 </html>
 
 <!-- TODO PLAN
-DEBUG
-line wrapping
-
 
 :set nu
 lualine
 
 Nvsplit & Nvs
 disallow ++opt and +cmd but allow file
+
+ZZ, ZQ and 5G
 
 vsplit
 :edit
@@ -55,9 +54,8 @@ line numbers should always be visible
 "nonumber" is not a visible command
 :set no| completes to :set nonumber but the completion only shows number
 
-make command only take their args
-:edit errmsg when no file found
-vsplit and split need to equalize widths and heights
+make lualine and bar content non-selectable
+
 buffer min width 1 (both dragging and vsplitting)
 vsplit:
 if curbuf is in an xcont but we do ysplit, half curbuf's space and make a ycont

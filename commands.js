@@ -1,7 +1,6 @@
 import { PAGES } from "./pages.js"
-import { cellH, ch, curbuf, pageCache, setCurbuf, textarea } from "./main.js"
-import { curbufName, newBuffer, newContainer, newHandle,
-    setLualineFilename } from "./buffers.js"
+import { cellH, ch, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
+import { Buffer, Container, Handle, curbufName, setLualineFilename } from "./buffers.js"
 
 export const COMMANDS = [
     { name: "edit", hidden: false, callback: edit, completions: PAGES },
@@ -35,7 +34,7 @@ ${shellCmd}
 shell returned 127
 
 Press ENTER or type command to continue`
-        console.log(err)
+        console.error(err)
     }
 
     const args = command.trim().split(" ")
@@ -57,7 +56,9 @@ export function edit(args) {
 
     const target = curbuf // Avoids async-related race conditions
     target.children[1].innerHTML = file
+
     setLualineFilename(file)
+    history.pushState(null, "", "/" + file)
 
     // TODO TEST kaumon
     if (pageCache[file]) {
@@ -71,7 +72,7 @@ export function edit(args) {
 
     // TODO but add "html-preview" to lualine
     if (!PAGES.includes(file)) {
-        target.children[0].innerHTML = ""
+        target.children[0].innerHTML = "<div class='content'><div></div></div>"
         // TODO CONSIDER putting into cache
         return
     }
@@ -91,14 +92,14 @@ export function edit(args) {
 
 function split(args) {
     const oldbuf = curbufName()
-    const buffer = newBuffer()
+    const buffer = Buffer()
 
     if (curbuf.parentElement.style.flexDirection === "column") {
         curbuf.before(buffer)
     } else {
-        const vcontainer = newContainer("column")
-        curbuf.replaceWith(vcontainer)
-        vcontainer.append(buffer, curbuf)
+        const column = Container("column")
+        curbuf.replaceWith(column)
+        column.append(buffer, curbuf)
     }
 
     setCurbuf(buffer)
@@ -119,17 +120,17 @@ function split(args) {
 export function vsplit(args) {
     const oldbuf = curbufName()
 
-    const buffer = newBuffer()
-    const handle = newHandle()
+    const buffer = Buffer()
+    const handle = Handle()
 
     if (curbuf.parentElement.style.flexDirection === "row") {
         console.log("pushing to the old container")
         curbuf.before(buffer, handle)
     } else {
         console.log("making a new container")
-        const hcontainer = newContainer("row")
-        curbuf.replaceWith(hcontainer)
-        hcontainer.append(buffer, handle, curbuf)
+        const row = Container("row")
+        curbuf.replaceWith(row)
+        row.append(buffer, handle, curbuf)
     }
 
     setCurbuf(buffer)
@@ -148,5 +149,23 @@ export function vsplit(args) {
 }
 
 function quit() {
-    window.open(window.location, "_self").close()
+    if (editor.children.length === 1) {
+        window.open(window.location, "_self").close()
+        return
+    }
+
+    if (curbuf.parentElement.firstElementChild === curbuf) {
+        // TODO DEBUG dont do two steps in vertical containers
+        setCurbuf(curbuf.parentElement.children[2])
+        curbuf.parentElement.children[0].remove()
+        curbuf.parentElement.children[0].remove()
+        return
+    }
+
+    // TODO DEBUG dont do two steps in vertical containers
+    setCurbuf(curbuf.previousSibling.previousSibling)
+    curbuf.nextSibling.remove()
+    curbuf.nextSibling.remove()
+    if (curbuf.parentElement.children.length === 1)
+        curbuf.parentElement.replaceWith(curbuf)
 }

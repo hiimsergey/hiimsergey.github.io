@@ -1,13 +1,13 @@
-import { initLualine, newBuffer, setLualineFilename } from "./buffers.js"
+import { Buffer, Lualine, setLualineFilename } from "./buffers.js"
 import { edit, executeCommand, vsplit } from "./commands.js"
 
-export const lualine = initLualine()
+export const editor = document.getElementById("editor")
+export const lualine = Lualine()
 export const textarea = document.querySelector("textarea")
-const portfolio = newBuffer()
-export let curbuf = portfolio
-export let pageCache = {}
-const editor = document.getElementById("editor")
+const firstBuffer = Buffer()
 
+export let curbuf = firstBuffer
+export let pageCache = {}
 export let ch, em, cellH = 0
 
 export function setCurbuf(div) {
@@ -15,7 +15,9 @@ export function setCurbuf(div) {
     div.children[1].style.display = "none"
     div.appendChild(lualine)
     curbuf = div
-    setLualineFilename(div.children[1].innerText)
+
+    setLualineFilename(curbuf.children[1].innerText)
+    history.pushState(null, "", "/" + curbuf.children[1].innerText)
 }
 
 function resizeTextArea() {
@@ -108,7 +110,11 @@ textarea.addEventListener("keydown", (e) => {
 
 updateRoot()
 editor.style.flexDirection = "row" // Necessary for reading later
+editor.appendChild(firstBuffer)
 
-editor.appendChild(portfolio)
-edit(["Portfolio.html"])
-vsplit(["Contact.html"])
+if (window.location.pathname === "/") {
+    edit(["portfolio.html"])
+    vsplit(["contact.html"])
+} else {
+    edit([window.location.pathname.slice(1)])
+}

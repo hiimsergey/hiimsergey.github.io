@@ -1,9 +1,9 @@
-import { curbuf } from "./main.js"
+import { curbuf, setCurbuf } from "./main.js"
 
 const filename = document.createElement("div")
 filename.id = "lualine-a"
 
-export function newBuffer() {
+export function Buffer() {
     const result = document.createElement("div")
     result.classList.add("buffer")
 
@@ -20,23 +20,24 @@ export function newBuffer() {
         bar.innerText = "[No name]"
         result.appendChild(bar)
 
+    result.addEventListener("click", () => setCurbuf(result))
     return result
 }
 
 // TODO add a visual line to handles
-export function newHandle() {
+export function Handle() {
     const result = document.createElement("div")
     result.classList.add("handle")
     return result
 }
 
-export function newContainer(type) {
+export function Container(type) {
     const result = document.createElement("div")
     result.classList.add(type)
     return result
 }
 
-export function initLualine() {
+export function Lualine() {
     const result = document.createElement("div")
     result.id = "lualine"
 
