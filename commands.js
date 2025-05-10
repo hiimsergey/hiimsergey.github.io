@@ -60,7 +60,6 @@ export function edit(args) {
     setLualineFilename(file)
     history.pushState(null, "", "/" + file)
 
-    // TODO TEST kaumon
     if (pageCache[file]) {
         target.children[0].children[0].innerHTML = pageCache[file]
             .trimEnd()
@@ -77,8 +76,7 @@ export function edit(args) {
         return
     }
 
-    // TODO TEST kaumon
-    fetch(`_pages/${file}`)
+    fetch("_pages/" + file)
         .then(res => res.text())
         .then(html => {
             target.children[0].children[0].innerHTML = html

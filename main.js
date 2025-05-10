@@ -65,10 +65,11 @@ window.addEventListener("resize", () => {
     resizeTextArea()
 })
 
-window.addEventListener("beforeunload", (e) => {
-    e.preventDefault()
-    e.returnValue = ""
-})
+// TODO FINAL CONSIDER
+// window.addEventListener("beforeunload", (e) => {
+//     e.preventDefault()
+//     e.returnValue = ""
+// })
 
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
@@ -113,8 +114,11 @@ editor.style.flexDirection = "row" // Necessary for reading later
 editor.appendChild(firstBuffer)
 
 if (window.location.pathname === "/") {
+    // TODO FINAL TEST
     edit(["portfolio.html"])
-    vsplit(["contact.html"])
+    if (window.innerWidth >= 768) { vsplit(["contact.html"]) }
+    else { split(["contact.html"]) }
 } else {
     edit([window.location.pathname.slice(1)])
+    setCurbuf(firstBuffer)
 }
