@@ -61,7 +61,7 @@ export function edit(args) {
 
     // TODO TEST kaumon
     if (pageCache[file]) {
-        target.children[0].innerHTML = pageCache[file]
+        target.children[0].children[0].innerHTML = pageCache[file]
             .trimEnd()
             .split("\n")
             .map(line => "<div>" + line + "</div>")
@@ -80,7 +80,7 @@ export function edit(args) {
     fetch(`_pages/${file}`)
         .then(res => res.text())
         .then(html => {
-            target.children[0].innerHTML = html
+            target.children[0].children[0].innerHTML = html
                 .trimEnd()
                 .split("\n")
                 .map(line => "<div>" + line + "</div>")

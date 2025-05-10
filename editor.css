@@ -1,6 +1,8 @@
 #editor {
     flex-grow: 1;
 
+    min-height: 0;
+
     padding-bottom: var(--cell-h);
 
     display: flex;
@@ -41,6 +43,20 @@ textarea::-webkit-scrollbar {
     display: none;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+
+    min-height: 0;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+}
+
 .buffer {
     background-color: brown;
 
@@ -48,6 +64,8 @@ textarea::-webkit-scrollbar {
 
     display: flex;
     flex-direction: column;
+
+    min-height: 0;
 }
 
 .viewport {
@@ -60,9 +78,12 @@ textarea::-webkit-scrollbar {
     counter-reset: line;
     position: relative;
     padding-left: 5ch;
+
+    /* TODO NOW*/
+    min-height: 0;
 }
 
-.viewport div {
+.content div {
     min-height: var(--cell-h);
     white-space: pre-wrap;
     word-break: break-word;
@@ -70,7 +91,7 @@ textarea::-webkit-scrollbar {
     position: relative;
 }
 
-.viewport div::before {
+.content div::before {
     display: var(--line-number-display);
 
     position: absolute;
@@ -99,4 +120,7 @@ textarea::-webkit-scrollbar {
     background-color: pink;
 
     height: var(--cell-h);
+
+    /* TODO NOW */
+    flex-shrink: 0;
 }

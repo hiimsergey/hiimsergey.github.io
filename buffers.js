@@ -10,6 +10,10 @@ export function newBuffer() {
         const viewport = document.createElement("div")
         viewport.classList.add("viewport")
         result.appendChild(viewport)
+            
+            const content = document.createElement("div")
+            content.classList.add("content")
+            viewport.appendChild(content)
 
         const bar = document.createElement("div")
         bar.classList.add("bar")
@@ -19,7 +23,7 @@ export function newBuffer() {
     return result
 }
 
-// TODO add this line to handles
+// TODO add a visual line to handles
 export function newHandle() {
     const result = document.createElement("div")
     result.classList.add("handle")
@@ -28,8 +32,7 @@ export function newHandle() {
 
 export function newContainer(type) {
     const result = document.createElement("div")
-    result.style.display = "flex"
-    result.style.flexDirection = type
+    result.classList.add(type)
     return result
 }
 
