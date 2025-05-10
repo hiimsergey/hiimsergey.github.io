@@ -1,4 +1,5 @@
 import { PAGES } from "./pages.js"
+import { N_COMMANDS } from "./ncommands.js"
 import { cellH, ch, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
 import { Buffer, Container, Handle, curbufName, setLualineFilename } from "./buffers.js"
 
@@ -35,6 +36,31 @@ shell returned 127
 
 Press ENTER or type command to continue`
         console.error(err)
+        return
+    }
+
+    if (command[0] >= '0' && command[0] <= '9') {
+        let i = 0
+        while (command[i] >= '0' && command[i] <= '9') ++i
+        const n = command.slice(0, i)
+        const args = command.slice(i).trim().split(" ")
+        console.log(n, args)
+
+        for (const NCMD of N_COMMANDS) {
+            if (args[0] === NCMD.name) {
+                NCMD.callback(n, args.slice(1))
+                return
+            }
+        }
+
+        for (const CMD of COMMANDS) {
+            if (args[0] === CMD.name) {
+                console.error("E481: No range allowed")
+                return
+            }
+        }
+
+        console.error("Invalid command")
     }
 
     const args = command.trim().split(" ")
