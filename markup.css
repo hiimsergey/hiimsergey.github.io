@@ -1,0 +1,30 @@
+h1, h2 {
+    margin: 0;
+
+    font-size: 1em;
+    font-weight: bold;
+}
+
+small {
+    font-size: 1em;
+}
+
+a {
+    font-style: italic;
+}
+
+a::after {
+    content: " ";
+}
+
+.special::after {
+    content: " ";
+}
+
+code {
+    color: green;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-style: normal;
+}

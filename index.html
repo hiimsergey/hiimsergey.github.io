@@ -1,172 +1,68 @@
-<!-- TODO ADD which-key so all actions are space-triggered -->
-<!-- but still through the command line too -->
-<!-- TODO FINAL do we need all classes? -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="icon" type="image/png" href="assets/logo.png"/>
-        <link rel="stylesheet" href="style.css"/>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="icon" type="image/jpeg" href="assets/logo.jpg"/>
+		<link rel="stylesheet" href="root.css">
+		<link rel="stylesheet" href="editor.css">
+		<link rel="stylesheet" href="markup.css">
+		<link rel="stylesheet" href="extra.css">
         <title>Sergey Lavrent</title>
     </head>
 
-	<body>
-        <div id="editor">
-            <div id="contact" class="buffer">
-                <div class="viewport">
-                    <div class="content">
-                        <div></div>
-                        <div><img src="assets/picture.jpg"/></div>
-
-                        <div></div>
-                        <h1>Sergey Lavrent</h1>
-
-                        <div></div>
-                        <div>*  &nbsp;<b>GitHub</b>: <a href="https://github.com/hiimsergey" target="_blank">hiimsergey</a></div>
-                        <div>* 󰇰 &nbsp;<b>Email</b>:&nbsp; <a href="mailto://sergey.lavrent@protonmail.com">sergey.lavrent@protonmail.com</a></div>
-
-                        <div></div>
-                        <div>Press j/k to navigate down/up.</div>
-                        <div>Type : and Tab to view available commands.</div>
-                        <div>E.g. Type :colorscheme followed by Tab to list available themes.</div>
-
-                        <div></div>
-                        <div class="deemph"><i>This website's design is an homage to the <a href="https://neovim.io" target="_blank">Neovim</a> editor.</i></div>
-                    </div>
-                </div>
-                <div class="lualine bar">
-                    <div class="component filename">Contact.portfolio</div>
-                    <div class="component position">1:1</div>
-                </div>
-            </div>
-
-            <div id="handle"><div id="handle-line"></div></div>
-
-            <div id="portfolio" class="buffer">
-                <div class="viewport">
-                    <div class="content">
-                        <div></div>
-                        <h1>👋 Welcome</h1>
-                                                
-                        <div></div>
-                        <div>I am Sergey, a developer based in Berlin.</div>
-                        <div>I primarily work in the low level sphere, but occasionally get my hands on Android and web development.</div>
-
-                        <div></div>
-                        <h2>💻 Languages I deal with</h2>
-
-                        <div></div>
-                        <div>* Rust</div>
-                        <div>* C</div>
-                        <div>* Zig</div>
-                        <div>* Kotlin</div>
-                        <div>* HTML/CSS/TypeScript</div>
-
-                            
-                        <div></div>
-                        <h2>💪 Skills</h2>
-                        <div></div>
-                        <div>* Low Level programming</div>
-                        <div>* Design with CSS</div>
-                        <div>* Shell scripting</div>
-
-                        <div></div>
-                        <h2>🛠️ Notable projects</h2>
-                        <div></div>
-                        <div>* <b>Flappyspace</b> <div class="deemph">(a Flappy-Bird-esque game in space)</div></div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;* <a id="aplusplus" href="https://hiimsergey.github.io/flappyspace" target="_blank">Play here</a></div>
-                        <div>* <b>Intercrawl</b> <div class="deemph">(roguelike desktop game)</div></div>
-                        <div>* <b>norsu.nvim</b> and its grammar, <b>tree-sitter-norsu</b> <div class="deemph">(Neovim plugin for a custom markup language)</div></div>
-                        <div>* <b>Obsidian Simple Columns</b> <div class="deemph">(Obsidian plugin for multi-column text)</div></div>
-                        <div>* Contributions for the <a href="https://github.com/mminl-de" target="_blank">mminl.de</a> organization:</div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;* <b>Interscore</b> <div class="deemph">(suite of programs for sports livestreams)</div></div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;* <b>Pakt</b> <div class="deemph">(shell script for package manager organization)</div></div>
-                        <div>&nbsp;&nbsp;&nbsp;&nbsp;* Every website for <a href="https://mminl-de.github.io" target="_blank">mminl-de.github.io</a></div>
-                        <div>* <a href="https://github.com/hiimsergey/hiimsergey.github.io" target="_blank">This website too</a></div>
-                        <div>* More at <a href="https://github.com/hiimsergey?tab=repositories" target="_blank">GitHub</a></div>
-
-                        <div></div>
-                        <h2>🎓 Education</h2>
-                        <div></div>
-                        <div>* 2024-present: <b>Technical University of Berlin</b> <div class="deemph">(B.Sc. Computer Science)</div></div>
-                    </div>
-                </div>
-                <div class="lualine bar">
-                    <div class="lualine-left">
-                        <div class="lualine-a">
-                            <div class="component bold mode">NORMAL</div>
-                            <div id="separator-mode" class="separator">𜷄</div>
-
-                            <div class="component git"> main</div>
-                            <div id="separator-git" class="separator">𜷄</div>
-                        </div>
-
-                        <div class="component filename">Portfolio.portfolio</div>
-                    </div>
-                    <div class="lualine-right">
-                        <div id="encoding" class="component">utf-8</div>
-
-                        <div class="boring-separator">𜹘</div>
-
-                        <div id="platform" class="component"></div>
-
-                        <div class="boring-separator">𜹘</div>
-
-                        <div id="filetype" class="component"> portfolio</div>
-
-                        <div class="lualine-z">
-                            <div id="separator-percentage" class="separator">𜵟</div>
-                            <div id="percentage" class="component">Top</div>
-
-                            <div id="separator-position" class="separator">𜵟</div>
-                            <div class="component bold position">1:1</div>
-
-                            <div id="separator-wrap" class="separator">𜵟</div>
-                            <div class="component wrap">󰖶 wrap</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <body>
+        <div id="root">
+            <div id="editor"></div>
+            <textarea>:echo "Hello World"</textarea>
         </div>
-<!-- TODO PLAN
-command history
+    </body>
 
-make the command bar wrap on too long input (switch to textarea)
-make every line strictly adhere to the cell height policy
-ditch deemph in favor of <small>
-/ (regex search) (maybe integrate Ctrl+F)
-scrolling
-optimize and clean up
-themes
-    oceanic
-    github-dark
-    github-light
-    onelight
-    everforest
-    gruvbox-material-light
-    solarized-dark
-    solarized-light
-    onedark
-mobile-friendly design: vertical stack, hide movement details
-:e
-
-proper color data structure
-error color
-
-:Ex
-:set rnu
-:h E21
-:wq & friends (E45: 'readonly' option is set (add ! to override) -> E212: Can't open file for writing: permission denied)
-FINAL ADD screenshots to README
-pane switching by moving the lualine itself
--->
-        <!-- TODO ! command should return shell errors 127 like fish does -->
-        <!-- TODO CONSIDER Ctrl+F mode -->
-        <input class="bar"/>
-
-        <div id="completion"><div id="selected"></div></div>
-	</body>
-
-    <script type="module" src="main.js"></script>
+    <script src="main.js" type="module"></script>
 </html>
+
+<!-- TODO PLAN
+
+:set nu
+lualine
+
+Nvsplit & Nvs
+disallow ++opt and +cmd but allow file
+
+ZZ, ZQ and 5G
+
+vsplit
+:edit
+buffers
+    :buffer
+    :buffers
+    :bnext & :bprev
+    :badd
+    :balt
+    :bdel
+    :bwipeout
+    :bunload
+    :sbuffer
+    :sbnext
+    etc.
+URLs
+visual mode
+rest
+
+line numbers should always be visible
+
+"nonumber" is not a visible command
+:set no| completes to :set nonumber but the completion only shows number
+
+make lualine and bar content non-selectable
+
+buffer min width 1 (both dragging and vsplitting)
+vsplit:
+if curbuf is in an xcont but we do ysplit, half curbuf's space and make a ycont
+in an xcont, if curbuf's next sibling is a ycont, then just half the space of curbuf and dont equalize all
+if curbuf is in a vertcont, equalize the main horcont
+
+selecting text in the pages while having completions open makes things funky
+`: echo "print"` doesnt work in the old version for some reason
+give <code> its own color
+-->
