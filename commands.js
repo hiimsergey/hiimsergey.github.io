@@ -1,6 +1,6 @@
 import { PAGES } from "./pages.js"
 import { N_COMMANDS } from "./ncommands.js"
-import { cellH, ch, colo, curbuf, editor, pageCache, setCurbuf,
+import { VERSION, cellH, ch, colo, curbuf, editor, pageCache, setCurbuf,
     textarea } from "./main.js"
 import { Buffer, Container, Handle, curbufName, setBarFilename,
     setLualineFilename } from "./buffers.js"
@@ -17,6 +17,10 @@ export const COMMANDS = [
     { name: "sp", hidden: true, callback: split, completions: PAGES },
 
     // TODO ADD :verbose/:verb
+
+    { name: "version", hidden: false, callback: version, completions: [] },
+    { name: "ver", hidden: true, callback: version, completions: [] },
+    { name: "ve", hidden: true, callback: version, completions: [] },
 
     { name: "vsplit", hidden: false, callback: vsplit, completions: PAGES },
     { name: "vs", hidden: true, callback: vsplit, completions: PAGES },
@@ -154,6 +158,19 @@ export function split(args) {
         buf.style.width = "100%"
         buf.style.height = bufH + "px"
     }
+}
+
+// TODO CONSIDER ALL "if (args.length)" -> "if (args)"
+function version(args) {
+    if (args.length) return
+
+    console.error(
+`:version
+${window.location.host} v${VERSION}
+No build type
+No LuaJIT
+Don't run ":verbose version" for more info`
+    )
 }
 
 export function vsplit(args) {
