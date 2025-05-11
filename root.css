@@ -8,15 +8,14 @@
     font-family: "JetBrains Mono";
     font-size: 1em;
 
+    color: var(--text-color);
+
     height: var(--cell-h);
     line-height: var(--cell-h);
-
-    /* TODO TEST */
-    box-sizing: border-box;
 }
 
 body {
-    background-color: black;
+    background-color: var(--bg-color);
 
     margin: 0;
 

@@ -171,6 +171,7 @@ export function vsplit(args) {
 }
 
 function quit() {
+    // TODO DEBUG this should not work on one child that is a layout
     if (editor.children.length === 1) {
         window.open(window.location, "_self").close()
         return

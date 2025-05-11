@@ -10,18 +10,19 @@
 }
 
 #lualine {
-    background-color: purple;
+    background-color: var(--bar-color); 
 
     height: var(--cell-h);
 }
 
 textarea {
+    background: none;
+    color: var(--text-color);
+
     position: absolute;
     bottom: 0;
     left: 0;
 
-    background: none;
-    background-color: orange;
     border: none;
     outline: none;
     padding: 0;
@@ -58,8 +59,6 @@ textarea::-webkit-scrollbar {
 }
 
 .buffer {
-    background-color: brown;
-
     flex-grow: 1;
 
     display: flex;
@@ -69,8 +68,6 @@ textarea::-webkit-scrollbar {
 }
 
 .viewport {
-    background-color: cyan;
-
     flex-grow: 1;
     overflow-y: auto;
 
@@ -92,6 +89,8 @@ textarea::-webkit-scrollbar {
 }
 
 .content div::before {
+    color: var(--line-number-color);
+
     display: var(--line-number-display);
 
     position: absolute;
@@ -110,14 +109,14 @@ textarea::-webkit-scrollbar {
 }
 
 .handle {
-    background-color: yellow;
+    background-color: var(--bg-color);
 
     min-width: 1ch;
     height: 100%;
 }
 
 .bar {
-    background-color: pink;
+    background-color: var(--bar-color);
 
     height: var(--cell-h);
 

@@ -1,4 +1,5 @@
 import { Buffer, Lualine, setLualineFilename } from "./buffers.js"
+import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
 import { edit, executeCommand, split } from "./commands.js"
 import { nVsplit } from "./ncommands.js"
 
@@ -7,6 +8,7 @@ export const lualine = Lualine()
 export const textarea = document.querySelector("textarea")
 const firstBuffer = Buffer()
 
+export let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 export let curbuf = firstBuffer
 export let drag = { handle: null }
 export let pageCache = {}
@@ -118,9 +120,11 @@ editor.appendChild(firstBuffer)
 if (window.location.pathname === "/") {
     // TODO FINAL TEST
     edit(["portfolio.html"])
-    if (window.innerWidth >= 768) { nVsplit(10, ["contact.html"]) }
+    if (window.innerWidth >= 768) { nVsplit(16, ["contact.html"]) }
     else { split(["contact.html"]) }
 } else {
     edit([window.location.pathname.slice(1)])
     setCurbuf(firstBuffer)
 }
+
+applyColorscheme()

@@ -5,11 +5,23 @@ h1, h2 {
     font-weight: bold;
 }
 
+h1 {
+    color: var(--h1-color);
+}
+
+h2 {
+    color: var(--h2-color);
+}
+
 small {
+    color: var(--muted-color);
+
     font-size: 1em;
 }
 
 a {
+    color: var(--link-color);
+
     font-style: italic;
 }
 
@@ -17,12 +29,16 @@ a::after {
     content: " ";
 }
 
+.special {
+    color: var(--special-link-color);
+}
+
 .special::after {
     content: " ";
 }
 
 code {
-    color: green;
+    color: var(--code-color);
 
     font-family: inherit;
     font-size: inherit;
