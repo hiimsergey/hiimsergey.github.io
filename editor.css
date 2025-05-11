@@ -10,18 +10,55 @@
 }
 
 #lualine {
-    background-color: purple;
+    background-color: var(--bar-color); 
+
+    display: flex;
+    justify-content: space-between;
 
     height: var(--cell-h);
 }
 
+.lualine-side,
+#lualine-a,
+#lualine-y,
+#lualine-z {
+    display: flex;
+}
+
+#lualine .mode, #lualine .position { background-color: var(--normal-mode-color); }
+#lualine .git, .percentage {
+    background-color: var(--bar-surface-color);
+    color: var(--normal-mode-color);
+}
+#lualine .wrap { background-color: var(--wrap-color); }
+#lualine .html-preview { background-color: var(--html-preview-color); }
+
+#lualine .mode,
+#lualine .git,
+.filename,
+.filetype,
+.percentage,
+.position,
+.wrap,
+.html-preview {
+    padding: 0 1ch;
+}
+
+#lualine .mode,
+#lualine .position,
+.wrap,
+.html-preview {
+    color: var(--bar-color);
+}
+
 textarea {
+    background: none;
+    color: var(--text-color);
+
     position: absolute;
     bottom: 0;
     left: 0;
 
-    background: none;
-    background-color: orange;
     border: none;
     outline: none;
     padding: 0;
@@ -58,8 +95,6 @@ textarea::-webkit-scrollbar {
 }
 
 .buffer {
-    background-color: brown;
-
     flex-grow: 1;
 
     display: flex;
@@ -69,8 +104,6 @@ textarea::-webkit-scrollbar {
 }
 
 .viewport {
-    background-color: cyan;
-
     flex-grow: 1;
     overflow-y: auto;
 
@@ -92,6 +125,8 @@ textarea::-webkit-scrollbar {
 }
 
 .content div::before {
+    color: var(--line-number-color);
+
     display: var(--line-number-display);
 
     position: absolute;
@@ -110,17 +145,32 @@ textarea::-webkit-scrollbar {
 }
 
 .handle {
-    background-color: yellow;
+    background-color: var(--bg-color);
 
     min-width: 1ch;
     height: 100%;
 }
 
 .bar {
-    background-color: pink;
+    background-color: var(--bar-color);
+
+    display: flex;
+    justify-content: space-between;
 
     height: var(--cell-h);
+}
 
-    /* TODO NOW */
-    flex-shrink: 0;
+.bar .filename, .bar .position {
+    color: var(--completion-selected-bg-color);
+}
+
+.position {
+    min-width: 5ch;
+    padding-right: 2ch;
+
+    text-align: right;
+}
+
+.mode, #lualine .position {
+    font-weight: bold;
 }

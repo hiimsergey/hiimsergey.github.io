@@ -1,13 +1,22 @@
 import { PAGES } from "./pages.js"
-import { cellH, ch, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
-import { Buffer, Container, Handle, curbufName, setLualineFilename } from "./buffers.js"
+import { N_COMMANDS } from "./ncommands.js"
+import { cellH, ch, colo, curbuf, editor, pageCache, setCurbuf,
+    textarea } from "./main.js"
+import { Buffer, Container, Handle, curbufName, setBarFilename,
+    setLualineFilename } from "./buffers.js"
+import { COLORSCHEMES } from "./colorschemes.js"
 
 export const COMMANDS = [
     { name: "edit", hidden: false, callback: edit, completions: PAGES },
     { name: "e", hidden: true, callback: edit, completions: PAGES },
 
+    { name: "pwd", hidden: false, callback: pwd, completions: [] },
+    { name: "pw", hidden: true, callback: pwd, completions: [] },
+
     { name: "split", hidden: false, callback: split, completions: PAGES },
     { name: "sp", hidden: true, callback: split, completions: PAGES },
+
+    // TODO ADD :verbose/:verb
 
     { name: "vsplit", hidden: false, callback: vsplit, completions: PAGES },
     { name: "vs", hidden: true, callback: vsplit, completions: PAGES },
@@ -35,6 +44,31 @@ shell returned 127
 
 Press ENTER or type command to continue`
         console.error(err)
+        return
+    }
+
+    if (command[0] >= '0' && command[0] <= '9') {
+        let i = 0
+        while (command[i] >= '0' && command[i] <= '9') ++i
+        const n = command.slice(0, i)
+        const args = command.slice(i).trim().split(" ")
+        console.log(n, args)
+
+        for (const NCMD of N_COMMANDS) {
+            if (args[0] === NCMD.name) {
+                NCMD.callback(n, args.slice(1))
+                return
+            }
+        }
+
+        for (const CMD of COMMANDS) {
+            if (args[0] === CMD.name) {
+                console.error("E481: No range allowed")
+                return
+            }
+        }
+
+        console.error("Invalid command")
     }
 
     const args = command.trim().split(" ")
@@ -55,12 +89,10 @@ export function edit(args) {
     const file = args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
-    target.children[1].innerHTML = file
-
+    setBarFilename(file)
     setLualineFilename(file)
     history.pushState(null, "", "/" + file)
 
-    // TODO TEST kaumon
     if (pageCache[file]) {
         target.children[0].children[0].innerHTML = pageCache[file]
             .trimEnd()
@@ -77,8 +109,7 @@ export function edit(args) {
         return
     }
 
-    // TODO TEST kaumon
-    fetch(`_pages/${file}`)
+    fetch("_pages/" + file)
         .then(res => res.text())
         .then(html => {
             target.children[0].children[0].innerHTML = html
@@ -90,7 +121,15 @@ export function edit(args) {
         })
 }
 
-function split(args) {
+// TODO DEBUG ":pwd3" should be treated like ":pwd 3"
+function pwd(args) {
+    if (args.length) console.error("E488: Trailing characters:", args.join(" "))
+    textarea.style.color = COLORSCHEMES[colo].text
+    textarea.style.fontStyle = "normal"
+    textarea.value = window.location.origin
+}
+
+export function split(args) {
     const oldbuf = curbufName()
     const buffer = Buffer()
 
@@ -124,10 +163,8 @@ export function vsplit(args) {
     const handle = Handle()
 
     if (curbuf.parentElement.style.flexDirection === "row") {
-        console.log("pushing to the old container")
         curbuf.before(buffer, handle)
     } else {
-        console.log("making a new container")
         const row = Container("row")
         curbuf.replaceWith(row)
         row.append(buffer, handle, curbuf)
@@ -149,14 +186,9 @@ export function vsplit(args) {
 }
 
 function quit() {
-    if (editor.children.length === 1) {
-        window.open(window.location, "_self").close()
-        return
-    }
-
     if (curbuf.parentElement.firstElementChild === curbuf) {
         // TODO DEBUG dont do two steps in vertical containers
-        setCurbuf(curbuf.parentElement.children[2])
+        setCurbuf(curbuf.parentElement.nextSibling.nextSibling)
         curbuf.parentElement.children[0].remove()
         curbuf.parentElement.children[0].remove()
         return
@@ -168,4 +200,10 @@ function quit() {
     curbuf.nextSibling.remove()
     if (curbuf.parentElement.children.length === 1)
         curbuf.parentElement.replaceWith(curbuf)
+
+    // TODO NOW DEBUG this should not work on one child that is a layout
+    if (!editor.children.length) {
+        window.open(window.location, "_self").close()
+        return
+    }
 }

@@ -1,23 +1,27 @@
-import { Buffer, Lualine, setLualineFilename } from "./buffers.js"
-import { edit, executeCommand, vsplit } from "./commands.js"
+import { Buffer, Lualine, curbufName, setLualineFilename } from "./buffers.js"
+import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
+import { edit, executeCommand, split } from "./commands.js"
+import { nVsplit } from "./ncommands.js"
 
 export const editor = document.getElementById("editor")
 export const lualine = Lualine()
 export const textarea = document.querySelector("textarea")
 const firstBuffer = Buffer()
 
+export let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 export let curbuf = firstBuffer
+export let drag = { handle: null }
 export let pageCache = {}
 export let ch, em, cellH = 0
 
 export function setCurbuf(div) {
-    curbuf.children[1].style.display = "block"
+    curbuf.children[1].style.display = "flex"
     div.children[1].style.display = "none"
     div.appendChild(lualine)
     curbuf = div
 
-    setLualineFilename(curbuf.children[1].innerText)
-    history.pushState(null, "", "/" + curbuf.children[1].innerText)
+    setLualineFilename(curbufName())
+    history.pushState(null, "", "/" + curbufName())
 }
 
 function resizeTextArea() {
@@ -65,16 +69,18 @@ window.addEventListener("resize", () => {
     resizeTextArea()
 })
 
-window.addEventListener("beforeunload", (e) => {
-    e.preventDefault()
-    e.returnValue = ""
-})
+// TODO FINAL CONSIDER
+// window.addEventListener("beforeunload", (e) => {
+//     e.preventDefault()
+//     e.returnValue = ""
+// })
 
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
             if (document.activeElement === textarea) break
-            // TODO set color and style (style is theme-specific) ()
+            textarea.style.color = COLORSCHEMES[colo].text
+            textarea.style.fontStyle = "normal"
             textarea.value = ""
             textarea.focus()
             break
@@ -85,7 +91,7 @@ document.addEventListener("keydown", (e) => {
         case "a":
         case "A":
             if (document.activeElement === textarea) break
-            // TODO set color and style (style is theme-specific)
+            textarea.style.color = COLORSCHEMES[colo].error
             textarea.style.fontStyle = "italic"
             textarea.value = "E21: Cannot make changes, 'modifiable' is off"
             break
@@ -113,8 +119,13 @@ editor.style.flexDirection = "row" // Necessary for reading later
 editor.appendChild(firstBuffer)
 
 if (window.location.pathname === "/") {
+    // TODO FINAL TEST
     edit(["portfolio.html"])
-    vsplit(["contact.html"])
+    if (window.innerWidth >= 768) { nVsplit(20, ["contact.html"]) }
+    else { split(["contact.html"]) }
 } else {
     edit([window.location.pathname.slice(1)])
+    setCurbuf(firstBuffer)
 }
+
+applyColorscheme()
