@@ -1,14 +1,20 @@
 import { PAGES } from "./pages.js"
 import { N_COMMANDS } from "./ncommands.js"
-import { cellH, ch, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
+import { cellH, ch, colo, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
 import { Buffer, Container, Handle, curbufName, setLualineFilename } from "./buffers.js"
+import { COLORSCHEMES } from "./colorschemes.js"
 
 export const COMMANDS = [
     { name: "edit", hidden: false, callback: edit, completions: PAGES },
     { name: "e", hidden: true, callback: edit, completions: PAGES },
 
+    { name: "pwd", hidden: false, callback: pwd, completions: [] },
+    { name: "pw", hidden: true, callback: pwd, completions: [] },
+
     { name: "split", hidden: false, callback: split, completions: PAGES },
     { name: "sp", hidden: true, callback: split, completions: PAGES },
+
+    // TODO ADD :verbose/:verb
 
     { name: "vsplit", hidden: false, callback: vsplit, completions: PAGES },
     { name: "vs", hidden: true, callback: vsplit, completions: PAGES },
@@ -112,6 +118,14 @@ export function edit(args) {
                 .join("\n")
             pageCache[file] = html
         })
+}
+
+// TODO DEBUG ":pwd3" should be treated like ":pwd 3"
+function pwd(args) {
+    if (args.length) console.error("E488: Trailing characters:", args.join(" "))
+    textarea.style.color = COLORSCHEMES[colo].text
+    textarea.style.fontStyle = "normal"
+    textarea.value = window.location.origin
 }
 
 export function split(args) {
