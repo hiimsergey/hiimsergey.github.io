@@ -1,7 +1,9 @@
 import { PAGES } from "./pages.js"
 import { N_COMMANDS } from "./ncommands.js"
-import { cellH, ch, colo, curbuf, editor, pageCache, setCurbuf, textarea } from "./main.js"
-import { Buffer, Container, Handle, curbufName, setLualineFilename } from "./buffers.js"
+import { cellH, ch, colo, curbuf, editor, pageCache, setCurbuf,
+    textarea } from "./main.js"
+import { Buffer, Container, Handle, curbufName, setBarFilename,
+    setLualineFilename } from "./buffers.js"
 import { COLORSCHEMES } from "./colorschemes.js"
 
 export const COMMANDS = [
@@ -87,8 +89,7 @@ export function edit(args) {
     const file = args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
-    target.children[1].innerHTML = file
-
+    setBarFilename(file)
     setLualineFilename(file)
     history.pushState(null, "", "/" + file)
 
@@ -185,15 +186,9 @@ export function vsplit(args) {
 }
 
 function quit() {
-    // TODO DEBUG this should not work on one child that is a layout
-    if (editor.children.length === 1) {
-        window.open(window.location, "_self").close()
-        return
-    }
-
     if (curbuf.parentElement.firstElementChild === curbuf) {
         // TODO DEBUG dont do two steps in vertical containers
-        setCurbuf(curbuf.parentElement.children[2])
+        setCurbuf(curbuf.parentElement.nextSibling.nextSibling)
         curbuf.parentElement.children[0].remove()
         curbuf.parentElement.children[0].remove()
         return
@@ -205,4 +200,10 @@ function quit() {
     curbuf.nextSibling.remove()
     if (curbuf.parentElement.children.length === 1)
         curbuf.parentElement.replaceWith(curbuf)
+
+    // TODO NOW DEBUG this should not work on one child that is a layout
+    if (!editor.children.length) {
+        window.open(window.location, "_self").close()
+        return
+    }
 }

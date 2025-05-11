@@ -21,7 +21,8 @@ export const COLORSCHEMES = [
         specialLink:                  "#f9e2af", // Yellow
         normalMode:                   "#89b4fa", // Blue
         wrap:                         "#f2cdcd", // Flamingo
-        htmlPreview:                  "#f38ba8"  // Red
+        htmlPreview:                  "#f38ba8", // Red
+        error:                        "#f38ba8", // Red
     }
 ]
 
@@ -114,5 +115,10 @@ export function applyColorscheme() {
     document.documentElement.style.setProperty(
         "--html-preview-color",
         COLORSCHEMES[colo].htmlPreview
+    )
+
+    document.documentElement.style.setProperty(
+        "--error-color",
+        COLORSCHEMES[colo].error
     )
 }
