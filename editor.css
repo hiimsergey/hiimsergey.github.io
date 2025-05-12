@@ -12,13 +12,28 @@
 #lualine {
     background-color: var(--bar-color); 
 
+    /* TODO REMOVE */
     display: flex;
     justify-content: space-between;
 
     height: var(--cell-h);
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    user-select: none;
+
+    position: relative;
 }
 
-.lualine-side,
+/* TODO FINAL CHECK does lualine have constant height? */
+#lualine-right {
+    position: absolute;
+    right: 0;
+}
+
+#lualine-left,
+#lualine-right,
 #lualine-a,
 #lualine-y,
 #lualine-z {

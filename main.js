@@ -3,7 +3,7 @@ import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
 import { edit, executeCommand, split } from "./commands.js"
 import { nVsplit } from "./ncommands.js"
 
-export const VERSION = "0.1.6"
+export const VERSION = "0.1.7"
 export const editor = document.getElementById("editor")
 export const lualine = Lualine()
 export const textarea = document.querySelector("textarea")

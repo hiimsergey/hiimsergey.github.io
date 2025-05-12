@@ -62,7 +62,7 @@ export function Lualine() {
     result.id = "lualine"
 
         const lualineLeft = document.createElement("div")
-        lualineLeft.classList.add("lualine-side")
+        lualineLeft.id = "lualine-left"
         result.appendChild(lualineLeft)
 
             const lualineA = document.createElement("div")
@@ -92,7 +92,7 @@ export function Lualine() {
             lualineLeft.appendChild(filename)
 
         const lualineRight = document.createElement("div")
-        lualineRight.classList.add("lualine-side")
+        lualineRight.id = "lualine-right"
         result.appendChild(lualineRight)
         result.appendChild(lualineRight)
 

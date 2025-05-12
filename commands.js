@@ -149,8 +149,6 @@ export function split(args) {
 
     if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
-    
-    equalizeBufferHeights()
 }
 
 // TODO CONSIDER ALL "if (args.length)" -> "if (args)"
@@ -184,9 +182,6 @@ export function vsplit(args) {
 
     if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
-
-    // TODO FINAL CONSIDER putting it into a function
-    equalizeBufferWidths()
 }
 
 function quit() {
