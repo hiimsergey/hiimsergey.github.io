@@ -203,24 +203,29 @@ export function vsplit(args) {
 }
 
 function quit() {
-    if (curbuf.parentElement.firstElementChild === curbuf) {
-        // TODO DEBUG dont do two steps in vertical containers
-        setCurbuf(curbuf.parentElement.nextSibling.nextSibling)
-        curbuf.parentElement.children[0].remove()
-        curbuf.parentElement.children[0].remove()
-        return
-    }
-
-    // TODO DEBUG dont do two steps in vertical containers
-    setCurbuf(curbuf.previousSibling.previousSibling)
-    curbuf.nextSibling.remove()
-    curbuf.nextSibling.remove()
-    if (curbuf.parentElement.children.length === 1)
-        curbuf.parentElement.replaceWith(curbuf)
-
-    // TODO NOW DEBUG this should not work on one child that is a layout
-    if (!editor.children.length) {
+    if (editor.children.length === 1 && editor.firstChild.classList.contains("buffer")) {
         window.open(window.location, "_self").close()
         return
     }
+
+    if (curbuf.parentElement.firstElementChild === curbuf) {
+        if (curbuf.parentElement.style.flexDirection === "column") {
+            setCurbuf(curbuf.nextSibling)
+            curbuf.parentElement.firstChild.remove()
+        } else {
+            setCurbuf(curbuf.nextSibling.nextSibling)
+            curbuf.parentElement.firstChild.remove()
+            curbuf.parentElement.firstChild.remove()
+        }
+    } else if (curbuf.parentElement.style.flexDirection === "column") {
+        setCurbuf(curbuf.previousSibling)
+        curbuf.nextSibling.remove()
+    } else {
+        setCurbuf(curbuf.previousSibling.previousSibling)
+        curbuf.nextSibling.remove()
+        curbuf.nextSibling.remove()
+    }
+
+    if (curbuf.parentElement.children.length === 1)
+        curbuf.parentElement.replaceWith(curbuf)
 }

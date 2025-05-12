@@ -51,6 +51,7 @@ export function Handle() {
 
 export function Container(type) {
     const result = document.createElement("div")
+    result.style.flexDirection = type
     result.classList.add(type)
     return result
 }
