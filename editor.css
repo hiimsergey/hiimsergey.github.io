@@ -51,6 +51,22 @@
     color: var(--bar-color);
 }
 
+#mode-separator,
+#git-separator,
+#filetype-separator,
+#percentage-separator,
+#position-separator,
+#wrap-separator {
+    align-content: center;
+}
+
+#mode-separator { color: var(--normal-mode-color); background-color: var(--bar-surface-color); }
+#git-separator { color: var(--bar-surface-color); background-color: var(--bar-color); }
+#filetype-separator { color: var(--bar-surface-color); background-color: var(--bar-color); }
+#percentage-separator { color: var(--normal-mode-color); background-color: var(--bar-surface-color); }
+#position-separator { color: var(--wrap-color); background-color: var(--normal-mode-color); }
+#wrap-separator { color: var(--html-preview-color); background-color: var(--wrap-color); }
+
 textarea {
     background: none;
     color: var(--text-color);

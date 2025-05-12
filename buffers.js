@@ -74,10 +74,20 @@ export function Lualine() {
                 mode.innerText = "NORMAL"
                 lualineA.appendChild(mode)
 
+                const modeSeparator = document.createElement("div")
+                modeSeparator.id = "mode-separator"
+                modeSeparator.innerText = "𜷄"
+                lualineA.appendChild(modeSeparator)
+
                 const git = document.createElement("div")
                 git.classList.add("git")
                 git.innerText = " main"
                 lualineA.appendChild(git)
+
+            const gitSeparator = document.createElement("div")
+            gitSeparator.id = "git-separator"
+            gitSeparator.innerText = "𜷄"
+            lualineLeft.appendChild(gitSeparator)
 
             lualineLeft.appendChild(filename)
 
@@ -95,20 +105,40 @@ export function Lualine() {
                 filetype.innerHTML = "<span style='color: #e34c26'></span> html"
                 lualineY.appendChild(filetype)
 
+                const filetypeSeparator = document.createElement("div")
+                filetypeSeparator.id = "filetype-separator"
+                filetypeSeparator.innerText = "𜵟"
+                lualineY.appendChild(filetypeSeparator)
+
                 const percentage = document.createElement("div")
                 percentage.classList.add("percentage")
                 percentage.innerText = "Top"
                 lualineY.appendChild(percentage)
+
+                const percentageSeparator = document.createElement("div")
+                percentageSeparator.id = "percentage-separator"
+                percentageSeparator.innerText = "𜵟"
+                lualineY.appendChild(percentageSeparator)
 
                 const position = document.createElement("div")
                 position.classList.add("position")
                 position.innerText = "1:1"
                 lualineY.appendChild(position)
 
+                const positionSeparator = document.createElement("div")
+                positionSeparator.id = "position-separator"
+                positionSeparator.innerText = "𜵟"
+                lualineY.appendChild(positionSeparator)
+
                 const wrap = document.createElement("div")
                 wrap.classList.add("wrap")
                 wrap.innerText = "󰖶 wrap"
                 lualineY.appendChild(wrap)
+
+                const wrapSeparator = document.createElement("div")
+                wrapSeparator.id = "wrap-separator"
+                wrapSeparator.innerText = "𜵟"
+                lualineY.appendChild(wrapSeparator)
 
                 const htmlPreview = document.createElement("div")
                 htmlPreview.classList.add("html-preview")
