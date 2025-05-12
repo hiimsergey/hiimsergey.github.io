@@ -68,7 +68,7 @@
 #wrap-separator { color: var(--html-preview-color); background-color: var(--wrap-color); }
 
 textarea {
-    background: none;
+    background-color: var(--bg-color);
     color: var(--text-color);
 
     position: absolute;
@@ -125,7 +125,6 @@ textarea::-webkit-scrollbar {
 
     /* Line numbers */
     counter-reset: line;
-    position: relative;
     padding-left: 5ch;
 
     /* TODO NOW*/

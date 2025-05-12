@@ -1,7 +1,7 @@
 h1, h2 {
     margin: 0;
 
-    font-size: 1em;
+    font-size: inherit;
     font-weight: bold;
 }
 
@@ -16,7 +16,7 @@ h2 {
 small {
     color: var(--muted-color);
 
-    font-size: 1em;
+    font-size: inherit;
 }
 
 a {

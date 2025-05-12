@@ -1,4 +1,4 @@
-import { ch, curbuf, drag, setCurbuf } from "./main.js"
+import { cellH, ch, curbuf, drag, editor, setCurbuf } from "./main.js"
 
 const filename = document.createElement("div")
 filename.classList.add("filename")
@@ -164,16 +164,32 @@ export function setLualineFilename(name) {
     filename.innerText = name
 }
 
+// TODO CONSIDER
+export function equalizeBufferWidths() {
+    const totalW = editor.clientWidth
+    const bufN = editor.children.length
+    const bufW = (totalW - ch * (bufN - 1)) / bufN
+    for (let i = 0; i < editor.children.length; i += 2)
+        editor.children[i].style.flex = bufW
+}
+
+export function equalizeBufferHeights() {
+    const totalH = editor.clientHeight
+    const bufN = editor.children.length
+    const bufH = (totalH - cellH * (bufN - 1)) / bufN
+    for (const buf of editor.children) buf.style.flex = bufH + "px"
+}
+
 function resizeHorizontally(e) {
     const leftRect = drag.handle.previousElementSibling.getBoundingClientRect()
     const leftWRaw = e.clientX - leftRect.left
     const leftW = Math.floor(leftWRaw / ch) * ch
-    drag.handle.previousElementSibling.style.width = leftW + "px"
+    drag.handle.previousElementSibling.style.flex = leftW
 
     const rightRect = drag.handle.nextElementSibling.getBoundingClientRect()
     const rightWRaw = rightRect.right - e.clientX
     const rightW = Math.ceil(rightWRaw / ch) * ch
-    drag.handle.nextElementSibling.style.width = rightW + "px"
+    drag.handle.nextElementSibling.style.flex = rightW
 }
 
 function resizeStop() {

@@ -4,7 +4,19 @@
 }
 
 @media only screen and (max-width: 767px) {
-    /* TODO FINAL TEST */
+    /* TODO FINAL TEST ALL */
+
+    body {
+        font-size: 22px;
+        --cell-h: 1.3em;
+        line-height: var(--cell-h);
+    }
+
+    #profile-picture {
+        width: 32ch;
+        height: calc(16 * var(--cell-h));
+    }
+
     textarea {
         pointer-events: auto;
     }

@@ -2,7 +2,7 @@ import { PAGES } from "./pages.js"
 import { N_COMMANDS } from "./ncommands.js"
 import { VERSION, cellH, ch, colo, curbuf, editor, pageCache, setCurbuf,
     textarea } from "./main.js"
-import { Buffer, Container, Handle, curbufName, setBarFilename,
+import { Buffer, Container, Handle, curbufName, equalizeBufferHeights, equalizeBufferWidths, setBarFilename,
     setLualineFilename } from "./buffers.js"
 import { COLORSCHEMES } from "./colorschemes.js"
 
@@ -149,15 +149,8 @@ export function split(args) {
 
     if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
-
-    // Equalize heights of layout children
-    const totalH = buffer.parentElement.clientHeight
-    const bufN = buffer.parentElement.children.length
-    const bufH = (totalH - cellH * (bufN - 1)) / bufN
-    for (const buf of buffer.parentElement.children) {
-        buf.style.width = "100%"
-        buf.style.height = bufH + "px"
-    }
+    
+    equalizeBufferHeights()
 }
 
 // TODO CONSIDER ALL "if (args.length)" -> "if (args)"
@@ -176,30 +169,24 @@ Don't run ":verbose version" for more info`
 export function vsplit(args) {
     const oldbuf = curbufName()
 
-    const buffer = Buffer()
+    const buf = Buffer()
     const handle = Handle()
 
     if (curbuf.parentElement.style.flexDirection === "row") {
-        curbuf.before(buffer, handle)
+        curbuf.before(buf, handle)
     } else {
         const row = Container("row")
         curbuf.replaceWith(row)
-        row.append(buffer, handle, curbuf)
+        row.append(buf, handle, curbuf)
     }
 
-    setCurbuf(buffer)
+    setCurbuf(buf)
 
     if (args.length) edit([args.join(" ")])
     else edit([oldbuf])
 
-    // Equalize widths of layout children
-    const totalW = buffer.parentElement.clientWidth
-    const bufN = buffer.parentElement.children.length
-    const bufW = (totalW - ch * (bufN - 1)) / bufN
-    for (let i = 0; i < buffer.parentElement.children.length; i += 2) {
-        buffer.parentElement.children[i].style.width = bufW + "px"
-        buffer.parentElement.children[i].style.height = "100%"
-    }
+    // TODO FINAL CONSIDER putting it into a function
+    equalizeBufferWidths()
 }
 
 function quit() {
@@ -226,6 +213,6 @@ function quit() {
         curbuf.nextSibling.remove()
     }
 
-    if (curbuf.parentElement.children.length === 1)
+    if (!curbuf.parentElement.id && curbuf.parentElement.children.length === 1)
         curbuf.parentElement.replaceWith(curbuf)
 }
