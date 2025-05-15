@@ -131,7 +131,8 @@ textarea::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
 
-    min-height: 0;
+    min-width: 1ch;
+    min-height: calc(2 * var(--cell-h));
 }
 
 .viewport {
@@ -183,6 +184,8 @@ textarea::-webkit-scrollbar {
 
 .bar {
     background-color: var(--bar-color);
+
+    user-select: none;
 
     display: flex;
     justify-content: space-between;

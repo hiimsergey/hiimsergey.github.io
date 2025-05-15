@@ -1,7 +1,4 @@
-import { cellH, ch, curbuf, drag, editor, setCurbuf } from "./main.js"
-
-const filename = document.createElement("div")
-filename.classList.add("filename")
+import { cellH, ch, drag, editor, setCurbuf } from "./main.js"
 
 export function Buffer() {
     const result = document.createElement("div")
@@ -30,11 +27,12 @@ export function Buffer() {
             position.innerText = "1:1"
             bar.appendChild(position)
 
+    result.filename = filename
     return result
 }
 
 // TODO add a visual line to handles
-export function Handle() {
+export function ResizeHandle() {
     const result = document.createElement("div")
     result.classList.add("handle")
 
@@ -89,6 +87,9 @@ export function Lualine() {
             gitSeparator.innerText = "𜷄"
             lualineLeft.appendChild(gitSeparator)
 
+            const filename = document.createElement("div")
+            filename.classList.add("filename")
+            filename.innerText = "[No Name]"
             lualineLeft.appendChild(filename)
 
         const lualineRight = document.createElement("div")
@@ -149,19 +150,9 @@ export function Lualine() {
             lualineZ.id = "lualine-z"
             lualineRight.appendChild(lualineZ)
 
+    // TODO DEBUG
+    result.filename = filename
     return result
-}
-
-export function curbufName() {
-    return curbuf.children[1].children[0].innerText
-}
-
-export function setBarFilename(name) {
-    curbuf.children[1].children[0].innerText = name
-}
-
-export function setLualineFilename(name) {
-    filename.innerText = name
 }
 
 // TODO CONSIDER

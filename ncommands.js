@@ -1,3 +1,5 @@
+// TODO REMOVE ALL
+
 import { PAGES } from "./pages.js"
 import { split, vsplit } from "./commands.js"
 import { cellH, ch, curbuf } from "./main.js"

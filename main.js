@@ -1,7 +1,6 @@
-import { Buffer, Lualine, curbufName, setLualineFilename } from "./buffers.js"
-import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
-import { edit, executeCommand, split } from "./commands.js"
-import { nVsplit } from "./ncommands.js"
+import { Buffer, Lualine } from "./buffers.js"
+import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
+import { edit, executeCommand, split, vsplit } from "./commands.js"
 
 export const VERSION = "0.1.7"
 export const editor = document.getElementById("editor")
@@ -15,14 +14,26 @@ export let drag = { handle: null }
 export let pageCache = {}
 export let ch, em, cellH = 0
 
+textarea.log = function(msg) {
+    textarea.style.color = COLORSCHEMES[colo].text
+    textarea.style.fontStyle = "normal"
+    textarea.value = msg
+}
+
+textarea.error = function(msg) {
+    textarea.style.color = COLORSCHEMES[colo].error
+    textarea.style.fontStyle = "italic"
+    textarea.value = msg
+}
+
 export function setCurbuf(div) {
     curbuf.children[1].style.display = "flex"
     div.children[1].style.display = "none"
     div.appendChild(lualine)
     curbuf = div
 
-    setLualineFilename(curbufName())
-    history.pushState(null, "", "/" + curbufName())
+    lualine.filename.innerText = curbuf.filename.innerText
+    history.pushState(null, "", "/" + curbuf.filename.innerText)
 }
 
 function resizeTextArea() {
@@ -121,11 +132,11 @@ editor.appendChild(firstBuffer)
 
 if (window.location.pathname === "/") {
     // TODO FINAL TEST
-    edit(["portfolio.html"])
-    if (window.innerWidth >= 768) { nVsplit(20, ["contact.html"]) }
-    else { split(["contact.html"]) }
+    edit({ args: ["portfolio.html"] })
+    if (window.innerWidth >= 950) vsplit({ args: ["contact.html"], prefix: 20 })
+    else { split({ args: ["contact.html"] }) }
 } else {
-    edit([window.location.pathname.slice(1)])
+    edit({ args: [window.location.pathname.slice(1)] })
     setCurbuf(firstBuffer)
 }
 

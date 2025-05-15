@@ -3,7 +3,7 @@
     height: calc(25 * var(--cell-h));
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 950px) {
     /* TODO FINAL TEST ALL */
 
     body {

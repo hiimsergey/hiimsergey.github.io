@@ -2,7 +2,7 @@ import { colo } from "./main.js"
 
 export const COLORSCHEMES = [
     {
-        name: "catppuccin-mocha",
+        name: "catppuccin-mocha",     // https://catppuccin.com/palette
 
         background:                   "#1e1e2e", // Base
         bar:                          "#181825", // Mantle
@@ -23,6 +23,30 @@ export const COLORSCHEMES = [
         wrap:                         "#f2cdcd", // Flamingo
         htmlPreview:                  "#f38ba8", // Red
         error:                        "#f38ba8", // Red
+    },
+
+    {
+        name: "gruvbox-material",     // https://github.com/sainnhe/gruvbox-material
+
+        background:                   "#282828", // bg0
+        bar:                          "#3a3735", // bg_statusline2
+        barSurface:                   "#504945", // bg_statusline3
+        completionBackground:         "#504945", // bg_statusline3 // TODO
+        completionText:               "#d4be98", // fg0
+        completionSelectedBackground: "#928374", // grey2 // TODO
+        completionSelectedText:       "#504945", // bg_statusline3
+        text:                         "#d4be98", // fg0 // TODO
+        lineNumbers:                  "#d4be98", // fg0 // TODo
+        h1:                           "#ea6962", // red
+        h2:                           "#e78a4e", // orange
+        code:                         "#a9b665", // green
+        muted:                        "#7c6f64", // grey0 // TODO
+        link:                         "#7daea3", // blue
+        specialLink:                  "#89b482", // aqua // TODO maybe yellow?
+        normalMode:                   "#928374", // grey2 // TODO
+        wrap:                         "#7daea3", // blue
+        htmlPreview:                  "#ea6962", // red
+        error:                        "#ea6962", // red
     }
 ]
 

@@ -30,9 +30,16 @@ resizeVertically
 
 CONSIDER neon theme
 
-:set nu
+:quit 123 and :quit123 should work
+TODO NOTE
+123command456 rest
+123 is a special prefix argument
+456 and rest are regular arguments
+:quit treats prefix as a range, all of them are somehow invalid
+:quit treats all args from the second one as trailing characters
+    if the first is not a number, then this one also
 
-make 𜷄 on all platforms
+:set nu
 
 Nvsplit & Nvs
 disallow ++opt and +cmd but allow file
@@ -57,22 +64,23 @@ buffers
     etc.
 URLs
 visual mode
-rest
+
+rest from the first repo
 
 line numbers should always be visible
 
 "nonumber" is not a visible command
 :set no| completes to :set nonumber but the completion only shows number
 
-make lualine and bar content non-selectable
+(implemented, just test) buffer min width 1
 
-buffer min width 1 (both dragging and vsplitting)
-vsplit:
+split saga:
 if curbuf is in an xcont but we do ysplit, half curbuf's space and make a ycont
 in an xcont, if curbuf's next sibling is a ycont, then just half the space of curbuf and dont equalize all
 if curbuf is in a vertcont, equalize the main horcont
 
 selecting text in the pages while having completions open makes things funky
 `: echo "print"` doesnt work in the old version for some reason
-give <code> its own color
+
+FINAL make 𜷄 on all platforms
 -->
