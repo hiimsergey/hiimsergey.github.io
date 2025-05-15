@@ -1,3 +1,5 @@
+// TODO ! handling for all commands
+
 import { PAGES } from "./pages.js"
 import { VERSION, cellH, ch, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
     textarea } from "./main.js"
@@ -46,10 +48,8 @@ Press ENTER or type command to continue`
     }
 
     const command = parseCommand(prompt)
-    console.log("cmdddjfldsafjdl: ", command)
     if (!command.name) return
 
-    console.log(COMMANDS)
     const candidates = COMMANDS.filter(CMD => CMD.name.startsWith(command.name))
     if (candidates.length === 1) {
         candidates[0].callback(command)
@@ -73,11 +73,7 @@ function parseCommand(prompt) {
     const prefix = i ? prompt.slice(0, i) : null
 
     const nameStart = i
-    while(prompt[i] !== ' ' && !isNumber(prompt[i]) && i < prompt.length) {
-        console.log(`taking '${prompt[i]}'`)
-        ++i
-    }
-    console.log(`not taking '${prompt[i]}'`)
+    while(prompt[i] !== ' ' && !isNumber(prompt[i]) && i < prompt.length) ++i
 
     let exclamation = false
     const name = (() => {
@@ -92,11 +88,8 @@ function parseCommand(prompt) {
     const suffixStart = i
     while (isNumber(prompt[i]) && i < prompt.length) ++i
     const suffix = suffixStart < i ? prompt.slice(suffixStart, i) : null
-    console.log(`sufixstrot ${suffixStart} and ${i}`)
-    console.log(`suffix: '${suffix}'`)
 
     const args = prompt.trim().split(" ").slice(1)
-    console.log("args: ", args)
 
     return { name, args: suffix ? [suffix, ...args] : args, prefix, exclamation }
 }
@@ -131,9 +124,7 @@ function colorscheme(cmd) {
 
 export function edit(cmd) {
     if (cmd.prefix) {
-        textarea.style.color = COLORSCHEMES[colo].error
-        textarea.style.fontStyle = "italic"
-        textarea.value = "E481: No range allowed"
+        textarea.error("E481: No range allowed")
         return
     }
 
@@ -142,26 +133,25 @@ export function edit(cmd) {
     const file = cmd.args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
-    curbuf.filename.innerText = file // TODO CONSIDER using this instead of target
+    curbuf.filename.innerText = file // TODO CONSIDER using curbuf instead of target
     lualine.filename.innerText = file
-    console.log("file: ", file)
     history.pushState(null, "", "/" + file)
 
     if (pageCache[file]) {
-        edit({ args: ["404.html"] })
+        target.content = pageCache[file]
         return
     }
 
     if (!PAGES.includes(file)) {
-        target.children[0].innerHTML = "<div class='content'><div></div></div>"
-        // TODO CONSIDER putting into cache
+        edit({ args: ["404.html"] })
         return
     }
 
     fetch("_pages/" + file)
         .then(res => res.text())
         .then(html => {
-            target.children[0].children[0].innerHTML = html
+            // TODO NOW DEBUG v
+            target.content.innerHTML = html
                 .trimEnd() // Exclude empty last line
                 .split("\n")
                 .map(line => "<div>" + line + "</div>")
@@ -172,16 +162,12 @@ export function edit(cmd) {
 
 function pwd(cmd) {
     if (cmd.prefix) {
-        textarea.style.color = COLORSCHEMES[colo].error
-        textarea.style.fontStyle = "italic"
-        textarea.value = "E481: No range allowed"
+        textarea.error("E481: No range allowed")
         return
     }
 
     if (cmd.args.length) {
-        textarea.style.color = COLORSCHEMES[colo].error
-        textarea.style.fontStyle = "italic"
-        textarea.value = "E488: Trailing characters: " + cmd.args.join(" ")
+        textarea.error("E488: Trailing characters: ", cmd.args.join(" "))
         return
     }
     
@@ -204,8 +190,11 @@ export function split(cmd) {
 
     setCurbuf(buffer)
 
-    if (cmd.length) edit({ name: cmd.join(" ") })
-    else edit({ name: oldbufName })
+    if (cmd.args.length) console.log("<args>: ", cmd.args.join(" "), cmd.args.length)
+    else console.log("</args>: ", oldbufName, cmd.args.length)
+
+    if (cmd.args.length) edit({ args: cmd.args })
+    else edit({ args: [oldbufName] })
 }
 
 // TODO CONSIDER ALL "if (args.length)" -> "if (args)"
@@ -241,10 +230,6 @@ export function vsplit(cmd) {
     // TODO NOW DEBUG why does this open 404?
     if (cmd.args.length) edit({ args: [cmd.args.join(" ")] })
     else edit({ args: [oldbufName] })
-
-    if (cmd.args.length) console.log("<args>: ", cmd.args.join(" "))
-    console.log("</args>: ", oldbufName)
-    console.log("either way: ", cmd)
 
     if (cmd.prefix) buf.style.width = cmd.prefix + "px" // TODO TEST
 }

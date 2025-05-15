@@ -28,6 +28,7 @@ export function Buffer() {
             bar.appendChild(position)
 
     result.filename = filename
+    result.content = content
     return result
 }
 

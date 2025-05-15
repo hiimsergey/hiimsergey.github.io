@@ -93,9 +93,7 @@ document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
             if (document.activeElement === textarea) break
-            textarea.style.color = COLORSCHEMES[colo].text
-            textarea.style.fontStyle = "normal"
-            textarea.value = ""
+            textarea.log("")
             textarea.focus()
             break
         case "i":
@@ -105,9 +103,7 @@ document.addEventListener("keydown", (e) => {
         case "a":
         case "A":
             if (document.activeElement === textarea) break
-            textarea.style.color = COLORSCHEMES[colo].error
-            textarea.style.fontStyle = "italic"
-            textarea.value = "E21: Cannot make changes, 'modifiable' is off"
+            textarea.error("E21: Cannot make changes, 'modifiable' is off")
             break
     }
 })
@@ -136,7 +132,7 @@ if (window.location.pathname === "/") {
     // TODO FINAL TEST
     edit({ args: ["portfolio.html"] })
     if (window.innerWidth >= 950) vsplit({ args: ["contact.html"], prefix: 20 })
-    else { split({ args: ["contact.html"] }) }
+    else split({ args: ["contact.html"] })
 } else {
     edit({ args: [window.location.pathname.slice(1)] })
     setCurbuf(firstBuffer)
