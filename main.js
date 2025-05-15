@@ -26,6 +26,8 @@ textarea.error = function(msg) {
     textarea.value = msg
 }
 
+export function setColo(i) { colo = i }
+
 export function setCurbuf(div) {
     curbuf.children[1].style.display = "flex"
     div.children[1].style.display = "none"

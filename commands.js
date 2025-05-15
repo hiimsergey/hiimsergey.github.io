@@ -1,35 +1,27 @@
 import { PAGES } from "./pages.js"
-import { VERSION, cellH, ch, colo, curbuf, editor, lualine, pageCache, setCurbuf,
+import { VERSION, cellH, ch, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
     textarea } from "./main.js"
 import { Buffer, Container, ResizeHandle, equalizeBufferHeights, equalizeBufferWidths } from "./buffers.js"
-import { COLORSCHEMES } from "./colorschemes.js"
+import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
+
+const newcmd = (
+    name,
+    callback,
+    completions = [],
+    hidden = false
+) => ({ name, hidden, callback, completions })
+
+const isNumber = ch => (ch >= '0' && ch <= '9')
 
 export const COMMANDS = [
-    { name: "colorscheme", hidden: false, callback: colorscheme, completions: [/* TODO */]},
-    { name: "colo", hidden: true, callback: colorscheme, completions: [/* TODO */]},
-
-    { name: "edit", hidden: false, callback: edit, completions: PAGES },
-    { name: "e", hidden: true, callback: edit, completions: PAGES },
-
-    { name: "pwd", hidden: false, callback: pwd, completions: [] },
-    { name: "pw", hidden: true, callback: pwd, completions: [] },
-
-    { name: "split", hidden: false, callback: split, completions: PAGES },
-    { name: "sp", hidden: true, callback: split, completions: PAGES },
-
+    newcmd("colorscheme", colorscheme),
+    newcmd("edit", edit, PAGES),
+    newcmd("pwd", pwd),
+    newcmd("split", split, PAGES),
     // TODO ADD :verbose/:verb
-
-    { name: "version", hidden: false, callback: version, completions: [] },
-    { name: "ver", hidden: true, callback: version, completions: [] },
-    { name: "ve", hidden: true, callback: version, completions: [] },
-
-    { name: "vsplit", hidden: false, callback: vsplit, completions: PAGES },
-    { name: "vs", hidden: true, callback: vsplit, completions: PAGES },
-
-    { name: "quit", hidden: false, callback: quit, completions: [] },
-    { name: "quit!", hidden: true, callback: quit, completions: [] },
-    { name: "q", hidden: true, callback: quit, completions: [] },
-    { name: "q!", hidden: true, callback: quit, completions: [] }
+    newcmd("version", version),
+    newcmd("vsplit", vsplit, PAGES),
+    newcmd("quit", quit)
 ]
 
 export function executeCommand() {
@@ -54,7 +46,10 @@ Press ENTER or type command to continue`
     }
 
     const command = parseCommand(prompt)
+    console.log("cmdddjfldsafjdl: ", command)
+    if (!command.name) return
 
+    console.log(COMMANDS)
     const candidates = COMMANDS.filter(CMD => CMD.name.startsWith(command.name))
     if (candidates.length === 1) {
         candidates[0].callback(command)
@@ -71,27 +66,67 @@ Press ENTER or type command to continue`
 }
 
 function parseCommand(prompt) {
-    if (!prompt) return { name: null, args: [], prefix: null }
+    if (!prompt) return { name: null, args: [], prefix: null, exclamation: false}
 
     let i = 0
-    while (!isNaN(prompt[i]) && i < prompt.length) ++i
+    while (isNumber(prompt[i]) && i < prompt.length) ++i
     const prefix = i ? prompt.slice(0, i) : null
 
     const nameStart = i
-    while(isNaN(prompt[i]) && i < prompt.length) ++i
-    const name = nameStart < i ? prompt.slice(nameStart, i) : null
+    while(prompt[i] !== ' ' && !isNumber(prompt[i]) && i < prompt.length) {
+        console.log(`taking '${prompt[i]}'`)
+        ++i
+    }
+    console.log(`not taking '${prompt[i]}'`)
+
+    let exclamation = false
+    const name = (() => {
+        if (nameStart >= i) return null
+        if (prompt[i - 1] === "!") {
+            exclamation = true
+            return prompt.slice(nameStart, i - 1)
+        }
+        return prompt.slice(nameStart, i)
+    })()
     
     const suffixStart = i
-    while (!isNaN(prompt[i]) && i < prompt.length) ++i
+    while (isNumber(prompt[i]) && i < prompt.length) ++i
     const suffix = suffixStart < i ? prompt.slice(suffixStart, i) : null
+    console.log(`sufixstrot ${suffixStart} and ${i}`)
+    console.log(`suffix: '${suffix}'`)
 
     const args = prompt.trim().split(" ").slice(1)
+    console.log("args: ", args)
 
-    return { name, args: suffix ? [suffix, ...args] : args, prefix }
+    return { name, args: suffix ? [suffix, ...args] : args, prefix, exclamation }
 }
 
 function colorscheme(cmd) {
-    if (!cmd.args.length) textarea.log(COLORSCHEMES[colo].name)
+    if (cmd.exclamation) {
+        textarea.error("E477: No ! allowed")
+        return
+    }
+
+    if (cmd.prefix) {
+        textarea.error("E481: No range allowed")
+        return
+    }
+
+    if (!cmd.args.length) {
+        textarea.log(COLORSCHEMES[colo].name)
+        return
+    }
+
+    const name = cmd.args.join(" ")
+    const i = COLORSCHEMES.findIndex(COLO => COLO.name === name)
+
+    if (i === -1) {
+        textarea.error(`E185: Cannot find color scheme '${name}'`)
+        return
+    }
+
+    setColo(i)
+    applyColorscheme()
 }
 
 export function edit(cmd) {

@@ -1,4 +1,4 @@
-import { colo } from "./main.js"
+import { colo, textarea } from "./main.js"
 
 export const COLORSCHEMES = [
     {
@@ -145,4 +145,6 @@ export function applyColorscheme() {
         "--error-color",
         COLORSCHEMES[colo].error
     )
+
+    textarea.style.color = COLORSCHEMES[colo].text
 }
