@@ -82,6 +82,22 @@
 #position-separator { color: var(--wrap-color); background-color: var(--normal-mode-color); }
 #wrap-separator { color: var(--html-preview-color); background-color: var(--wrap-color); }
 
+#completion {
+    background-color: var(--completion-bg-color);
+
+    display: none;
+
+    position: absolute;
+    bottom: var(--cell-h);
+
+    z-index: 3; /* TODO FINAL VALUE */
+}
+
+#selected {
+    background-color: var(--completion-selected-bg-color);
+    color: var(--completion-selected-text-color);
+}
+
 textarea {
     background-color: var(--bg-color);
     color: var(--text-color);

@@ -1,16 +1,25 @@
-import { Buffer, Lualine } from "./buffers.js"
+import { Buffer, CompletionWindow, Lualine } from "./buffers.js"
 import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
 import { edit, executeCommand, split, vsplit } from "./commands.js"
+import { initCompletions } from "./completions.js"
 
-export const VERSION = "0.1.7"
+export const VERSION = "0.1.9"
+export const completionWindow = CompletionWindow()
 export const editor = document.getElementById("editor")
 export const lualine = Lualine()
 export const textarea = document.querySelector("textarea")
+
 const firstBuffer = Buffer()
 
+export let completion = {
+    input: "",
+    trigger: initCompletions,
+    options: [],
+    cur: 0
+}
 export let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 export let curbuf = firstBuffer
-export let drag = { handle: null }
+export let drag = { handle: null } // TODO CONSIDER exporting a setter instead
 export let pageCache = {}
 export let ch, em, cellH = 0
 
@@ -92,16 +101,17 @@ window.addEventListener("resize", () => {
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case ":":
+            // TODO FINAL CONSIDER moving it to an own event listener
             if (document.activeElement === textarea) break
             textarea.log("")
             textarea.focus()
             break
+        case "a":
+        case "A":
         case "i":
         case "I":
         case "o":
         case "O":
-        case "a":
-        case "A":
             if (document.activeElement === textarea) break
             textarea.error("E21: Cannot make changes, 'modifiable' is off")
             break
@@ -116,6 +126,10 @@ textarea.addEventListener("keydown", (e) => {
             executeCommand()
             textarea.blur()
             break
+        case "Tab":
+            completion.trigger(e.shiftKey)
+            e.preventDefault()
+            break
         case "Escape":
             textarea.value = ""
             textarea.blur()
@@ -129,8 +143,8 @@ editor.style.flexDirection = "row" // Necessary for reading later
 editor.appendChild(firstBuffer)
 
 if (window.location.pathname === "/") {
-    // TODO FINAL TEST
     edit({ args: ["portfolio.html"] })
+                                                            // TODO FINAL TEST
     if (window.innerWidth >= 950) vsplit({ args: ["contact.html"], prefix: 20 })
     else split({ args: ["contact.html"] })
 } else {

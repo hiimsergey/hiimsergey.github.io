@@ -56,9 +56,9 @@ Press ENTER or type command to continue`
         return
     }
 
-    const finding = candidates.find(cand => cand.name === command.name)
-    if (finding) {
-        finding.callback(command)
+    const match = candidates.find(cand => cand.name === command.name)
+    if (match) {
+        match.callback(command)
         return
     }
 
@@ -175,7 +175,6 @@ function pwd(cmd) {
     textarea.log(window.location.origin)
 }
 
-// TODO NOW
 export function split(cmd) {
     const oldbufName = curbuf.filename.innerText
     const buffer = Buffer()
@@ -197,7 +196,6 @@ export function split(cmd) {
     else edit({ args: [oldbufName] })
 }
 
-// TODO CONSIDER ALL "if (args.length)" -> "if (args)"
 function version(args) {
     if (args.length) return
 

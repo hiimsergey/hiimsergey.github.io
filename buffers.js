@@ -32,18 +32,13 @@ export function Buffer() {
     return result
 }
 
-// TODO add a visual line to handles
-export function ResizeHandle() {
+export function CompletionWindow() {
     const result = document.createElement("div")
-    result.classList.add("handle")
+    result.id = "completion"
 
-    result.addEventListener("mousedown", (e) => {
-        drag.handle = result
-        e.preventDefault() // Prevent selecting text while dragging
-
-        document.addEventListener("mousemove", resizeHorizontally)
-        document.addEventListener("mouseup", resizeStop)
-    })
+        const selected = document.createElement("div")
+        selected.id = "selected"
+        result.appendChild(selected)
 
     return result
 }
@@ -153,6 +148,22 @@ export function Lualine() {
 
     // TODO DEBUG
     result.filename = filename
+    return result
+}
+
+// TODO add a visual line to handles
+export function ResizeHandle() {
+    const result = document.createElement("div")
+    result.classList.add("handle")
+
+    result.addEventListener("mousedown", (e) => {
+        drag.handle = result
+        e.preventDefault() // Prevent selecting text while dragging
+
+        document.addEventListener("mousemove", resizeHorizontally)
+        document.addEventListener("mouseup", resizeStop)
+    })
+
     return result
 }
 
