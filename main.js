@@ -1,9 +1,10 @@
 import { Buffer, CompletionWindow, Lualine } from "./buffers.js"
 import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
 import { edit, executeCommand, split, vsplit } from "./commands.js"
-import { initCompletions } from "./completions.js"
+import { initCompletions, resetCompletions } from "./completions.js"
 
 export const VERSION = "0.1.9"
+export const root = document.getElementById("root")
 export const completionWindow = CompletionWindow()
 export const editor = document.getElementById("editor")
 export const lualine = Lualine()
@@ -123,6 +124,7 @@ textarea.addEventListener("input", resizeTextArea)
 textarea.addEventListener("keydown", (e) => {
     switch (e.key) {
         case "Enter":
+            resetCompletions()
             executeCommand()
             textarea.blur()
             break
@@ -130,10 +132,15 @@ textarea.addEventListener("keydown", (e) => {
             completion.trigger(e.shiftKey)
             e.preventDefault()
             break
+
+        case "Backspace":
+            if (textarea.value !== ":") break
         case "Escape":
             textarea.value = ""
             textarea.blur()
             resizeTextArea()
+        default:
+            resetCompletions()
             break
     }
 })

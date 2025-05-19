@@ -1,4 +1,4 @@
-import { cellH, ch, drag, editor, setCurbuf } from "./main.js"
+import { cellH, ch, drag, editor, root, setCurbuf } from "./main.js"
 
 export function Buffer() {
     const result = document.createElement("div")
@@ -40,6 +40,7 @@ export function CompletionWindow() {
         selected.id = "selected"
         result.appendChild(selected)
 
+    root.appendChild(result)
     return result
 }
 

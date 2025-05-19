@@ -1,11 +1,10 @@
-// TODO ! handling for all commands
-
 import { PAGES } from "./pages.js"
-import { VERSION, cellH, ch, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
+import { VERSION, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
     textarea } from "./main.js"
 import { Buffer, Container, ResizeHandle, equalizeBufferHeights, equalizeBufferWidths } from "./buffers.js"
 import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
 
+// TODO ! handling for all commands
 const newcmd = (
     name,
     callback,
@@ -16,7 +15,7 @@ const newcmd = (
 const isNumber = ch => (ch >= '0' && ch <= '9')
 
 export const COMMANDS = [
-    newcmd("colorscheme", colorscheme),
+    newcmd("colorscheme", colorscheme, COLORSCHEMES.map(COLO => COLO.name)),
     newcmd("edit", edit, PAGES),
     newcmd("pwd", pwd),
     newcmd("split", split, PAGES),
@@ -261,4 +260,36 @@ function quit() {
 
     if (!curbuf.parentElement.id && curbuf.parentElement.children.length === 1)
         curbuf.parentElement.replaceWith(curbuf)
+}
+
+// TODO MOVE + USE
+function findNextBuffer() {
+    // TODO NOW remove the original node
+    // make the one the curbuf
+    let buf = curbuf
+
+    while (true) {
+        buf = buf.nextSibling
+        if (!buf) return null
+        if (buf.classList.contains("handle")) {
+            let handle = buf
+            buf = buf.nextSibling
+            handle.remove()
+        }
+        // TODO ADD container class in CSS
+        while (buf.classList.contains("container")) buf = buf.children[0]
+        return buf
+    }
+
+        if (curbuf.parentElement.style.flexDirection === "column") {
+            // TODO NOW DEBUG it takes focuses the next buffer, regardless whether
+            // its a buffer or a container
+            // What if you could just find the next/previous .buffer.div?
+            setCurbuf(curbuf.nextSibling)
+            curbuf.parentElement.firstChild.remove()
+        } else {
+            setCurbuf(curbuf.nextSibling.nextSibling)
+            curbuf.parentElement.firstChild.remove()
+            curbuf.parentElement.firstChild.remove()
+        }
 }

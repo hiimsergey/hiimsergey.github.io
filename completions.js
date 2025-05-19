@@ -1,5 +1,5 @@
-import { COMMANDS } from "./commands";
-import { cellH, completion, completionWindow, textarea } from "./main";
+import { COMMANDS } from "./commands.js"
+import { cellH, completion, completionWindow, textarea } from "./main.js"
 
 export function initCompletions(up) {
     while (completionWindow.firstChild) completionWindow.firstChild.remove()
@@ -13,18 +13,26 @@ export function initCompletions(up) {
     }
 
     completionWindow.style.display = "block"
-    completionWindow.style.width =
-        Math.max(...completion.options.map(opt => opt.length)) + 5 + "ch"
     completionWindow.style.height = (completion.options.length - 1) * cellH + "px"
 
     // Don't display the original command in the completion menu
     completionWindow.children[0].style.display = "none"
 
-    completionWindow.style.left = completion.input.length + "ch"
+    // TODO CHECK
+    const leftOffset = completion.input.indexOf(" ", 1)
+    completionWindow.style.left = (leftOffset !== -1) * leftOffset + "ch"
 
     cycleCompletions(up)
     if (completion.options.length > 2) completion.trigger = cycleCompletions
     else resetCompletions()
+}
+
+export function resetCompletions() {
+    completionWindow.style.display = "none"
+
+    completion.input = ""
+    completion.trigger = initCompletions
+    completion.cur = 0
 }
 
 function updateCompletions() {
@@ -36,7 +44,7 @@ function updateCompletions() {
     if (command.endsWith(" ")) {
         const candidates = COMMANDS.filter(CMD => CMD.name.startsWith(words[0]))
         completion.options =
-            (candidates.length === 1) ? [null, ...candidates[0].completions] : [null]
+            (candidates.length === 1) ? ["", ...candidates[0].completions] : [""]
         return
     }
 
@@ -66,18 +74,10 @@ function cycleCompletions(up) {
     completionWindow.children[completion.cur].id = "selected"
 
     if (completion.input.endsWith(" ")) {
-        input.value = completion.input + completion.options[completion.cur]
+        textarea.value = completion.input + completion.options[completion.cur]
     } else {
         let words = completion.input.slice(1).split(" ")
         words[words.length - 1] = completion.options[completion.cur]
-        input.value = ":" + words.join(" ")
+        textarea.value = ":" + words.join(" ")
     }
-}
-
-function resetCompletions() {
-    completionWindow.style.display = "none"
-
-    completion.input = ""
-    completion.trigger = initCompletions
-    completion.cur = 0
 }

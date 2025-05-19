@@ -87,10 +87,16 @@
 
     display: none;
 
+    min-width: 17ch;
+
     position: absolute;
     bottom: var(--cell-h);
 
     z-index: 3; /* TODO FINAL VALUE */
+}
+
+#completion > * {
+    padding: 0 1ch;
 }
 
 #selected {
