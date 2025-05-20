@@ -1,4 +1,5 @@
 import { Buffer, CompletionWindow, Lualine } from "./buffers.js"
+import { initCommandHistory } from "./cmd_history.js"
 import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
 import { edit, executeCommand, split, vsplit } from "./commands.js"
 import { initCompletions, resetCompletions } from "./completions.js"
@@ -17,6 +18,11 @@ export let completion = {
     trigger: initCompletions,
     options: [],
     cur: 0
+}
+export let cmd_history = {
+    trigger: initCommandHistory,
+    items: [],
+    cur: -1
 }
 export let colo = Math.floor(Math.random() * COLORSCHEMES.length)
 export let curbuf = firstBuffer
@@ -131,6 +137,18 @@ textarea.addEventListener("keydown", (e) => {
         case "Tab":
             completion.trigger(e.shiftKey)
             e.preventDefault()
+            break
+        case "ArrowUp":
+            cmd_history.trigger(true)
+            e.preventDefault()
+            break
+        case "ArrowDown":
+            cmd_history.trigger(false)
+            e.preventDefault()
+            break
+
+        case "Shift":
+        case "Alt":
             break
 
         case "Backspace":

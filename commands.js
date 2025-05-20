@@ -16,13 +16,13 @@ const isNumber = ch => (ch >= '0' && ch <= '9')
 
 export const COMMANDS = [
     newcmd("colorscheme", colorscheme, COLORSCHEMES.map(COLO => COLO.name)),
-    newcmd("edit", edit, PAGES),
-    newcmd("pwd", pwd),
-    newcmd("split", split, PAGES),
+    newcmd("edit",        edit,        PAGES),
+    newcmd("pwd",         pwd),
+    newcmd("split",       split,       PAGES),
     // TODO ADD :verbose/:verb
-    newcmd("version", version),
-    newcmd("vsplit", vsplit, PAGES),
-    newcmd("quit", quit)
+    newcmd("version",     version),
+    newcmd("vsplit",      vsplit,      PAGES),
+    newcmd("quit",        quit)
 ]
 
 export function executeCommand() {
@@ -110,15 +110,17 @@ function colorscheme(cmd) {
     }
 
     const name = cmd.args.join(" ")
-    const i = COLORSCHEMES.findIndex(COLO => COLO.name === name)
 
-    if (i === -1) {
-        textarea.error(`E185: Cannot find color scheme '${name}'`)
-        return
+    for (let i = 0; i < COLORSCHEMES.length; ++i) {
+        if (name === COLORSCHEMES[i].name) {
+            setColo(i)
+            applyColorscheme()
+            return
+        }
     }
 
-    setColo(i)
-    applyColorscheme()
+    textarea.error(`E185: Cannot find color scheme '${name}'`)
+    return
 }
 
 export function edit(cmd) {
@@ -132,12 +134,12 @@ export function edit(cmd) {
     const file = cmd.args.join(" ")
 
     const target = curbuf // Avoids async-related race conditions
-    curbuf.filename.innerText = file // TODO CONSIDER using curbuf instead of target
+    target.filename.innerText = file // TODO CONSIDER using curbuf instead of target
     lualine.filename.innerText = file
     history.pushState(null, "", "/" + file)
 
     if (pageCache[file]) {
-        target.content = pageCache[file]
+        target.content.innerHTML = pageCache[file]
         return
     }
 
@@ -150,12 +152,13 @@ export function edit(cmd) {
         .then(res => res.text())
         .then(html => {
             // TODO NOW DEBUG v
+            // TODO NOTE ":e portfolio.html" on contact.html doesnt work
             target.content.innerHTML = html
                 .trimEnd() // Exclude empty last line
                 .split("\n")
                 .map(line => "<div>" + line + "</div>")
                 .join("\n")
-            pageCache[file] = html
+            pageCache[file] = target.content.innerHTML
         })
 }
 
@@ -231,7 +234,12 @@ export function vsplit(cmd) {
     if (cmd.prefix) buf.style.width = cmd.prefix + "px" // TODO TEST
 }
 
-function quit() {
+function quit(cmd) {
+    if (cmd.prefix) {
+        textarea.error("E16: Invalid range")
+        return
+    }
+
     if (editor.children.length === 1 && editor.firstChild.classList.contains("buffer")) {
         window.open(window.location, "_self").close()
         return
