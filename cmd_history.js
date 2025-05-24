@@ -1,8 +1,8 @@
 import { cmd_history, textarea } from "./main.js"
 
 export function initCommandHistory() {
-    console.log("TODO init cmd history")
     if (!cmd_history.items.length) return // TODO CONSIDER
+    console.log("TODO init cmd history")
 
     if (cmd_history.items[cmd_history.items.length - 1] !== textarea.value)
         cmd_history.items.push(textarea.value)

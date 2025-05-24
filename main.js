@@ -1,5 +1,5 @@
 import { Buffer, CompletionWindow, Lualine } from "./buffers.js"
-import { initCommandHistory } from "./cmd_history.js"
+import { initCommandHistory, resetCommandHistory } from "./cmd_history.js"
 import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
 import { edit, executeCommand, split, vsplit } from "./commands.js"
 import { initCompletions, resetCompletions } from "./completions.js"
@@ -131,6 +131,7 @@ textarea.addEventListener("keydown", (e) => {
     switch (e.key) {
         case "Enter":
             resetCompletions()
+            resetCommandHistory()
             executeCommand()
             textarea.blur()
             break
@@ -138,6 +139,7 @@ textarea.addEventListener("keydown", (e) => {
             completion.trigger(e.shiftKey)
             e.preventDefault()
             break
+            // TODO DEBUG history generally doesnt work
         case "ArrowUp":
             cmd_history.trigger(true)
             e.preventDefault()
@@ -154,11 +156,17 @@ textarea.addEventListener("keydown", (e) => {
         case "Backspace":
             if (textarea.value !== ":") break
         case "Escape":
+            resizeTextArea()
+            resetCommandHistory()
             textarea.value = ""
             textarea.blur()
-            resizeTextArea()
         default:
             resetCompletions()
+            // TODO COMMENT
+            if (cmd_history.trigger !== initCommandHistory) {
+                cmd_history.trigger = initCommandHistory
+                cmd_history.items.pop()
+            }
             break
     }
 })

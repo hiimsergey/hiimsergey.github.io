@@ -15,14 +15,16 @@ const newcmd = (
 const isNumber = ch => (ch >= '0' && ch <= '9')
 
 export const COMMANDS = [
-    newcmd("colorscheme", colorscheme, COLORSCHEMES.map(COLO => COLO.name)),
-    newcmd("edit",        edit,        PAGES),
-    newcmd("pwd",         pwd),
-    newcmd("split",       split,       PAGES),
+    newcmd("Norsu",         Norsu),
+
+    newcmd("colorscheme",   colorscheme, COLORSCHEMES.map(COLO => COLO.name)),
+    newcmd("edit",          edit,        PAGES),
+    newcmd("pwd",           pwd),
+    newcmd("split",         split,       PAGES),
     // TODO ADD :verbose/:verb
-    newcmd("version",     version),
-    newcmd("vsplit",      vsplit,      PAGES),
-    newcmd("quit",        quit)
+    newcmd("version",       version),
+    newcmd("vsplit",        vsplit,      PAGES),
+    newcmd("quit",          quit)
 ]
 
 export function executeCommand() {
@@ -92,6 +94,9 @@ function parseCommand(prompt) {
 
     return { name, args: suffix ? [suffix, ...args] : args, prefix, exclamation }
 }
+
+// TODO CONSIDER FIX to support /norsu
+function Norsu() { window.open("/norsu/") }
 
 function colorscheme(cmd) {
     if (cmd.exclamation) {
