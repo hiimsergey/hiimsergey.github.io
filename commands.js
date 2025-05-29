@@ -1,8 +1,8 @@
 import { PAGES } from "./pages.js"
-import { VERSION, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
-    textarea } from "./main.js"
+import { VERSION, ctx, editor, lualine, textarea } from "./main.js"
 import { Buffer, Container, ResizeHandle, equalizeBufferHeights, equalizeBufferWidths } from "./buffers.js"
 import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
+import { findNextBuffer, findPrevBuffer, setCurbuf } from "./util.js"
 
 // TODO ! handling for all commands
 const newcmd = (
@@ -67,20 +67,20 @@ Press ENTER or type command to continue`
 }
 
 function parseCommand(prompt) {
-    if (!prompt) return { name: null, args: [], prefix: null, exclamation: false}
+    if (!prompt) return { name: null, args: [], range: null, bang: false}
 
     let i = 0
     while (isNumber(prompt[i]) && i < prompt.length) ++i
-    const prefix = i ? prompt.slice(0, i) : null
+    const range = i ? prompt.slice(0, i) : null
 
     const nameStart = i
     while(prompt[i] !== ' ' && !isNumber(prompt[i]) && i < prompt.length) ++i
 
-    let exclamation = false
+    let bang = false
     const name = (() => {
         if (nameStart >= i) return null
         if (prompt[i - 1] === "!") {
-            exclamation = true
+            bang = true
             return prompt.slice(nameStart, i - 1)
         }
         return prompt.slice(nameStart, i)
@@ -92,25 +92,25 @@ function parseCommand(prompt) {
 
     const args = prompt.trim().split(" ").slice(1)
 
-    return { name, args: suffix ? [suffix, ...args] : args, prefix, exclamation }
+    return { name, args: suffix ? [suffix, ...args] : args, range, bang }
 }
 
 // TODO CONSIDER FIX to support /norsu
 function Norsu() { window.open("/norsu/") }
 
 function colorscheme(cmd) {
-    if (cmd.exclamation) {
+    if (cmd.bang) {
         textarea.error("E477: No ! allowed")
         return
     }
 
-    if (cmd.prefix) {
+    if (cmd.range) {
         textarea.error("E481: No range allowed")
         return
     }
 
     if (!cmd.args.length) {
-        textarea.log(COLORSCHEMES[colo].name)
+        textarea.log(COLORSCHEMES[ctx.colo].name)
         return
     }
 
@@ -118,7 +118,7 @@ function colorscheme(cmd) {
 
     for (let i = 0; i < COLORSCHEMES.length; ++i) {
         if (name === COLORSCHEMES[i].name) {
-            setColo(i)
+            ctx.colo = i
             applyColorscheme()
             return
         }
@@ -129,46 +129,42 @@ function colorscheme(cmd) {
 }
 
 export function edit(cmd) {
-    if (cmd.prefix) {
+    console.log(cmd)
+
+    if (cmd.range) {
         textarea.error("E481: No range allowed")
         return
     }
-
     if (!cmd.args.length) return
 
-    const file = cmd.args.join(" ")
-
-    const target = curbuf // Avoids async-related race conditions
-    target.filename.innerText = file // TODO CONSIDER using curbuf instead of target
-    lualine.filename.innerText = file
+    let file = cmd.args.join(" ").replace(/%20/g, " ")
     history.pushState(null, "", "/" + file)
 
-    if (pageCache[file]) {
-        target.content.innerHTML = pageCache[file]
+    const target = ctx.curbuf // Avoids async-related race conditions
+    target.filename.innerText = file
+    lualine.filename.innerText = file
+
+    if (ctx.pageCache[file]) {
+        target.content.innerHTML = ctx.pageCache[file]
         return
     }
 
-    if (!PAGES.includes(file)) {
-        edit({ args: ["404.html"] })
-        return
-    }
+    if (!PAGES.includes(file)) file = "404.html"
 
     fetch("_pages/" + file)
         .then(res => res.text())
         .then(html => {
-            // TODO NOW DEBUG v
-            // TODO NOTE ":e portfolio.html" on contact.html doesnt work
             target.content.innerHTML = html
                 .trimEnd() // Exclude empty last line
                 .split("\n")
                 .map(line => "<div>" + line + "</div>")
                 .join("\n")
-            pageCache[file] = target.content.innerHTML
+            ctx.pageCache[file] = target.content.innerHTML
         })
 }
 
 function pwd(cmd) {
-    if (cmd.prefix) {
+    if (cmd.range) {
         textarea.error("E481: No range allowed")
         return
     }
@@ -183,24 +179,26 @@ function pwd(cmd) {
 }
 
 export function split(cmd) {
-    const oldbufName = curbuf.filename.innerText
-    const buffer = Buffer()
+    const oldbufName = ctx.curbuf.filename.innerText
+    const buf = Buffer()
 
-    if (curbuf.parentElement.style.flexDirection === "column") {
-        curbuf.before(buffer)
+    if (ctx.curbuf.parentElement.style.flexDirection === "column") {
+        ctx.curbuf.before(buf)
     } else {
-        const column = Container("column")
-        curbuf.replaceWith(column)
-        column.append(buffer, curbuf)
+        const col = Container("column")
+        ctx.curbuf.replaceWith(col)
+        col.append(buf, ctx.curbuf)
     }
 
-    setCurbuf(buffer)
+    setCurbuf(buf)
 
     if (cmd.args.length) console.log("<args>: ", cmd.args.join(" "), cmd.args.length)
     else console.log("</args>: ", oldbufName, cmd.args.length)
 
     if (cmd.args.length) edit({ args: cmd.args })
     else edit({ args: [oldbufName] })
+
+    if (cmd.range) buf.style.flex = cmd.range
 }
 
 function version(args) {
@@ -215,32 +213,32 @@ Don't run ":verbose version" for more info`
     )
 }
 
+// TODO CONSIDER "set splitbelow splitright"
 export function vsplit(cmd) {
-    const oldbufName = curbuf.filename.innerText
-
+    const oldbufName = ctx.curbuf.filename.innerText
     const buf = Buffer()
     const handle = ResizeHandle()
 
-    if (curbuf.parentElement.style.flexDirection === "row") {
-        curbuf.before(buf, handle)
+    if (ctx.curbuf.parentElement.style.flexDirection === "row") {
+        ctx.curbuf.before(buf, handle)
     } else {
         const row = Container("row")
-        curbuf.replaceWith(row)
-        row.append(buf, handle, curbuf)
+        ctx.curbuf.replaceWith(row)
+        row.append(buf, handle, ctx.curbuf)
     }
 
-    // TODO CONSIDER make it curbuf.set(buf) or buf.makeCurbuf()
+    // TODO CONSIDER make it ctx.curbuf.set(buf) or buf.makeCurbuf()
     setCurbuf(buf)
 
-    // TODO NOW DEBUG why does this open 404?
-    if (cmd.args.length) edit({ args: [cmd.args.join(" ")] })
+    if (cmd.args.length) edit({ args: cmd.args })
+        // TODO NOW DEBUG this opens [No name]
     else edit({ args: [oldbufName] })
 
-    if (cmd.prefix) buf.style.width = cmd.prefix + "px" // TODO TEST
+    if (cmd.range) buf.style.flex = cmd.range
 }
 
 function quit(cmd) {
-    if (cmd.prefix) {
+    if (cmd.range) {
         textarea.error("E16: Invalid range")
         return
     }
@@ -250,59 +248,14 @@ function quit(cmd) {
         return
     }
 
-    if (curbuf.parentElement.firstElementChild === curbuf) {
-        if (curbuf.parentElement.style.flexDirection === "column") {
-            // TODO NOW DEBUG it takes focuses the next buffer, regardless whether
-            // its a buffer or a container
-            // What if you could just find the next/previous .buffer.div?
-            setCurbuf(curbuf.nextSibling)
-            curbuf.parentElement.firstChild.remove()
-        } else {
-            setCurbuf(curbuf.nextSibling.nextSibling)
-            curbuf.parentElement.firstChild.remove()
-            curbuf.parentElement.firstChild.remove()
-        }
-    } else if (curbuf.parentElement.style.flexDirection === "column") {
-        setCurbuf(curbuf.previousSibling)
-        curbuf.nextSibling.remove()
-    } else {
-        setCurbuf(curbuf.previousSibling.previousSibling)
-        curbuf.nextSibling.remove()
-        curbuf.nextSibling.remove()
-    }
+    const buf = ctx.curbuf.parentElement.firstElementChild === ctx.curbuf ?
+        findNextBuffer() :
+        findPrevBuffer()
+    const oldbuf = ctx.curbuf
+    setCurbuf(buf)
+    oldbuf.remove()
 
-    if (!curbuf.parentElement.id && curbuf.parentElement.children.length === 1)
-        curbuf.parentElement.replaceWith(curbuf)
-}
-
-// TODO MOVE + USE
-function findNextBuffer() {
-    // TODO NOW remove the original node
-    // make the one the curbuf
-    let buf = curbuf
-
-    while (true) {
-        buf = buf.nextSibling
-        if (!buf) return null
-        if (buf.classList.contains("handle")) {
-            let handle = buf
-            buf = buf.nextSibling
-            handle.remove()
-        }
-        // TODO ADD container class in CSS
-        while (buf.classList.contains("container")) buf = buf.children[0]
-        return buf
-    }
-
-        if (curbuf.parentElement.style.flexDirection === "column") {
-            // TODO NOW DEBUG it takes focuses the next buffer, regardless whether
-            // its a buffer or a container
-            // What if you could just find the next/previous .buffer.div?
-            setCurbuf(curbuf.nextSibling)
-            curbuf.parentElement.firstChild.remove()
-        } else {
-            setCurbuf(curbuf.nextSibling.nextSibling)
-            curbuf.parentElement.firstChild.remove()
-            curbuf.parentElement.firstChild.remove()
-        }
+    // Don't let ctx.curbuf escape #editor
+    if (!ctx.curbuf.parentElement.id && ctx.curbuf.parentElement.children.length === 1)
+        ctx.curbuf.parentElement.replaceWith(ctx.curbuf)
 }
