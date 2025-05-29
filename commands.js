@@ -1,8 +1,8 @@
 import { PAGES } from "./pages.js"
-import { VERSION, colo, curbuf, editor, lualine, pageCache, setColo, setCurbuf,
-    textarea } from "./main.js"
+import { VERSION, ctx, editor, lualine, textarea } from "./main.js"
 import { Buffer, Container, ResizeHandle, equalizeBufferHeights, equalizeBufferWidths } from "./buffers.js"
 import { applyColorscheme, COLORSCHEMES } from "./colorschemes.js"
+import { findNextBuffer, findPrevBuffer, setCurbuf } from "./util.js"
 
 // TODO ! handling for all commands
 const newcmd = (
@@ -110,7 +110,7 @@ function colorscheme(cmd) {
     }
 
     if (!cmd.args.length) {
-        textarea.log(COLORSCHEMES[colo].name)
+        textarea.log(COLORSCHEMES[ctx.colo].name)
         return
     }
 
@@ -118,7 +118,7 @@ function colorscheme(cmd) {
 
     for (let i = 0; i < COLORSCHEMES.length; ++i) {
         if (name === COLORSCHEMES[i].name) {
-            setColo(i)
+            ctx.colo = i
             applyColorscheme()
             return
         }
@@ -140,12 +140,12 @@ export function edit(cmd) {
     let file = cmd.args.join(" ").replace(/%20/g, " ")
     history.pushState(null, "", "/" + file)
 
-    const target = curbuf // Avoids async-related race conditions
+    const target = ctx.curbuf // Avoids async-related race conditions
     target.filename.innerText = file
     lualine.filename.innerText = file
 
-    if (pageCache[file]) {
-        target.content.innerHTML = pageCache[file]
+    if (ctx.pageCache[file]) {
+        target.content.innerHTML = ctx.pageCache[file]
         return
     }
 
@@ -159,7 +159,7 @@ export function edit(cmd) {
                 .split("\n")
                 .map(line => "<div>" + line + "</div>")
                 .join("\n")
-            pageCache[file] = target.content.innerHTML
+            ctx.pageCache[file] = target.content.innerHTML
         })
 }
 
@@ -179,15 +179,15 @@ function pwd(cmd) {
 }
 
 export function split(cmd) {
-    const oldbufName = curbuf.filename.innerText
+    const oldbufName = ctx.curbuf.filename.innerText
     const buf = Buffer()
 
-    if (curbuf.parentElement.style.flexDirection === "column") {
-        curbuf.before(buf)
+    if (ctx.curbuf.parentElement.style.flexDirection === "column") {
+        ctx.curbuf.before(buf)
     } else {
         const col = Container("column")
-        curbuf.replaceWith(col)
-        col.append(buf, curbuf)
+        ctx.curbuf.replaceWith(col)
+        col.append(buf, ctx.curbuf)
     }
 
     setCurbuf(buf)
@@ -215,19 +215,19 @@ Don't run ":verbose version" for more info`
 
 // TODO CONSIDER "set splitbelow splitright"
 export function vsplit(cmd) {
-    const oldbufName = curbuf.filename.innerText
+    const oldbufName = ctx.curbuf.filename.innerText
     const buf = Buffer()
     const handle = ResizeHandle()
 
-    if (curbuf.parentElement.style.flexDirection === "row") {
-        curbuf.before(buf, handle)
+    if (ctx.curbuf.parentElement.style.flexDirection === "row") {
+        ctx.curbuf.before(buf, handle)
     } else {
         const row = Container("row")
-        curbuf.replaceWith(row)
-        row.append(buf, handle, curbuf)
+        ctx.curbuf.replaceWith(row)
+        row.append(buf, handle, ctx.curbuf)
     }
 
-    // TODO CONSIDER make it curbuf.set(buf) or buf.makeCurbuf()
+    // TODO CONSIDER make it ctx.curbuf.set(buf) or buf.makeCurbuf()
     setCurbuf(buf)
 
     if (cmd.args.length) edit({ args: cmd.args })
@@ -248,48 +248,14 @@ function quit(cmd) {
         return
     }
 
-    const buf = curbuf.parentElement.firstElementChild === curbuf ?
+    const buf = ctx.curbuf.parentElement.firstElementChild === ctx.curbuf ?
         findNextBuffer() :
         findPrevBuffer()
-    const oldbuf = curbuf
+    const oldbuf = ctx.curbuf
     setCurbuf(buf)
     oldbuf.remove()
 
-    // Don't let curbuf escape #editor
-    if (!curbuf.parentElement.id && curbuf.parentElement.children.length === 1)
-        curbuf.parentElement.replaceWith(curbuf)
-}
-
-// TODO MOVE + USE
-function findNextBuffer() {
-    // TODO NOW remove the original node
-    // make the one the curbuf
-    let buf = curbuf
-    buf = buf.nextSibling
-
-    if (buf.classList.contains("handle")) {
-        let handle = buf
-        buf = buf.nextSibling
-        handle.remove()
-    }
-    while (buf.classList.contains("container")) buf = buf.children[0]
-
-    return buf
-}
-
-// TODO MOVE + USE
-function findPrevBuffer() {
-    // TODO NOW remove the original node
-    // make the one the curbuf
-    let buf = curbuf
-    buf = buf.previousSibling
-
-    if (buf.classList.contains("handle")) {
-        let handle = buf
-        buf = buf.previousSibling
-        handle.remove()
-    }
-    while (buf.classList.contains("container")) buf = buf.children[0]
-
-    return buf
+    // Don't let ctx.curbuf escape #editor
+    if (!ctx.curbuf.parentElement.id && ctx.curbuf.parentElement.children.length === 1)
+        ctx.curbuf.parentElement.replaceWith(ctx.curbuf)
 }

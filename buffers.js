@@ -1,4 +1,5 @@
-import { cellH, ch, drag, editor, root, setCurbuf } from "./main.js"
+import { ctx, cellH, ch, editor, root } from "./main.js"
+import { setCurbuf } from "./util.js"
 
 export function Buffer() {
     const result = document.createElement("div")
@@ -7,6 +8,10 @@ export function Buffer() {
         const viewport = document.createElement("div")
         viewport.classList.add("viewport")
         viewport.addEventListener("click", () => setCurbuf(result))
+        viewport.addEventListener("wheel", e => {
+            e.preventDefault()
+            viewport.scrollTop += Math.sign(e.deltaY) * cellH
+        }, { passive: false })
         result.appendChild(viewport)
             
             const content = document.createElement("div")
@@ -158,7 +163,7 @@ export function ResizeHandle() {
     result.classList.add("handle")
 
     result.addEventListener("mousedown", (e) => {
-        drag.handle = result
+        ctx.drag.handle = result
         e.preventDefault() // Prevent selecting text while dragging
 
         document.addEventListener("mousemove", resizeHorizontally)
@@ -187,15 +192,15 @@ export function equalizeBufferHeights() {
 
 // TODO NOW DEBUG
 function resizeHorizontally(e) {
-    const leftRect = drag.handle.previousElementSibling.getBoundingClientRect()
+    const leftRect = ctx.handle.previousElementSibling.getBoundingClientRect()
     const leftWRaw = e.clientX - leftRect.left
     const leftW = Math.floor(leftWRaw / ch) * ch
-    drag.handle.previousElementSibling.style.flex = leftW
+    ctx.handle.previousElementSibling.style.flex = leftW
 
-    const rightRect = drag.handle.nextElementSibling.getBoundingClientRect()
+    const rightRect = ctx.handle.nextElementSibling.getBoundingClientRect()
     const rightWRaw = rightRect.right - e.clientX
     const rightW = Math.ceil(rightWRaw / ch) * ch
-    drag.handle.nextElementSibling.style.flex = rightW
+    ctx.handle.nextElementSibling.style.flex = rightW
 }
 
 function resizeStop() {

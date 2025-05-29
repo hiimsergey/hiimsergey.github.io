@@ -3,6 +3,7 @@ import { initCommandHistory, resetCommandHistory } from "./cmd_history.js"
 import { COLORSCHEMES, applyColorscheme } from "./colorschemes.js"
 import { edit, executeCommand, split, vsplit } from "./commands.js"
 import { initCompletions, resetCompletions } from "./completions.js"
+import { findBufferAbove, findBufferBelow, findBufferLeft, findBufferRight, setCurbuf } from "./util.js"
 
 export const VERSION = "0.1.9"
 export const root = document.getElementById("root")
@@ -24,34 +25,24 @@ export let cmd_history = {
     items: [],
     cur: -1
 }
-export let colo = Math.floor(Math.random() * COLORSCHEMES.length)
-export let curbuf = firstBuffer
-export let drag = { handle: null } // TODO CONSIDER exporting a setter instead
-export let pageCache = {}
+export let ctx = {
+    colo: Math.floor(Math.random() * COLORSCHEMES.length),
+    curbuf: firstBuffer,
+    handle: null, // TODO CONSIDER exporting a setter instead
+    pageCache: {}
+}
 export let ch, em, cellH = 0
 
 textarea.log = function(msg) {
-    textarea.style.color = COLORSCHEMES[colo].text
+    textarea.style.color = COLORSCHEMES[ctx.colo].text
     textarea.style.fontStyle = "normal"
     textarea.value = msg
 }
 
 textarea.error = function(msg) {
-    textarea.style.color = COLORSCHEMES[colo].error
+    textarea.style.color = COLORSCHEMES[ctx.colo].error
     textarea.style.fontStyle = "italic"
     textarea.value = msg
-}
-
-export function setColo(i) { colo = i }
-
-export function setCurbuf(div) {
-    curbuf.children[1].style.display = "flex"
-    div.children[1].style.display = "none"
-    div.appendChild(lualine)
-    curbuf = div
-
-    lualine.filename.innerText = curbuf.filename.innerText
-    history.pushState(null, "", "/" + curbuf.filename.innerText)
 }
 
 function resizeTextArea() {
@@ -105,13 +96,40 @@ window.addEventListener("resize", () => {
 //     e.returnValue = ""
 // })
 
-document.addEventListener("keydown", (e) => {
+document.addEventListener("keydown", e => {
     switch (e.key) {
         case ":":
             // TODO FINAL CONSIDER moving it to an own event listener
             if (document.activeElement === textarea) break
             textarea.log("")
             textarea.focus()
+            break
+        case "h":
+            if (!e.altKey) break
+            const bufLeft = findBufferLeft()
+            if (bufLeft) setCurbuf(bufLeft)
+            break
+        case "j":
+            if (!e.altKey) {
+                curbuf.children[0].scrollTop += cellH
+                break
+            }
+            const bufBelow = findBufferBelow()
+            console.log(bufBelow)
+            if (bufBelow) setCurbuf(bufBelow)
+            break
+        case "k":
+            if (!e.altKey) {
+                curbuf.children[0].scrollTop -= cellH
+                break
+            }
+            const bufAbove = findBufferAbove()
+            if (bufAbove) setCurbuf(bufAbove)
+            break
+        case "l":
+            if (!e.altKey) break
+            const bufRight = findBufferRight()
+            if (bufRight) setCurbuf(bufRight)
             break
         case "a":
         case "A":
@@ -127,7 +145,7 @@ document.addEventListener("keydown", (e) => {
 
 textarea.addEventListener("input", resizeTextArea)
 
-textarea.addEventListener("keydown", (e) => {
+textarea.addEventListener("keydown", e => {
     switch (e.key) {
         case "Enter":
             resetCompletions()

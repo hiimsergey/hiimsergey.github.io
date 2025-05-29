@@ -1,4 +1,4 @@
-import { colo, textarea } from "./main.js"
+import { ctx, textarea } from "./main.js"
 
 export const COLORSCHEMES = [
     {
@@ -53,98 +53,98 @@ export const COLORSCHEMES = [
 export function applyColorscheme() {
     document.documentElement.style.setProperty(
         "--bg-color",
-        COLORSCHEMES[colo].background
+        COLORSCHEMES[ctx.colo].background
     )
 
     document.documentElement.style.setProperty(
         "--bar-color",
-        COLORSCHEMES[colo].bar
+        COLORSCHEMES[ctx.colo].bar
     )
 
     document.documentElement.style.setProperty(
         "--bar-surface-color",
-        COLORSCHEMES[colo].barSurface
+        COLORSCHEMES[ctx.colo].barSurface
     )
 
     document.documentElement.style.setProperty(
         "--completion-bg-color",
-        COLORSCHEMES[colo].completionBackground
+        COLORSCHEMES[ctx.colo].completionBackground
     )
 
     document.documentElement.style.setProperty(
         "--completion-text-color",
-        COLORSCHEMES[colo].completionText
+        COLORSCHEMES[ctx.colo].completionText
     )
 
     document.documentElement.style.setProperty(
         "--completion-selected-bg-color",
-        COLORSCHEMES[colo].completionSelectedBackground
+        COLORSCHEMES[ctx.colo].completionSelectedBackground
     )
 
     document.documentElement.style.setProperty(
         "--completion-selected-text-color",
-        COLORSCHEMES[colo].completionSelectedText
+        COLORSCHEMES[ctx.colo].completionSelectedText
     )
 
     document.documentElement.style.setProperty(
         "--text-color",
-        COLORSCHEMES[colo].text
+        COLORSCHEMES[ctx.colo].text
     )
 
     document.documentElement.style.setProperty(
         "--line-number-color",
-        COLORSCHEMES[colo].lineNumbers
+        COLORSCHEMES[ctx.colo].lineNumbers
     )
 
     document.documentElement.style.setProperty(
         "--h1-color",
-        COLORSCHEMES[colo].h1
+        COLORSCHEMES[ctx.colo].h1
     )
 
     document.documentElement.style.setProperty(
         "--h2-color",
-        COLORSCHEMES[colo].h2
+        COLORSCHEMES[ctx.colo].h2
     )
 
     document.documentElement.style.setProperty(
         "--code-color",
-        COLORSCHEMES[colo].code
+        COLORSCHEMES[ctx.colo].code
     )
 
     document.documentElement.style.setProperty(
         "--muted-color",
-        COLORSCHEMES[colo].muted
+        COLORSCHEMES[ctx.colo].muted
     )
 
     document.documentElement.style.setProperty(
         "--link-color",
-        COLORSCHEMES[colo].link
+        COLORSCHEMES[ctx.colo].link
     )
 
     document.documentElement.style.setProperty(
         "--special-link-color",
-        COLORSCHEMES[colo].specialLink
+        COLORSCHEMES[ctx.colo].specialLink
     )
 
     document.documentElement.style.setProperty(
         "--normal-mode-color",
-        COLORSCHEMES[colo].normalMode
+        COLORSCHEMES[ctx.colo].normalMode
     )
 
     document.documentElement.style.setProperty(
         "--wrap-color",
-        COLORSCHEMES[colo].wrap
+        COLORSCHEMES[ctx.colo].wrap
     )
 
     document.documentElement.style.setProperty(
         "--html-preview-color",
-        COLORSCHEMES[colo].htmlPreview
+        COLORSCHEMES[ctx.colo].htmlPreview
     )
 
     document.documentElement.style.setProperty(
         "--error-color",
-        COLORSCHEMES[colo].error
+        COLORSCHEMES[ctx.colo].error
     )
 
-    textarea.style.color = COLORSCHEMES[colo].text
+    textarea.style.color = COLORSCHEMES[ctx.colo].text
 }
