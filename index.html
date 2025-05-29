@@ -14,7 +14,7 @@
     <body>
         <div id="root">
             <div id="editor"></div>
-            <textarea>:echo "Hello World"</textarea>
+            <textarea></textarea>
         </div>
     </body>
 
@@ -22,63 +22,47 @@
 </html>
 
 <!-- TODO PLAN
-DEBUG
-resizing
-:sp on single buffer doesnt stretch it horizontally
+DEBUG resizing & stretching
+for some reason, you can just drag a lone buffer vertically
+FINAL make 𜷄 on all platforms
+:20vs | should complete
 
-DEBUG 404.html call stack
-
-resizeVertically
-
-CONSIDER neon theme
-
-:set nu
-
-Nvsplit & Nvs
-disallow ++opt and +cmd but allow file
-
-ZZ, ZQ and 5G
-
-:123| completes to normal commands???
-
-vsplit
-buffers
-    :buffer
-    :buffers
-    :bnext & :bprev
-    :badd
-    :balt
-    :bdel
-    :bwipeout
-    :bunload
-    :sbuffer
-    :sbnext
-    etc.
-URLs
-visual mode
-
-rename prefix and exclamation to range and bang
-
-scrolling in discrete steps
-
+discrete scrolling
+/ searching
+completion
+    "nonumber" is not a visible command
+        :set no| completes to :set nonumber but the completion only shows number
+    :123| completes to normal commands???
+    when in completion mode, arrow keys also cycle
 rest from the first repo
 
-line numbers should always be visible
-
-"nonumber" is not a visible command
-:set no| completes to :set nonumber but the completion only shows number
-
+line numbers always visible
 (implemented, just test) buffer min width 1
+commands
+    :set nu rnu
+    Nvsplit & Nvs
+        disallow ++opt and +cmd but allow file
+    buffers
+        :buffer
+        :buffers
+        :bnext & :bprev
+        :badd
+        :balt
+        :bdel
+        :bwipeout
+        :bunload
+        :sbuffer
+        :sbnext
+        etc.
+themes
+    CONSIDER neon theme
+? ZZ, ZQ and 5G
 
-when in completion mode, arrow keys also cycle
-
-split saga:
+NOTE split saga:
 if curbuf is in an xcont but we do ysplit, half curbuf's space and make a ycont
 in an xcont, if curbuf's next sibling is a ycont, then just half the space of curbuf and dont equalize all
 if curbuf is in a vertcont, equalize the main horcont
 
 selecting text in the pages while having completions open makes things funky
 `: echo "print"` doesnt work in the old version for some reason
-
-FINAL make 𜷄 on all platforms
 -->

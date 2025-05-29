@@ -7,7 +7,7 @@
     /* TODO FINAL TEST ALL */
 
     body {
-        font-size: 20px;
+        font-size: 18px;
         --cell-h: 1.3em;
         line-height: var(--cell-h);
     }

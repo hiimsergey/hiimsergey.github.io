@@ -178,7 +178,7 @@ editor.appendChild(firstBuffer)
 if (window.location.pathname === "/") {
     edit({ args: ["portfolio.html"] })
                                                             // TODO FINAL TEST
-    if (window.innerWidth >= 950) vsplit({ args: ["contact.html"], prefix: 20 })
+    if (window.innerWidth >= 950) vsplit({ args: ["contact.html"], range: 100 })
     else split({ args: ["contact.html"] })
 } else {
     edit({ args: [window.location.pathname.slice(1)] })
