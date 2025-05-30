@@ -198,6 +198,7 @@ export function split(cmd) {
     if (cmd.args.length) edit({ args: cmd.args })
     else edit({ args: [oldbufName] })
 
+    equalizeBufferHeights(buf.parentElement) // TODO TEST
     if (cmd.range) buf.style.flex = cmd.range
 }
 
@@ -234,6 +235,7 @@ export function vsplit(cmd) {
         // TODO NOW DEBUG this opens [No name]
     else edit({ args: [oldbufName] })
 
+    equalizeBufferWidths(buf.parentElement) // TODO TEST
     if (cmd.range) buf.style.flex = cmd.range
 }
 

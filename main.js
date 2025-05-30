@@ -98,6 +98,9 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("keydown", e => {
     switch (e.key) {
+        case "/":
+            textarea.error("/ is unfortunately not supported, use Ctrl-F instead")
+            return
         case ":":
             // TODO FINAL CONSIDER moving it to an own event listener
             if (document.activeElement === textarea) break
@@ -110,27 +113,52 @@ document.addEventListener("keydown", e => {
             if (bufLeft) setCurbuf(bufLeft)
             break
         case "j":
-            if (!e.altKey) {
-                curbuf.children[0].scrollTop += cellH
+            if (e.altKey) {
+                const bufBelow = findBufferBelow()
+                console.log(bufBelow)
+                if (bufBelow) setCurbuf(bufBelow)
                 break
             }
-            const bufBelow = findBufferBelow()
-            console.log(bufBelow)
-            if (bufBelow) setCurbuf(bufBelow)
+        case "ArrowDown":
+            ctx.curbuf.children[0].scrollTop += cellH
             break
         case "k":
-            if (!e.altKey) {
-                curbuf.children[0].scrollTop -= cellH
+            if (e.altKey) {
+                const bufAbove = findBufferAbove()
+                if (bufAbove) setCurbuf(bufAbove)
                 break
             }
-            const bufAbove = findBufferAbove()
-            if (bufAbove) setCurbuf(bufAbove)
+        case "ArrowUp":
+            ctx.curbuf.children[0].scrollTop -= cellH
             break
         case "l":
             if (!e.altKey) break
             const bufRight = findBufferRight()
             if (bufRight) setCurbuf(bufRight)
             break
+        case "u":
+            // TODO changing a readonly file
+            if (!e.ctrlKey) break
+        case "PageUp":
+            ctx.curbuf.children[0].scrollTop -= 10 * cellH
+            e.preventDefault()
+            break
+        case "d":
+            // TODO O-Pending
+            if (!e.ctrlKey) break
+        case "PageDown":
+            ctx.curbuf.children[0].scrollTop += 10 * cellH
+            e.preventDefault()
+            break
+        case "Home":
+            ctx.curbuf.children[0].scrollTop = 0
+            e.preventDefault()
+            break
+        case "End":
+            ctx.curbuf.children[0].scrollTop = ctx.curbuf.children[0].scrollHeight
+            e.preventDefault()
+            break
+
         case "a":
         case "A":
         case "i":
