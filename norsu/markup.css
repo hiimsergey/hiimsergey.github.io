@@ -1,0 +1,62 @@
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before { color: gray; }
+h1::before { content: "# "; }
+h2::before { content: "## "; }
+h3::before { content: "### "; }
+h4::before { content: "#### "; }
+h5::before { content: "##### "; }
+h6::before { content: "###### "; }
+
+small {
+    color: gray;
+    font-size: 1em;
+}
+small::before { content: "// "; }
+
+b { color: red; }
+b::before, b::after {
+    content: "*";
+    color: gray;
+}
+
+i { color: blue; }
+i::before, i::after {
+    content: "/";
+    color: gray;
+}
+
+u::before, u::after {
+    content: "_";
+    color: gray;
+}
+
+s { color: lightgray; }
+s::before, s::after {
+    content: "~";
+    color: gray;
+}
+
+mark::before, mark::after {
+    content: "=";
+    color: gray;
+}
+
+code { color: green; }
+code::before, code::after {
+    content: "`";
+    color: gray;
+}
+
+q::before {
+    content: "> ";
+    color: gray;
+}
+q::after { content: none; }
+
+a::before {
+    content: "[[";
+    color: gray;
+}
+a::after {
+    content: "]]";
+    color: gray;
+}

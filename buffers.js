@@ -161,33 +161,38 @@ export function Lualine() {
 export function ResizeHandle() {
     const result = document.createElement("div")
     result.classList.add("handle")
-
     result.addEventListener("mousedown", (e) => {
-        ctx.drag.handle = result
+        ctx.handle = result
         e.preventDefault() // Prevent selecting text while dragging
 
         document.addEventListener("mousemove", resizeHorizontally)
         document.addEventListener("mouseup", resizeStop)
     })
 
+        const line = document.createElement("div")
+        line.classList.add("line")
+        result.appendChild(line)
+
+        const bottom_cell = document.createElement("div")
+        bottom_cell.classList.add("bottom-cell")
+        result.appendChild(bottom_cell)
+
     return result
 }
 
-// TODO CONSIDER
-export function equalizeBufferWidths() {
-    const totalW = editor.clientWidth
-    const bufN = editor.children.length
+export function equalizeBufferWidths(container) {
+    const totalW = container.clientWidth
+    const bufN = container.children.length
     const bufW = (totalW - ch * (bufN - 1)) / bufN
-    for (let i = 0; i < editor.children.length; i += 2)
-        editor.children[i].style.flex = bufW
+    for (let i = 0; i < container.children.length; i += 2)
+        container.children[i].style.flex = bufW
 }
 
-// TODO CONSIDER
-export function equalizeBufferHeights() {
-    const totalH = editor.clientHeight
-    const bufN = editor.children.length
+export function equalizeBufferHeights(container) {
+    const totalH = container.clientHeight
+    const bufN = container.children.length
     const bufH = (totalH - cellH * (bufN - 1)) / bufN
-    for (const buf of editor.children) buf.style.flex = bufH + "px"
+    for (const buf of container.children) buf.style.flex = bufH + "px"
 }
 
 // TODO NOW DEBUG
