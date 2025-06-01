@@ -195,8 +195,27 @@ textarea::-webkit-scrollbar {
 .handle {
     background-color: var(--bg-color);
 
+    display: flex;
+    flex-direction: column;
+
     min-width: 1ch;
     height: 100%;
+}
+
+.handle .line {
+    background-color: var(--bar-color);
+
+    flex-grow: 1;
+    width: 5%;
+
+    margin: 0 auto; /* TODO TEST */
+}
+
+.handle .bottom-cell {
+    background-color: var(--bar-color);
+
+    width: 100%;
+    height: var(--cell-h);
 }
 
 .bar {

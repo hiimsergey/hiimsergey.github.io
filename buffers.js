@@ -161,7 +161,6 @@ export function Lualine() {
 export function ResizeHandle() {
     const result = document.createElement("div")
     result.classList.add("handle")
-
     result.addEventListener("mousedown", (e) => {
         ctx.handle = result
         e.preventDefault() // Prevent selecting text while dragging
@@ -169,6 +168,14 @@ export function ResizeHandle() {
         document.addEventListener("mousemove", resizeHorizontally)
         document.addEventListener("mouseup", resizeStop)
     })
+
+        const line = document.createElement("div")
+        line.classList.add("line")
+        result.appendChild(line)
+
+        const bottom_cell = document.createElement("div")
+        bottom_cell.classList.add("bottom-cell")
+        result.appendChild(bottom_cell)
 
     return result
 }

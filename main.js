@@ -5,7 +5,7 @@ import { edit, executeCommand, split, vsplit } from "./commands.js"
 import { initCompletions, resetCompletions } from "./completions.js"
 import { findBufferAbove, findBufferBelow, findBufferLeft, findBufferRight, setCurbuf } from "./util.js"
 
-export const VERSION = "0.1.9"
+export const VERSION = "0.1.14"
 export const root = document.getElementById("root")
 export const completionWindow = CompletionWindow()
 export const editor = document.getElementById("editor")

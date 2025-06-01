@@ -24,7 +24,6 @@ export const COLORSCHEMES = [
         htmlPreview:                  "#f38ba8", // Red
         error:                        "#f38ba8", // Red
     },
-
     {
         name: "gruvbox-material",     // https://github.com/sainnhe/gruvbox-material
 
@@ -47,6 +46,29 @@ export const COLORSCHEMES = [
         wrap:                         "#7daea3", // blue
         htmlPreview:                  "#ea6962", // red
         error:                        "#ea6962", // red
+    },
+    {
+        name: "neovimio",             // https://neovim.io
+
+        background:                   "#0f191f", // --bg-color
+        bar:                          "#0b151b", // --accent-bg-color
+        barSurface:                   "#0b151b", // --accent-bg-color
+        completionBackground:         "#0b151b", // --accent-bg-color
+        completionText:               "#5fb950", // --link-color
+        completionSelectedBackground: "#5fb950", // --link-color
+        completionSelectedText:       "#0b151b", // --accent-bg-color
+        text:                         "#a9d5c4", // --fg-color
+        lineNumbers:                  "#a9d5c4", // --fg-color
+        h1:                           "#a9d5c4", // --fg-color
+        h2:                           "#a9d5c4", // --fg-color
+        code:                         "#00c243", // --code-color
+        muted:                        "#565f89", // --hljs-black
+        link:                         "#5fb950", // --link-color
+        specialLink:                  "#00b7b7", // --tag-color
+        normalMode:                   "#00b7b7", // --tag-color
+        wrap:                         "#00b952", // $(".btn").background
+        htmlPreview:                  "#1174b1", // --border-color
+        error:                        "#f7768e", // --hljs-red
     }
 ]
 
@@ -146,5 +168,6 @@ export function applyColorscheme() {
         COLORSCHEMES[ctx.colo].error
     )
 
+    // Due to the DOM, it needs to be explicitly updated to instantly take effect
     textarea.style.color = COLORSCHEMES[ctx.colo].text
 }
